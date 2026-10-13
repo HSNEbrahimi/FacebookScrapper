@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#f0f4ff">
 
-<title>Facebook Scraper — Collect Facebook Posts Automatically</title>
-<meta name="description" content="A Windows program that collects Facebook posts for you automatically — text, images, and videos. Runs in the background while you work. Bulk scraping service available.">
-<meta name="keywords" content="facebook scraper, collect facebook posts, facebook data, web scraping, data collection">
+<title>Facebook Scraper — Collect, Monitor, and Manage Facebook Data</title>
+<meta name="description" content="Windows app + cloud service + Web API to collect Facebook posts at scale. Buy the software, watch it live from any browser, or let us run the whole job for you.">
+<meta name="keywords" content="facebook scraper, collect facebook data, bulk scraping service, web api, facebook monitoring, data collection">
 <meta name="author" content="Hosein Ebrahimi">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hsnebrahimi.github.io/FacebookScrapper/">
-<meta property="og:title" content="Facebook Scraper — Collect Facebook Posts Automatically">
-<meta property="og:description" content="A Windows program that collects Facebook posts for you automatically. Runs in the background while you work.">
+<meta property="og:title" content="Facebook Scraper — Collect, Monitor, and Manage Facebook Data">
+<meta property="og:description" content="Buy the software, watch it live in your browser, or let us run the whole job for you.">
 <meta property="og:image" content="https://hsnebrahimi.github.io/FacebookScrapper/preview.png">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Facebook Scraper — Collect Facebook Posts Automatically">
-<meta name="twitter:description" content="A Windows program that collects Facebook posts for you automatically.">
+<meta name="twitter:title" content="Facebook Scraper — Collect, Monitor, and Manage">
+<meta name="twitter:description" content="Buy the software, watch it live in your browser, or let us run the job for you.">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,18 +30,16 @@
 
   :root{
     --bg-1:#eef3ff;
-    --bg-2:#f5f0ff;
-    --bg-3:#eafaf5;
     --text:#0f1a35;
     --text-2:#4a5878;
     --text-3:#8b95b0;
     --glass:rgba(255,255,255,0.55);
     --glass-2:rgba(255,255,255,0.75);
-    --glass-3:rgba(255,255,255,0.85);
+    --glass-3:rgba(255,255,255,0.88);
     --stroke:rgba(255,255,255,0.9);
     --stroke-2:rgba(180,195,230,0.35);
-    --shadow-glass:0 8px 32px rgba(80,110,180,0.12),0 2px 8px rgba(80,110,180,0.06);
-    --shadow-glass-lg:0 20px 60px rgba(80,110,180,0.18),0 4px 16px rgba(80,110,180,0.08);
+    --shadow:0 8px 32px rgba(80,110,180,0.12),0 2px 8px rgba(80,110,180,0.06);
+    --shadow-lg:0 20px 60px rgba(80,110,180,0.18),0 4px 16px rgba(80,110,180,0.08);
     --accent:#5b7fff;
     --accent-2:#8b5cf6;
     --accent-3:#14b8a6;
@@ -52,7 +50,7 @@
     --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   }
 
-  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
   body{
     font-family:var(--sans);
     background:var(--bg-1);
@@ -64,71 +62,16 @@
     position:relative;
   }
 
-  /* ─────── colorful background orbs (visible through glass) ─────── */
-  .bg-wrap{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-    overflow:hidden;
-  }
-  .orb{
-    position:absolute;border-radius:50%;
-    filter:blur(80px);
-    opacity:0.65;
-    will-change:transform;
-  }
-  .orb-1{
-    width:520px;height:520px;
-    background:radial-gradient(circle,#93b8ff,transparent 70%);
-    top:-120px;left:-100px;
-    animation:float1 20s ease-in-out infinite;
-  }
-  .orb-2{
-    width:480px;height:480px;
-    background:radial-gradient(circle,#d8b4fe,transparent 70%);
-    top:15%;right:-120px;
-    animation:float2 26s ease-in-out infinite;
-  }
-  .orb-3{
-    width:420px;height:420px;
-    background:radial-gradient(circle,#a7f3d0,transparent 70%);
-    top:55%;left:-80px;
-    animation:float3 24s ease-in-out infinite;
-  }
-  .orb-4{
-    width:500px;height:500px;
-    background:radial-gradient(circle,#fbcfe8,transparent 70%);
-    bottom:-150px;right:10%;
-    animation:float2 30s ease-in-out infinite reverse;
-  }
-  .orb-5{
-    width:380px;height:380px;
-    background:radial-gradient(circle,#fde68a,transparent 70%);
-    top:35%;left:40%;
-    opacity:0.4;
-    animation:float1 28s ease-in-out infinite reverse;
-  }
-  @keyframes float1{
-    0%,100%{transform:translate(0,0) scale(1)}
-    50%{transform:translate(60px,50px) scale(1.08)}
-  }
-  @keyframes float2{
-    0%,100%{transform:translate(0,0) scale(1)}
-    50%{transform:translate(-70px,40px) scale(0.95)}
-  }
-  @keyframes float3{
-    0%,100%{transform:translate(0,0) scale(1)}
-    50%{transform:translate(50px,-60px) scale(1.05)}
-  }
-
-  /* ─────── subtle noise for glass realism ─────── */
-  .bg-wrap::after{
-    content:'';
-    position:absolute;inset:0;
-    background-image:
-      radial-gradient(rgba(255,255,255,0.4) 1px,transparent 1px);
-    background-size:3px 3px;
-    opacity:0.15;
-    mix-blend-mode:overlay;
-  }
+  .bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.65;will-change:transform}
+  .orb-1{width:520px;height:520px;background:radial-gradient(circle,#93b8ff,transparent 70%);top:-120px;left:-100px;animation:float1 20s ease-in-out infinite}
+  .orb-2{width:480px;height:480px;background:radial-gradient(circle,#d8b4fe,transparent 70%);top:15%;right:-120px;animation:float2 26s ease-in-out infinite}
+  .orb-3{width:420px;height:420px;background:radial-gradient(circle,#a7f3d0,transparent 70%);top:55%;left:-80px;animation:float3 24s ease-in-out infinite}
+  .orb-4{width:500px;height:500px;background:radial-gradient(circle,#fbcfe8,transparent 70%);bottom:-150px;right:10%;animation:float2 30s ease-in-out infinite reverse}
+  .orb-5{width:380px;height:380px;background:radial-gradient(circle,#fde68a,transparent 70%);top:35%;left:40%;opacity:0.4;animation:float1 28s ease-in-out infinite reverse}
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,50px) scale(1.08)}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-70px,40px) scale(0.95)}}
+  @keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-60px) scale(1.05)}}
 
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
@@ -143,42 +86,26 @@
     border:1px solid rgba(91,127,255,0.18);
   }
 
-  .wrap{
-    max-width:1160px;
-    margin:0 auto;
-    padding:0 24px;
-    position:relative;
-    z-index:1;
-  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
 
   /* ═══════════ NAV ═══════════ */
   .nav{
     position:sticky;top:12px;z-index:100;
-    margin:12px 24px 0;
+    margin:12px auto 0;max-width:1180px;
     border-radius:16px;
     background:var(--glass-2);
     backdrop-filter:blur(24px) saturate(180%);
     -webkit-backdrop-filter:blur(24px) saturate(180%);
     border:1px solid var(--stroke);
-    box-shadow:var(--shadow-glass);
-    max-width:1160px;
-    margin-left:auto;
-    margin-right:auto;
+    box-shadow:var(--shadow);
   }
-  .nav-inner{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:12px 22px;
-    gap:20px;
-  }
-  .brand{
-    display:flex;align-items:center;gap:11px;
-    font-weight:700;font-size:14.5px;
-    letter-spacing:-0.01em;
-    color:var(--text);
-  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;gap:20px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:14.5px;letter-spacing:-0.01em}
   .brand-mark{
     width:34px;height:34px;border-radius:10px;
-    background:linear-gradient(135deg,#5b7fff 0%,#8b5cf6 100%);
+    background:url('logo.png');
+	background-position: center;
+    background-size: cover;
     display:grid;place-items:center;
     font-family:var(--mono);font-size:12px;font-weight:700;color:#fff;
     box-shadow:0 6px 18px rgba(91,127,255,0.35),inset 0 1px 0 rgba(255,255,255,0.3);
@@ -188,56 +115,34 @@
   .brand-sub{color:var(--text-2);font-weight:500;font-size:12.5px}
 
   .nav-links{display:flex;gap:22px;align-items:center}
-  .nav-links a{
-    font-size:13.5px;color:var(--text-2);font-weight:500;
-    transition:color .15s;
-  }
+  .nav-links a{font-size:13.5px;color:var(--text-2);font-weight:500;transition:color .15s}
   .nav-links a:hover{color:var(--accent)}
 
   .btn{
     display:inline-flex;align-items:center;gap:8px;
     padding:10px 18px;border-radius:11px;
     font-size:13.5px;font-weight:600;
-    transition:all .2s;
-    cursor:pointer;border:none;
-    font-family:inherit;
-    white-space:nowrap;
-    letter-spacing:-0.005em;
+    transition:all .2s;cursor:pointer;border:none;
+    font-family:inherit;white-space:nowrap;letter-spacing:-0.005em;
   }
   .btn-primary{
     background:linear-gradient(135deg,#5b7fff 0%,#8b5cf6 100%);
     color:#fff;
     box-shadow:0 8px 24px rgba(91,127,255,0.35),inset 0 1px 0 rgba(255,255,255,0.25);
   }
-  .btn-primary:hover{
-    transform:translateY(-1px);
-    box-shadow:0 12px 32px rgba(91,127,255,0.45),inset 0 1px 0 rgba(255,255,255,0.3);
-  }
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(91,127,255,0.45),inset 0 1px 0 rgba(255,255,255,0.3)}
   .btn-ghost{
-    background:var(--glass);
-    color:var(--text);
+    background:var(--glass);color:var(--text);
     border:1px solid var(--stroke-2);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     box-shadow:0 2px 8px rgba(80,110,180,0.06);
   }
-  .btn-ghost:hover{
-    border-color:var(--accent);
-    background:rgba(255,255,255,0.85);
-    color:var(--accent);
-  }
+  .btn-ghost:hover{border-color:var(--accent);background:rgba(255,255,255,0.85);color:var(--accent)}
 
   /* ═══════════ HERO ═══════════ */
   .hero{padding:56px 0 40px;position:relative}
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1.05fr 0.95fr;
-    gap:48px;
-    align-items:start;
-  }
-  @media (max-width:960px){
-    .hero-grid{grid-template-columns:1fr;gap:36px}
-  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:48px;align-items:start}
+  @media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:36px}}
 
   .live-pill{
     display:inline-flex;align-items:center;gap:9px;
@@ -245,62 +150,29 @@
     background:rgba(255,255,255,0.7);
     border:1px solid rgba(16,185,129,0.3);
     font-size:12px;font-weight:600;color:#0d9d75;
-    font-family:var(--mono);
-    margin-bottom:24px;
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    font-family:var(--mono);margin-bottom:24px;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     box-shadow:0 2px 10px rgba(16,185,129,0.1);
   }
-  .live-pill .dot{
-    width:7px;height:7px;border-radius:50%;
-    background:var(--green);
-    box-shadow:0 0 10px var(--green);
-    animation:pulse 2s infinite;
-  }
+  .live-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
-  h1{
-    font-size:clamp(34px,4.8vw,54px);
-    font-weight:800;line-height:1.08;
-    letter-spacing:-0.03em;
-    margin-bottom:22px;
-    color:var(--text);
-  }
-  h1 em{
-    font-style:normal;
-    background:linear-gradient(120deg,#5b7fff 0%,#8b5cf6 60%,#14b8a6 100%);
-    -webkit-background-clip:text;background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
+  h1{font-size:clamp(34px,4.8vw,54px);font-weight:800;line-height:1.08;letter-spacing:-0.03em;margin-bottom:22px;color:var(--text)}
+  h1 em{font-style:normal;background:linear-gradient(120deg,#5b7fff 0%,#8b5cf6 60%,#14b8a6 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
-  .lede{
-    font-size:17px;color:var(--text-2);
-    max-width:560px;margin-bottom:34px;
-    line-height:1.65;
-  }
+  .lede{font-size:17px;color:var(--text-2);max-width:580px;margin-bottom:34px;line-height:1.65}
   .lede strong{color:var(--text);font-weight:600}
 
   .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
 
-  /* simple 3-step strip under hero */
-  .simple-steps{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin-top:36px;
-  }
-  @media (max-width:640px){
-    .simple-steps{grid-template-columns:1fr}
-  }
+  .simple-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
+  @media (max-width:640px){.simple-steps{grid-template-columns:1fr}}
   .step{
-    background:var(--glass);
-    border:1px solid var(--stroke);
-    border-radius:14px;
-    padding:16px 18px;
+    background:var(--glass);border:1px solid var(--stroke);
+    border-radius:14px;padding:16px 18px;
     backdrop-filter:blur(16px) saturate(160%);
     -webkit-backdrop-filter:blur(16px) saturate(160%);
-    box-shadow:var(--shadow-glass);
-    transition:transform .2s;
+    box-shadow:var(--shadow);transition:transform .2s;
   }
   .step:hover{transform:translateY(-2px)}
   .step-num{
@@ -308,56 +180,32 @@
     width:26px;height:26px;border-radius:8px;
     background:linear-gradient(135deg,#5b7fff,#8b5cf6);
     color:#fff;font-size:12px;font-weight:700;
-    font-family:var(--mono);
-    margin-bottom:10px;
+    font-family:var(--mono);margin-bottom:10px;
     box-shadow:0 4px 12px rgba(91,127,255,0.3);
   }
-  .step h4{
-    font-size:13.5px;font-weight:700;
-    margin-bottom:4px;
-    color:var(--text);
-  }
-  .step p{
-    font-size:12.5px;color:var(--text-2);
-    line-height:1.5;
-  }
+  .step h4{font-size:13.5px;font-weight:700;margin-bottom:4px;color:var(--text)}
+  .step p{font-size:12.5px;color:var(--text-2);line-height:1.5}
 
-  /* ─────── mock dashboard card (glass) ─────── */
+  /* terminal */
   .terminal{
-    background:var(--glass-2);
-    border:1px solid var(--stroke);
-    border-radius:20px;
-    overflow:hidden;
+    background:var(--glass-2);border:1px solid var(--stroke);
+    border-radius:20px;overflow:hidden;
     backdrop-filter:blur(28px) saturate(180%);
     -webkit-backdrop-filter:blur(28px) saturate(180%);
-    box-shadow:var(--shadow-glass-lg);
-    position:relative;
+    box-shadow:var(--shadow-lg);position:relative;
   }
   .terminal-head{
     display:flex;align-items:center;gap:8px;
-    padding:14px 18px;
-    background:rgba(255,255,255,0.4);
+    padding:14px 18px;background:rgba(255,255,255,0.4);
     border-bottom:1px solid rgba(180,195,230,0.3);
-    position:relative;
   }
   .tdot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
-  .tdot.red{background:#ff5f57}
-  .tdot.yellow{background:#febc2e}
-  .tdot.green{background:#28c840}
-  .terminal-title{
-    margin-left:auto;margin-right:auto;
-    font-family:var(--mono);font-size:11.5px;
-    color:var(--text-3);
-    letter-spacing:0.02em;
-    font-weight:500;
-  }
+  .tdot.red{background:#ff5f57}.tdot.yellow{background:#febc2e}.tdot.green{background:#28c840}
+  .terminal-title{margin-left:auto;margin-right:auto;font-family:var(--mono);font-size:11.5px;color:var(--text-3);letter-spacing:0.02em;font-weight:500}
   .terminal-body{
-    padding:22px 24px;
-    font-family:var(--mono);font-size:12.5px;
-    line-height:1.95;
-    overflow-x:auto;
-    color:var(--text-2);
-    background:rgba(255,255,255,0.35);
+    padding:22px 24px;font-family:var(--mono);font-size:12.5px;
+    line-height:1.95;overflow-x:auto;
+    color:var(--text-2);background:rgba(255,255,255,0.35);
   }
   .terminal-body .prompt{color:#10b981;font-weight:700}
   .terminal-body .cmd{color:var(--text);font-weight:500}
@@ -377,413 +225,386 @@
     padding:5px 12px;
     background:rgba(91,127,255,0.1);
     border:1px solid rgba(91,127,255,0.2);
-    border-radius:100px;
-    margin-bottom:16px;
+    border-radius:100px;margin-bottom:16px;
   }
-  h2{
-    font-size:clamp(26px,3.4vw,36px);
-    font-weight:800;letter-spacing:-0.025em;
-    margin-bottom:16px;line-height:1.18;
-    color:var(--text);
-  }
-  .section-sub{
-    color:var(--text-2);max-width:640px;
-    margin-bottom:44px;font-size:16px;
-    line-height:1.65;
-  }
+  h2{font-size:clamp(26px,3.4vw,36px);font-weight:800;letter-spacing:-0.025em;margin-bottom:16px;line-height:1.18;color:var(--text)}
+  .section-sub{color:var(--text-2);max-width:680px;margin-bottom:44px;font-size:16px;line-height:1.65}
 
-  /* ═══════════ FEATURE CARDS (GLASS) ═══════════ */
-  .features{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:16px;
-  }
-  .feature{
-    background:var(--glass);
-    border:1px solid var(--stroke);
-    border-radius:18px;
-    padding:26px 24px;
+  /* ═══════════ EXPLAIN (3 cards) ═══════════ */
+  .explain{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media (max-width:768px){.explain{grid-template-columns:1fr}}
+  .explain-card{
+    background:var(--glass-2);border:1px solid var(--stroke);
+    border-radius:18px;padding:30px 26px;
     backdrop-filter:blur(24px) saturate(180%);
     -webkit-backdrop-filter:blur(24px) saturate(180%);
-    transition:all .25s;
-    box-shadow:var(--shadow-glass);
-    position:relative;
-    overflow:hidden;
+    box-shadow:var(--shadow);text-align:center;transition:transform .2s;
   }
-  .feature:hover{
-    background:var(--glass-3);
-    transform:translateY(-3px);
-    box-shadow:var(--shadow-glass-lg);
-    border-color:rgba(91,127,255,0.3);
-  }
-
-  .feature-icon{
-    width:44px;height:44px;
-    border-radius:12px;
+  .explain-card:hover{transform:translateY(-3px)}
+  .explain-icon{
+    width:64px;height:64px;border-radius:18px;margin:0 auto 18px;
+    display:grid;place-items:center;font-size:28px;
     background:linear-gradient(135deg,rgba(91,127,255,0.15),rgba(139,92,246,0.1));
     border:1px solid rgba(91,127,255,0.2);
-    display:grid;place-items:center;
-    font-size:20px;
-    margin-bottom:16px;
+    box-shadow:0 8px 20px rgba(91,127,255,0.15);
   }
-  .feature h3{
-    font-size:15.5px;font-weight:700;
-    margin-bottom:9px;color:var(--text);
-    letter-spacing:-0.01em;
+  .explain-card h3{font-size:17px;font-weight:700;margin-bottom:10px;color:var(--text);letter-spacing:-0.015em}
+  .explain-card p{font-size:14px;color:var(--text-2);line-height:1.65}
+
+  /* ═══════════ 3 WAYS TO USE ═══════════ */
+  .ways{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media (max-width:900px){.ways{grid-template-columns:1fr}}
+  .way{
+    background:var(--glass-2);border:1px solid var(--stroke);
+    border-radius:20px;padding:32px 28px;
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+    box-shadow:var(--shadow);transition:all .25s;
+    position:relative;overflow:hidden;display:flex;flex-direction:column;
   }
-  .feature p{
-    font-size:13.5px;color:var(--text-2);
-    line-height:1.65;
+  .way:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .way-num{
+    font-family:var(--mono);font-size:11px;
+    color:var(--accent);font-weight:700;
+    letter-spacing:0.1em;margin-bottom:14px;
+  }
+  .way h3{font-size:19px;font-weight:800;margin-bottom:10px;letter-spacing:-0.015em;color:var(--text)}
+  .way .way-sub{font-size:13px;color:var(--text-3);margin-bottom:18px;font-family:var(--mono);font-weight:500}
+  .way p{font-size:14px;color:var(--text-2);line-height:1.65;margin-bottom:20px}
+  .way ul{list-style:none;margin-bottom:24px;flex-grow:1}
+  .way ul li{
+    padding:7px 0 7px 24px;position:relative;
+    font-size:13.5px;color:var(--text-2);line-height:1.55;
+  }
+  .way ul li::before{
+    content:'✓';position:absolute;left:0;top:6px;
+    color:var(--green);font-weight:700;font-size:14px;
+  }
+  .way ul li strong{color:var(--text);font-weight:600}
+  .way-price{
+    padding-top:18px;border-top:1px solid rgba(180,195,230,0.3);
+    font-family:var(--mono);font-size:12.5px;
+    color:var(--text-3);font-weight:600;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .way-price strong{color:var(--accent);font-size:16px;font-family:var(--sans)}
+
+  .way.featured{
+    background:linear-gradient(180deg,rgba(91,127,255,0.1),rgba(255,255,255,0.65));
+    border-color:rgba(91,127,255,0.3);
+  }
+  .way.featured::before{
+    content:'MOST POPULAR';
+    position:absolute;top:18px;right:-32px;
+    transform:rotate(45deg);
+    background:linear-gradient(135deg,#5b7fff,#8b5cf6);
+    color:#fff;font-size:10px;font-weight:700;
+    font-family:var(--mono);letter-spacing:0.1em;
+    padding:4px 40px;box-shadow:0 4px 12px rgba(91,127,255,0.3);
+	top: 36px !important;
   }
 
-  .feature.highlight{
-    background:linear-gradient(180deg,rgba(16,185,129,0.08),rgba(255,255,255,0.5));
-    border-color:rgba(16,185,129,0.25);
-  }
-  .feature.highlight .feature-icon{
-    background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(20,184,166,0.1));
-    border-color:rgba(16,185,129,0.3);
-  }
-
-  /* ═══════════ SPLIT (background mode) ═══════════ */
-  .split{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:40px;
-    align-items:center;
-    background:var(--glass-2);
-    border:1px solid var(--stroke);
-    border-radius:22px;
-    padding:44px;
+  /* ═══════════ LIVE PANEL SECTION ═══════════ */
+  .live-panel{
+    background:linear-gradient(135deg,rgba(91,127,255,0.08),rgba(139,92,246,0.06) 50%,rgba(20,184,166,0.05) 100%);
+    border:1px solid var(--stroke);border-radius:24px;
+    padding:48px 44px;
     backdrop-filter:blur(28px) saturate(180%);
     -webkit-backdrop-filter:blur(28px) saturate(180%);
-    box-shadow:var(--shadow-glass-lg);
-    position:relative;
-    overflow:hidden;
+    box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
   }
-  @media (max-width:900px){
-    .split{grid-template-columns:1fr;padding:32px 24px;gap:28px}
-  }
-
-  .split-text h3{
-    font-size:clamp(20px,2.4vw,27px);
-    font-weight:800;letter-spacing:-0.02em;
-    margin-bottom:14px;line-height:1.25;
-    color:var(--text);
-  }
-  .split-text h3 em{
-    font-style:normal;
-    color:var(--green);
-  }
-  .split-text p{
-    font-size:15px;color:var(--text-2);
-    line-height:1.7;margin-bottom:16px;
-  }
-  .split-list{list-style:none;margin-top:20px}
-  .split-list li{
-    padding:8px 0 8px 28px;
-    position:relative;
-    font-size:14px;
-    color:var(--text-2);
-    line-height:1.55;
-  }
-  .split-list li::before{
-    content:'✓';
-    position:absolute;left:0;top:7px;
-    color:var(--green);
-    font-weight:700;
-    font-size:15px;
-  }
-  .split-list li strong{color:var(--text);font-weight:600}
-
-  /* keyboard illustration */
-  .kb-illo{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-  }
-  .kb-row{display:flex;gap:6px}
-  .key{
-    width:40px;height:40px;
-    border-radius:9px;
-    background:var(--glass-3);
-    border:1px solid var(--stroke-2);
-    display:grid;place-items:center;
-    font-family:var(--mono);
-    font-size:11px;
-    font-weight:600;
-    color:var(--text-2);
-    box-shadow:
-      0 2px 4px rgba(80,110,180,0.08),
-      inset 0 -2px 0 rgba(80,110,180,0.08),
-      inset 0 1px 0 rgba(255,255,255,0.9);
-    transition:all .2s;
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-  }
-  .key.active{
-    background:linear-gradient(180deg,#5b7fff,#8b5cf6);
-    border-color:rgba(91,127,255,0.5);
-    color:#fff;
-    box-shadow:0 6px 16px rgba(91,127,255,0.4),inset 0 1px 0 rgba(255,255,255,0.3);
-    transform:translateY(1px);
-  }
-  .key.space{width:150px}
-  .kb-caption{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--text-3);
-    text-align:center;
-    margin-top:12px;
-    font-weight:500;
+  @media (max-width:768px){.live-panel{padding:32px 24px}}
+  .live-panel::before{
+    content:'';position:absolute;top:-1px;left:30%;right:30%;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(91,127,255,0.6),transparent);
   }
 
-  /* ═══════════ SERVICE CARD ═══════════ */
-  .service{
-    background:linear-gradient(135deg,rgba(91,127,255,0.1) 0%,rgba(139,92,246,0.08) 50%,rgba(20,184,166,0.06) 100%);
-    border:1px solid var(--stroke);
-    border-radius:22px;
-    padding:44px;
-    backdrop-filter:blur(28px) saturate(180%);
-    -webkit-backdrop-filter:blur(28px) saturate(180%);
-    box-shadow:var(--shadow-glass-lg);
-    position:relative;
-    overflow:hidden;
-  }
-  @media (max-width:768px){
-    .service{padding:32px 24px}
-  }
+  .lp-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:44px;align-items:center}
+  @media (max-width:900px){.lp-grid{grid-template-columns:1fr;gap:28px}}
 
-  .service-grid{
-    display:grid;
-    grid-template-columns:1.4fr 1fr;
-    gap:44px;
-    align-items:center;
-  }
-  @media (max-width:900px){
-    .service-grid{grid-template-columns:1fr;gap:28px}
-  }
-
-  .service h3{
+  .lp-text h3{
     font-size:clamp(22px,2.6vw,30px);
     font-weight:800;letter-spacing:-0.02em;
-    margin-bottom:16px;line-height:1.25;
-    color:var(--text);
+    margin-bottom:16px;line-height:1.25;color:var(--text);
   }
-  .service h3 em{
+  .lp-text h3 em{
     font-style:normal;
     background:linear-gradient(120deg,#5b7fff,#8b5cf6);
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;
   }
-  .service p{
-    color:var(--text-2);font-size:15px;
-    line-height:1.7;margin-bottom:18px;
+  .lp-text p{font-size:15px;color:var(--text-2);line-height:1.7;margin-bottom:16px}
+  .lp-text ul{list-style:none;margin-top:18px}
+  .lp-text ul li{
+    padding:9px 0 9px 28px;position:relative;
+    font-size:14px;color:var(--text-2);line-height:1.55;
   }
+  .lp-text ul li::before{content:'✓';position:absolute;left:0;top:8px;color:var(--green);font-weight:700}
+  .lp-text ul li strong{color:var(--text);font-weight:600}
 
-  .service-stats{
-    display:grid;gap:12px;
-    grid-template-columns:1fr 1fr;
-  }
-  .stat{
+  /* mock live panel */
+  .mock-panel{
     background:var(--glass-3);
     border:1px solid var(--stroke);
-    border-radius:14px;
-    padding:18px;
-    backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px);
-    box-shadow:var(--shadow-glass);
-  }
-  .stat-label{
-    font-family:var(--mono);font-size:10.5px;
-    color:var(--text-3);letter-spacing:0.06em;
-    margin-bottom:8px;text-transform:uppercase;
-    font-weight:600;
-  }
-  .stat-value{
-    font-size:20px;font-weight:800;
-    color:var(--accent);
-    letter-spacing:-0.02em;
-  }
-  .stat-value small{
-    font-size:12px;color:var(--text-3);
-    font-weight:500;margin-left:4px;
-  }
-
-  /* ═══════════ SIMPLE EXPLANATION ═══════════ */
-  .explain{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-    margin-top:8px;
-  }
-  @media (max-width:768px){
-    .explain{grid-template-columns:1fr}
-  }
-  .explain-card{
-    background:var(--glass-2);
-    border:1px solid var(--stroke);
-    border-radius:18px;
-    padding:30px 26px;
+    border-radius:16px;
+    overflow:hidden;
     backdrop-filter:blur(24px) saturate(180%);
     -webkit-backdrop-filter:blur(24px) saturate(180%);
-    box-shadow:var(--shadow-glass);
-    text-align:center;
-    transition:transform .2s;
+    box-shadow:var(--shadow-lg);
+    font-family:var(--mono);font-size:12px;
   }
-  .explain-card:hover{transform:translateY(-3px)}
-  .explain-icon{
-    width:64px;height:64px;
-    border-radius:18px;
-    margin:0 auto 18px;
+  .mock-head{
+    padding:12px 16px;
+    background:rgba(255,255,255,0.5);
+    border-bottom:1px solid rgba(180,195,230,0.3);
+    display:flex;align-items:center;gap:10px;
+  }
+  .mock-url{
+    flex:1;
+    background:rgba(255,255,255,0.7);
+    padding:5px 12px;border-radius:6px;
+    font-size:11px;color:var(--text-2);
+    border:1px solid rgba(180,195,230,0.4);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .mock-dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0}
+  .mock-body{padding:18px 16px;background:rgba(255,255,255,0.3)}
+  .mock-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+  .mock-stat{
+    background:rgba(255,255,255,0.7);
+    border:1px solid rgba(180,195,230,0.4);
+    border-radius:8px;padding:10px 12px;
+  }
+  .mock-stat-label{font-size:9px;color:var(--text-3);letter-spacing:0.05em;font-weight:700;text-transform:uppercase;margin-bottom:3px}
+  .mock-stat-value{font-size:14px;font-weight:800;color:var(--accent);font-family:var(--sans)}
+  .mock-stat-value.green{color:var(--green)}
+  .mock-log{
+    background:rgba(255,255,255,0.6);
+    border:1px solid rgba(180,195,230,0.4);
+    border-radius:8px;padding:12px 14px;
+    font-size:11px;line-height:1.9;
+    color:var(--text-2);max-height:180px;overflow:hidden;
+  }
+  .mock-log .line{display:flex;gap:10px}
+  .mock-log .t{color:var(--text-3);flex-shrink:0}
+  .mock-log .m{color:var(--text)}
+  .mock-log .ok{color:var(--green);font-weight:600}
+  .mock-log .warn{color:var(--amber);font-weight:600}
+
+  /* ═══════════ API SECTION ═══════════ */
+  .api-section{
+    background:var(--glass-2);
+    border:1px solid var(--stroke);
+    border-radius:24px;padding:48px 44px;
+    backdrop-filter:blur(28px) saturate(180%);
+    -webkit-backdrop-filter:blur(28px) saturate(180%);
+    box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+  }
+  @media (max-width:768px){.api-section{padding:32px 24px}}
+
+  .api-header{text-align:center;max-width:720px;margin:0 auto 40px}
+  .api-header h3{
+    font-size:clamp(22px,2.8vw,30px);
+    font-weight:800;letter-spacing:-0.02em;
+    margin-bottom:14px;color:var(--text);
+  }
+  .api-header h3 em{
+    font-style:normal;
+    background:linear-gradient(120deg,#5b7fff,#8b5cf6);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .api-header p{font-size:15.5px;color:var(--text-2);line-height:1.7}
+
+  .api-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:44px;align-items:start}
+  @media (max-width:900px){.api-grid{grid-template-columns:1fr;gap:28px}}
+
+  .endpoint{
+    display:flex;align-items:flex-start;gap:12px;
+    padding:14px 16px;
+    background:rgba(255,255,255,0.6);
+    border:1px solid rgba(180,195,230,0.4);
+    border-radius:10px;margin-bottom:10px;
+    transition:all .2s;
+  }
+  .endpoint:hover{background:rgba(255,255,255,0.9);transform:translateX(2px)}
+  .method{
+    font-family:var(--mono);font-size:10px;font-weight:700;
+    padding:3px 8px;border-radius:5px;flex-shrink:0;
+    letter-spacing:0.05em;margin-top:2px;
+  }
+  .method.get{background:rgba(91,127,255,0.15);color:#4055c4}
+  .method.post{background:rgba(16,185,129,0.15);color:#0d9d75}
+  .method.del{background:rgba(236,72,153,0.15);color:#be185d}
+  .endpoint-path{
+    font-family:var(--mono);font-size:12.5px;
+    color:var(--text);font-weight:600;
+    margin-bottom:3px;
+  }
+  .endpoint-desc{font-size:12.5px;color:var(--text-2);line-height:1.5}
+
+  .api-code{
+    background:#0f1a35;
+    border:1px solid rgba(30,45,80,0.5);
+    border-radius:14px;padding:22px 24px;
+    font-family:var(--mono);font-size:12px;
+    line-height:1.85;color:#e2e8f8;
+    overflow-x:auto;
+    box-shadow:0 20px 50px rgba(15,26,53,0.25);
+    position:relative;
+  }
+  .api-code::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(91,127,255,0.6),transparent);
+  }
+  .api-code .c-tag{color:#a78bfa}
+  .api-code .c-attr{color:#7dd3fc}
+  .api-code .c-str{color:#fbbf24}
+  .api-code .c-cmt{color:#64748b;font-style:italic}
+  .api-code .c-kw{color:#f472b6;font-weight:600}
+  .api-code .c-num{color:#34d399}
+
+  /* ═══════════ BUSINESS VALUE ═══════════ */
+  .value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .value{
+    background:var(--glass-2);border:1px solid var(--stroke);
+    border-radius:16px;padding:26px 24px;
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+    box-shadow:var(--shadow);transition:all .2s;
+    position:relative;
+  }
+  .value:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+  .value-icon{
+    width:44px;height:44px;border-radius:12px;
+    background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(20,184,166,0.1));
+    border:1px solid rgba(16,185,129,0.25);
     display:grid;place-items:center;
-    font-size:28px;
+    font-size:20px;margin-bottom:16px;
+  }
+  .value h3{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--text);letter-spacing:-0.005em}
+  .value p{font-size:13.5px;color:var(--text-2);line-height:1.6}
+
+  /* ═══════════ FEATURES ═══════════ */
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .feature{
+    background:var(--glass);border:1px solid var(--stroke);
+    border-radius:18px;padding:26px 24px;
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+    transition:all .25s;box-shadow:var(--shadow);
+  }
+  .feature:hover{background:var(--glass-3);transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:rgba(91,127,255,0.3)}
+  .feature-icon{
+    width:44px;height:44px;border-radius:12px;
     background:linear-gradient(135deg,rgba(91,127,255,0.15),rgba(139,92,246,0.1));
     border:1px solid rgba(91,127,255,0.2);
-    box-shadow:0 8px 20px rgba(91,127,255,0.15);
+    display:grid;place-items:center;font-size:20px;margin-bottom:16px;
   }
-  .explain-card h3{
-    font-size:17px;font-weight:700;
-    margin-bottom:10px;color:var(--text);
-    letter-spacing:-0.015em;
+  .feature h3{font-size:15.5px;font-weight:700;margin-bottom:9px;color:var(--text);letter-spacing:-0.01em}
+  .feature p{font-size:13.5px;color:var(--text-2);line-height:1.65}
+
+  /* ═══════════ SPLIT BACKGROUND ═══════════ */
+  .split{
+    display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
+    background:var(--glass-2);border:1px solid var(--stroke);
+    border-radius:22px;padding:44px;
+    backdrop-filter:blur(28px) saturate(180%);
+    -webkit-backdrop-filter:blur(28px) saturate(180%);
+    box-shadow:var(--shadow-lg);
   }
-  .explain-card p{
-    font-size:14px;color:var(--text-2);
-    line-height:1.65;
+  @media (max-width:900px){.split{grid-template-columns:1fr;padding:32px 24px;gap:28px}}
+  .split-text h3{font-size:clamp(20px,2.4vw,27px);font-weight:800;letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;color:var(--text)}
+  .split-text h3 em{font-style:normal;color:var(--green)}
+  .split-text p{font-size:15px;color:var(--text-2);line-height:1.7;margin-bottom:16px}
+  .split-list{list-style:none;margin-top:20px}
+  .split-list li{padding:8px 0 8px 28px;position:relative;font-size:14px;color:var(--text-2);line-height:1.55}
+  .split-list li::before{content:'✓';position:absolute;left:0;top:7px;color:var(--green);font-weight:700;font-size:15px}
+  .split-list li strong{color:var(--text);font-weight:600}
+
+  .kb-illo{display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;padding:20px}
+  .kb-row{display:flex;gap:6px}
+  .key{
+    width:40px;height:40px;border-radius:9px;
+    background:var(--glass-3);border:1px solid var(--stroke-2);
+    display:grid;place-items:center;
+    font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text-2);
+    box-shadow:0 2px 4px rgba(80,110,180,0.08),inset 0 -2px 0 rgba(80,110,180,0.08),inset 0 1px 0 rgba(255,255,255,0.9);
+    transition:all .2s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   }
+  .key.active{
+    background:linear-gradient(180deg,#5b7fff,#8b5cf6);
+    border-color:rgba(91,127,255,0.5);color:#fff;
+    box-shadow:0 6px 16px rgba(91,127,255,0.4),inset 0 1px 0 rgba(255,255,255,0.3);
+    transform:translateY(1px);
+  }
+  .key.space{width:150px}
+  .kb-caption{font-family:var(--mono);font-size:12px;color:var(--text-3);text-align:center;margin-top:12px;font-weight:500}
 
   /* ═══════════ SPECS ═══════════ */
   .specs{
-    background:var(--glass-2);
-    border:1px solid var(--stroke);
-    border-radius:18px;
-    overflow:hidden;
-    backdrop-filter:blur(24px);
-    -webkit-backdrop-filter:blur(24px);
-    box-shadow:var(--shadow-glass);
+    background:var(--glass-2);border:1px solid var(--stroke);
+    border-radius:18px;overflow:hidden;
+    backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+    box-shadow:var(--shadow);
   }
   .specs-row{
-    display:grid;
-    grid-template-columns:220px 1fr;
-    padding:16px 24px;
-    border-bottom:1px solid rgba(180,195,230,0.25);
-    font-size:14px;
-    align-items:baseline;
-    transition:background .15s;
+    display:grid;grid-template-columns:220px 1fr;
+    padding:16px 24px;border-bottom:1px solid rgba(180,195,230,0.25);
+    font-size:14px;align-items:baseline;transition:background .15s;
   }
   .specs-row:last-child{border-bottom:none}
   .specs-row:hover{background:rgba(255,255,255,0.4)}
-  .specs-row dt{
-    color:var(--text-3);
-    font-family:var(--mono);font-size:12px;
-    letter-spacing:0.02em;
-    font-weight:600;
-  }
+  .specs-row dt{color:var(--text-3);font-family:var(--mono);font-size:12px;letter-spacing:0.02em;font-weight:600}
   .specs-row dd{color:var(--text);font-size:14px}
   .specs-row dd strong{color:var(--accent);font-weight:600}
-  @media (max-width:640px){
-    .specs-row{grid-template-columns:1fr;gap:4px;padding:14px 18px}
-  }
+  @media (max-width:640px){.specs-row{grid-template-columns:1fr;gap:4px;padding:14px 18px}}
 
   /* ═══════════ HONESTY ═══════════ */
   .honesty{
-    background:var(--glass-2);
-    border:1px solid var(--stroke);
-    border-left:4px solid var(--amber);
-    border-radius:16px;
+    background:var(--glass-2);border:1px solid var(--stroke);
+    border-left:4px solid var(--amber);border-radius:16px;
     padding:26px 30px;
-    backdrop-filter:blur(24px);
-    -webkit-backdrop-filter:blur(24px);
-    box-shadow:var(--shadow-glass);
+    backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+    box-shadow:var(--shadow);
   }
-  .honesty h3{
-    font-size:15px;font-weight:700;
-    color:#b45309;margin-bottom:16px;
-    font-family:var(--mono);
-    letter-spacing:0.02em;
-  }
+  .honesty h3{font-size:15px;font-weight:700;color:#b45309;margin-bottom:16px;font-family:var(--mono);letter-spacing:0.02em}
   .honesty ul{list-style:none}
-  .honesty li{
-    padding:8px 0 8px 26px;
-    position:relative;
-    font-size:14px;
-    color:var(--text-2);
-    line-height:1.65;
-  }
-  .honesty li::before{
-    content:'—';
-    position:absolute;left:0;
-    color:var(--text-3);
-    font-family:var(--mono);
-    font-weight:600;
-  }
+  .honesty li{padding:8px 0 8px 26px;position:relative;font-size:14px;color:var(--text-2);line-height:1.65}
+  .honesty li::before{content:'—';position:absolute;left:0;color:var(--text-3);font-family:var(--mono);font-weight:600}
 
   /* ═══════════ CTA ═══════════ */
   .cta-final{
     background:linear-gradient(135deg,rgba(91,127,255,0.12) 0%,rgba(139,92,246,0.1) 100%);
-    border:1px solid var(--stroke);
-    border-radius:24px;
-    padding:64px 40px;
-    text-align:center;
-    position:relative;
-    overflow:hidden;
+    border:1px solid var(--stroke);border-radius:24px;
+    padding:64px 40px;text-align:center;
+    position:relative;overflow:hidden;
     backdrop-filter:blur(28px) saturate(180%);
     -webkit-backdrop-filter:blur(28px) saturate(180%);
-    box-shadow:var(--shadow-glass-lg);
+    box-shadow:var(--shadow-lg);
   }
   .cta-final h2{margin-bottom:16px;color:var(--text)}
-  .cta-final p{
-    color:var(--text-2);max-width:560px;
-    margin:0 auto 30px;font-size:16px;
-    line-height:1.65;
-  }
-
+  .cta-final p{color:var(--text-2);max-width:600px;margin:0 auto 30px;font-size:16px;line-height:1.65}
   .pill-price{
-    display:inline-block;
-    font-family:var(--mono);font-size:12px;
-    padding:6px 14px;
-    background:var(--glass-3);
-    border:1px solid rgba(16,185,129,0.3);
-    color:#0d9d75;
-    border-radius:100px;
-    margin-bottom:22px;
-    font-weight:700;
+    display:inline-block;font-family:var(--mono);font-size:12px;
+    padding:6px 14px;background:var(--glass-3);
+    border:1px solid rgba(16,185,129,0.3);color:#0d9d75;
+    border-radius:100px;margin-bottom:22px;font-weight:700;
     box-shadow:0 4px 12px rgba(16,185,129,0.1);
   }
-
   .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-
-  .cta-note{
-    margin-top:22px;
-    font-size:13px;
-    color:var(--text-3);
-    font-family:var(--mono);
-    font-weight:500;
-  }
+  .cta-note{margin-top:22px;font-size:13px;color:var(--text-3);font-family:var(--mono);font-weight:500}
 
   /* ═══════════ FOOTER ═══════════ */
-  footer{
-    padding:40px 0 60px;
-    margin-top:40px;
-  }
+  footer{padding:40px 0 60px;margin-top:40px}
   .footer-inner{
-    display:flex;justify-content:space-between;
-    align-items:center;gap:20px;
-    flex-wrap:wrap;
-    font-size:13px;
-    color:var(--text-3);
-    font-family:var(--mono);
-    padding:20px 26px;
-    background:var(--glass);
-    border:1px solid var(--stroke);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:20px;flex-wrap:wrap;font-size:13px;color:var(--text-3);
+    font-family:var(--mono);padding:20px 26px;
+    background:var(--glass);border:1px solid var(--stroke);
     border-radius:16px;
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-    box-shadow:var(--shadow-glass);
-    font-weight:500;
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    box-shadow:var(--shadow);font-weight:500;
   }
   .footer-inner a{color:var(--text-2);transition:color .15s}
   .footer-inner a:hover{color:var(--accent)}
@@ -805,7 +626,6 @@
   }
 
   ::selection{background:rgba(91,127,255,0.3);color:#fff}
-
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s,transform .7s}
   .reveal.in{opacity:1;transform:none}
 </style>
@@ -824,16 +644,16 @@
 <nav class="nav">
   <div class="nav-inner">
     <a href="/FacebookScrapper/" class="brand">
-      <span class="brand-mark">FS</span>
+      <div class="brand-mark"></div>
       <span>Facebook Scraper</span>
       <span class="brand-sep">/</span>
       <span class="brand-sub">v2.0</span>
     </a>
     <div class="nav-links">
-      <a href="#how">How it works</a>
+      <a href="#ways">Pricing</a>
+      <a href="#live">Live panel</a>
+      <a href="#api">API</a>
       <a href="#features">Features</a>
-      <a href="#background">Background</a>
-      <a href="#bulk">Bulk service</a>
       <a href="#contact">Contact</a>
     </div>
     <a href="#contact" class="btn btn-primary">Get a quote →</a>
@@ -847,40 +667,40 @@
       <div>
         <div class="live-pill">
           <span class="dot"></span>
-          Works on Windows 10 / 11
+          Windows app · Web API · Cloud service
         </div>
 
         <h1>
-          Collect Facebook posts.<br>
-          <em>Automatically.</em>
+          Facebook data,<br>
+          <em>three ways to get it.</em>
         </h1>
 
         <p class="lede">
-          A simple Windows program that saves Facebook posts for you —
-          text, photos, and videos. It runs quietly in the background
-          <strong>while you keep using your computer normally</strong>.
+          Buy the software and run it yourself. Watch it working live in your browser.
+          Or hand the whole job to us and just receive the results.
+          <strong>Same tool, same quality — you pick the level of involvement.</strong>
         </p>
 
         <div class="hero-cta">
-          <a href="#contact" class="btn btn-primary">Request a demo →</a>
-          <a href="#bulk" class="btn btn-ghost">Or let me do it for you</a>
+          <a href="#ways" class="btn btn-primary">See the 3 options →</a>
+          <a href="#contact" class="btn btn-ghost">Talk to me first</a>
         </div>
 
         <div class="simple-steps">
           <div class="step">
             <div class="step-num">1</div>
-            <h4>You open the app</h4>
-            <p>Type the Facebook page or profile you want to watch.</p>
+            <h4>Pick your option</h4>
+            <p>Software license, live monitoring, or done-for-you service.</p>
           </div>
           <div class="step">
             <div class="step-num">2</div>
-            <h4>You press Start</h4>
-            <p>Then go back to your work. It runs on its own.</p>
+            <h4>Tell us your targets</h4>
+            <p>Which pages, what date range, what fields you need.</p>
           </div>
           <div class="step">
             <div class="step-num">3</div>
-            <h4>You get the data</h4>
-            <p>Posts, photos, videos — all saved to a database file.</p>
+            <h4>Get clean data</h4>
+            <p>In Excel, JSON, or sent straight to your database.</p>
           </div>
         </div>
       </div>
@@ -895,57 +715,391 @@
         <div class="terminal-body">
 <span class="prompt">PS&gt;</span> <span class="cmd">.\facebook.exe</span> <span class="arg">-userProfile=</span><span class="val">my_account</span> `<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">-profiles=</span><span class="val">brandpage,competitor1</span> `<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">-media=</span><span class="val">images,videos</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">-media=</span><span class="val">images,videos</span> `<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">-server=</span><span class="val">https://panel.yourdomain.com/</span><br>
 <br>
 <span class="out">[13:42:01] App ready. Logged in as my_account.</span><br>
-<span class="out">[13:42:11] Watching 2 pages.</span><br>
+<span class="out">[13:42:11] Web panel online — 2 viewers</span><br>
 <span class="out">[13:43:27] Page 1 — 47 new posts saved.</span><br>
 <span class="out">[13:45:02] Downloading 8 videos…</span><br>
 <span class="out">[13:51:14] Page 1 — 231 new posts saved.</span><br>
 <span class="warn">[13:52:08] Facebook is slowing us down. Waiting 12s…</span><br>
 <span class="out">[14:02:09] </span><span class="ok">✓ Done. 278 posts, 94 files saved.</span><br>
-<span class="out">[14:02:09] Still running in background…</span>
+<span class="out">[14:02:09] API: /status → 200 OK</span>
         </div>
       </div>
     </div>
   </div>
 </header>
 
-<!-- ═══════ SIMPLE EXPLANATION ═══════ -->
-<section id="how">
+<!-- ═══════ WHAT IT DOES ═══════ -->
+<section>
   <div class="wrap">
     <div class="section-tag">in plain words</div>
-    <h2>What does this thing actually do?</h2>
+    <h2>What does this actually do for you?</h2>
     <p class="section-sub">
-      Let's skip the tech talk. Here is exactly what this program does for you.
+      Skip the tech talk. Here's the plain-English version of what you're buying.
     </p>
 
     <div class="explain">
       <div class="explain-card">
         <div class="explain-icon">📥</div>
-        <h3>It saves Facebook posts</h3>
+        <h3>It collects Facebook posts for you</h3>
         <p>
-          You give it the name of a Facebook page. It goes through that page
-          and copies every post it finds — the text, the photos, the videos.
-          Like taking notes, but automatic.
+          You give it a list of Facebook pages. It reads every post — text,
+          photos, videos — and saves everything in one clean file. Like a
+          tireless assistant that never misses a post.
         </p>
       </div>
       <div class="explain-card">
-        <div class="explain-icon">⚡</div>
-        <h3>It works while you do other things</h3>
+        <div class="explain-icon">👀</div>
+        <h3>You can watch it working live</h3>
         <p>
-          You open it, you press start, you forget about it. Use Word, play
-          a video, answer emails — it keeps working in the background. Your
-          mouse and keyboard stay yours.
+          A private dashboard opens in your browser at a URL we send you.
+          See how many posts have been collected, what's coming in right now,
+          and how much is left — from any device, anywhere.
         </p>
       </div>
       <div class="explain-card">
-        <div class="explain-icon">📊</div>
-        <h3>It puts everything in one place</h3>
+        <div class="explain-icon">⚙️</div>
+        <h3>Or control it entirely by API</h3>
         <p>
-          All posts end up in a neat file on your computer. You can search
-          them, sort them by date, or send them to another program. No more
-          copying and pasting by hand.
+          For technical teams: start, pause, stop, and reconfigure everything
+          through simple HTTP requests. Perfect for scheduled jobs, dashboards,
+          and integrations with your existing systems.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 3 WAYS ═══════ -->
+<section id="ways">
+  <div class="wrap">
+    <div class="section-tag">three ways to work with us</div>
+    <h2>Choose your level of involvement.</h2>
+    <p class="section-sub">
+      Whether you want the tool, the results, or something in between —
+      there's an option that fits how you work.
+    </p>
+
+    <div class="ways">
+      <!-- WAY 1 -->
+      <div class="way">
+        <div class="way-num">OPTION 01</div>
+        <h3>Buy the software</h3>
+        <div class="way-sub">// self-hosted · Windows</div>
+        <p>
+          Install it on your Windows machine and run it whenever you want.
+          Full control, unlimited use, your data stays with you.
+        </p>
+        <ul>
+          <li><strong>Runs on your PC</strong> — nothing to host, nothing to pay monthly</li>
+          <li><strong>Unlimited scraping</strong> — no per-post fees, ever</li>
+          <li><strong>Local database</strong> — data never leaves your machine</li>
+          <li><strong>Live web panel</strong> — check progress from any browser on your network</li>
+          <li><strong>Free updates</strong> — new versions included for 12 months</li>
+        </ul>
+        <div class="way-price">
+          <span>one-time license</span>
+          <strong>from $499</strong>
+        </div>
+      </div>
+
+      <!-- WAY 2 (featured) -->
+      <div class="way featured">
+        <div class="way-num">OPTION 02</div>
+        <h3>We run it for you</h3>
+        <div class="way-sub">// managed · live panel · API</div>
+        <p>
+          Tell us what you need. We run the scrapers on our servers, and you
+          watch the results come in through a private live dashboard.
+        </p>
+        <ul>
+          <li><strong>Zero setup</strong> — you send a list, we do the work</li>
+          <li><strong>Live dashboard URL</strong> — watch progress from any device</li>
+          <li><strong>Web API access</strong> — pull data or control jobs programmatically</li>
+          <li><strong>Your infrastructure stays clean</strong> — no installs on your side</li>
+          <li><strong>We handle proxies, retries, and rate limits</strong> — you just get data</li>
+        </ul>
+        <div class="way-price">
+          <span>monthly service</span>
+          <strong>from $299/mo</strong>
+        </div>
+      </div>
+
+      <!-- WAY 3 -->
+      <div class="way">
+        <div class="way-num">OPTION 03</div>
+        <h3>One-off bulk job</h3>
+        <div class="way-sub">// project-based</div>
+        <p>
+          Have a specific dataset you need once? Send the requirements —
+          pages, date range, fields — and receive the file when it's done.
+        </p>
+        <ul>
+          <li><strong>Fixed price per project</strong> — no subscriptions, no surprises</li>
+          <li><strong>Clean, deduplicated output</strong> — ready to use immediately</li>
+          <li><strong>Multiple delivery formats</strong> — Excel, JSON, SQLite, or CSV</li>
+          <li><strong>Minimum 10,000 posts</strong> — for smaller jobs, use Option 01</li>
+          <li><strong>48-hour typical turnaround</strong> — for standard scopes</li>
+        </ul>
+        <div class="way-price">
+          <span>per project</span>
+          <strong>quote on request</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ LIVE PANEL ═══════ -->
+<section id="live">
+  <div class="wrap">
+    <div class="section-tag">live dashboard</div>
+    <h2>Watch the collection happen — from anywhere.</h2>
+    <p class="section-sub">
+      No more "is it running?" emails. We give you a private URL. Open it
+      on your laptop, tablet, or phone and see exactly what's going on.
+    </p>
+
+    <div class="live-panel">
+      <div class="lp-grid">
+        <div class="lp-text">
+          <h3>Your own <em>real-time monitoring panel.</em></h3>
+          <p>
+            Every job we run for you comes with a private dashboard URL.
+            No login to our systems needed — just the link we send you.
+          </p>
+          <p>
+            You'll see how many posts have been collected so far, what's
+            coming in right now, how many videos have downloaded, and how
+            long until the job is finished. Refresh or leave it open —
+            it updates on its own.
+          </p>
+          <ul>
+            <li><strong>Private URL</strong> — sent to you by email, unique per client</li>
+            <li><strong>Works on any device</strong> — phone, tablet, desktop</li>
+            <li><strong>Live post feed</strong> — see new posts as they arrive</li>
+            <li><strong>Progress and ETA</strong> — know exactly when it'll be done</li>
+            <li><strong>Download data anytime</strong> — even mid-job</li>
+            <li><strong>Optional password protection</strong> — for sensitive jobs</li>
+          </ul>
+        </div>
+
+        <div class="mock-panel">
+          <div class="mock-head">
+            <span class="mock-dot"></span>
+            <div class="mock-url">https://panel.your-job.com/acme-corp</div>
+          </div>
+          <div class="mock-body">
+            <div class="mock-stat-row">
+              <div class="mock-stat">
+                <div class="mock-stat-label">posts collected</div>
+                <div class="mock-stat-value">2,847</div>
+              </div>
+              <div class="mock-stat">
+                <div class="mock-stat-label">media files</div>
+                <div class="mock-stat-value green">412</div>
+              </div>
+              <div class="mock-stat">
+                <div class="mock-stat-label">progress</div>
+                <div class="mock-stat-value green">78%</div>
+              </div>
+            </div>
+            <div class="mock-log">
+              <div class="line"><span class="t">14:02:01</span><span class="m">New post from brandpage</span></div>
+              <div class="line"><span class="t">14:02:03</span><span class="m">Downloading video (42 MB)…</span></div>
+              <div class="line"><span class="t">14:02:09</span><span class="m ok">✓ Video saved</span></div>
+              <div class="line"><span class="t">14:02:14</span><span class="m">New post from competitor1</span></div>
+              <div class="line"><span class="t">14:02:18</span><span class="m warn">Rate-limited, waiting 12s…</span></div>
+              <div class="line"><span class="t">14:02:30</span><span class="m">Resuming collection…</span></div>
+              <div class="line"><span class="t">14:02:41</span><span class="m ok">✓ Batch saved (47 posts)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ API SECTION ═══════ -->
+<section id="api">
+  <div class="wrap">
+    <div class="section-tag">web api</div>
+    <h2>Full control through simple HTTP requests.</h2>
+    <p class="section-sub">
+      For teams that want to schedule jobs, connect the tool to internal
+      dashboards, or trigger scraping from another application — everything
+      the desktop app can do is also available through the API.
+    </p>
+
+    <div class="api-section">
+      <div class="api-header">
+        <h3>Everything <em>programmable.</em></h3>
+        <p>
+          Start jobs, check progress, download results, change settings — all
+          through standard HTTP calls. Works with any programming language,
+          any automation tool, any scheduling platform.
+        </p>
+      </div>
+
+      <div class="api-grid">
+        <div>
+          <div class="endpoint">
+            <span class="method post">POST</span>
+            <div>
+              <div class="endpoint-path">/api/jobs/start</div>
+              <div class="endpoint-desc">Launch a new scraping job with your parameters.</div>
+            </div>
+          </div>
+          <div class="endpoint">
+            <span class="method get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/jobs/{id}/status</div>
+              <div class="endpoint-desc">Check progress, counts, and ETA in real time.</div>
+            </div>
+          </div>
+          <div class="endpoint">
+            <span class="method post">POST</span>
+            <div>
+              <div class="endpoint-path">/api/jobs/{id}/pause</div>
+              <div class="endpoint-desc">Pause a running job. Resume any time.</div>
+            </div>
+          </div>
+          <div class="endpoint">
+            <span class="method post">POST</span>
+            <div>
+              <div class="endpoint-path">/api/jobs/{id}/stop</div>
+              <div class="endpoint-desc">Stop the job and finalize the dataset.</div>
+            </div>
+          </div>
+          <div class="endpoint">
+            <span class="method get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/jobs/{id}/download</div>
+              <div class="endpoint-desc">Download the current dataset in JSON, CSV, or SQLite.</div>
+            </div>
+          </div>
+          <div class="endpoint">
+            <span class="method post">POST</span>
+            <div>
+              <div class="endpoint-path">/api/jobs/{id}/config</div>
+              <div class="endpoint-desc">Change targets, proxies, speed, or filters on the fly.</div>
+            </div>
+          </div>
+          <div class="endpoint">
+            <span class="method get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/jobs/{id}/logs</div>
+              <div class="endpoint-desc">Stream structured logs for monitoring and alerting.</div>
+            </div>
+          </div>
+          <div class="endpoint">
+            <span class="method del">DEL</span>
+            <div>
+              <div class="endpoint-path">/api/jobs/{id}</div>
+              <div class="endpoint-desc">Delete a job and its associated data.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="api-code">
+<span class="c-cmt"># Start a new job</span><br>
+<span class="c-kw">curl</span> -X POST https://panel.your-job.com<span class="c-tag">/api/jobs/start</span> \<br>
+&nbsp;&nbsp;-H <span class="c-attr">"Authorization: Bearer YOUR_TOKEN"</span> \<br>
+&nbsp;&nbsp;-H <span class="c-attr">"Content-Type: application/json"</span> \<br>
+&nbsp;&nbsp;-d <span class="c-str">'{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"profiles": ["brandpage", "competitor1"],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"start_date": "2025-01-01",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"end_date": "2025-10-13",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"media": ["images", "videos"],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"format": "json"<br>
+&nbsp;&nbsp;}'</span><br>
+<br>
+<span class="c-cmt"># → 201 Created</span><br>
+<span class="c-str">{</span><br>
+&nbsp;&nbsp;<span class="c-attr">"job_id"</span>: <span class="c-str">"job_a3f8c2e1"</span>,<br>
+&nbsp;&nbsp;<span class="c-attr">"status"</span>: <span class="c-str">"running"</span>,<br>
+&nbsp;&nbsp;<span class="c-attr">"live_panel_url"</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">"https://panel.your-job.com/jobs/a3f8c2e1"</span>,<br>
+&nbsp;&nbsp;<span class="c-attr">"eta_seconds"</span>: <span class="c-num">4200</span><br>
+<span class="c-str">}</span><br>
+<br>
+<span class="c-cmt"># Check progress anytime</span><br>
+<span class="c-kw">curl</span> https://panel.your-job.com<span class="c-tag">/api/jobs/job_a3f8c2e1/status</span> \<br>
+&nbsp;&nbsp;-H <span class="c-attr">"Authorization: Bearer YOUR_TOKEN"</span><br>
+<br>
+<span class="c-cmt"># → 200 OK</span><br>
+<span class="c-str">{</span><br>
+&nbsp;&nbsp;<span class="c-attr">"status"</span>: <span class="c-str">"running"</span>,<br>
+&nbsp;&nbsp;<span class="c-attr">"posts_collected"</span>: <span class="c-num">2847</span>,<br>
+&nbsp;&nbsp;<span class="c-attr">"media_downloaded"</span>: <span class="c-num">412</span>,<br>
+&nbsp;&nbsp;<span class="c-attr">"percent_complete"</span>: <span class="c-num">78</span><br>
+<span class="c-str">}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BUSINESS VALUE ═══════ -->
+<section>
+  <div class="wrap">
+    <div class="section-tag">business impact</div>
+    <h2>What this means for your business.</h2>
+    <p class="section-sub">
+      This isn't about the software. It's about what the software lets you
+      do — faster, cheaper, and without hiring anyone.
+    </p>
+
+    <div class="value-grid">
+      <div class="value">
+        <div class="value-icon">💰</div>
+        <h3>Cut manual work to zero</h3>
+        <p>
+          What took an analyst two hours a day now runs in the background.
+          Free up your team's time for actual analysis instead of copy-paste.
+        </p>
+      </div>
+      <div class="value">
+        <div class="value-icon">📈</div>
+        <h3>Scale without new hires</h3>
+        <p>
+          Monitor 10 pages or 1,000 — the same tool handles it. No new
+          headcount required, no training, no ramp-up time.
+        </p>
+      </div>
+      <div class="value">
+        <div class="value-icon">🎯</div>
+        <h3>Real competitive advantage</h3>
+        <p>
+          Know what competitors posted this morning, not last week.
+          See emerging trends before they hit the mainstream.
+        </p>
+      </div>
+      <div class="value">
+        <div class="value-icon">📊</div>
+        <h3>Data you actually own</h3>
+        <p>
+          No SaaS lock-in. Your posts, images, and videos live in your
+          database, on your machine. Export anytime, use anywhere.
+        </p>
+      </div>
+      <div class="value">
+        <div class="value-icon">⏱️</div>
+        <h3>Results in days, not months</h3>
+        <p>
+          No IT project, no procurement, no integration phase. Set up in
+          an afternoon and start collecting immediately.
+        </p>
+      </div>
+      <div class="value">
+        <div class="value-icon">🔐</div>
+        <h3>Confidential by design</h3>
+        <p>
+          Self-hosted option keeps all data on your servers. Nothing sent
+          to us, nothing sent to third parties. Compliance-friendly.
         </p>
       </div>
     </div>
@@ -955,11 +1109,10 @@
 <!-- ═══════ FEATURES ═══════ -->
 <section id="features">
   <div class="wrap">
-    <div class="section-tag">why it's better</div>
-    <h2>Why not just copy-paste by hand?</h2>
+    <div class="section-tag">under the hood</div>
+    <h2>Why it works when other tools don't.</h2>
     <p class="section-sub">
-      Because you have better things to do. Here's what makes this different
-      from opening Facebook in a browser and copying posts one by one.
+      The technical reasons this handles jobs that break most scrapers.
     </p>
 
     <div class="features">
@@ -967,86 +1120,77 @@
         <div class="feature-icon">🔒</div>
         <h3>Looks like a real browser</h3>
         <p>
-          Facebook blocks programs that pretend to be browsers. This one
-          actually uses the same engine Microsoft Edge uses — so Facebook
-          can't tell the difference. You log in once, and it stays logged in.
+          Facebook blocks tools that pretend to be browsers. This one uses
+          the same engine Microsoft Edge uses — Facebook can't tell the
+          difference. You log in once, and it stays logged in.
         </p>
       </div>
-
       <div class="feature">
         <div class="feature-icon">👥</div>
-        <h3>Run several at once</h3>
+        <h3>Run several jobs at once</h3>
         <p>
-          Managing data for 5 clients? Run 5 copies at the same time, each
-          with its own Facebook account and its own internet address. If
-          one gets blocked, the others keep working.
+          Five clients? Run five copies simultaneously, each with its own
+          Facebook account and proxy. If one gets blocked, the others
+          keep working.
         </p>
       </div>
-
       <div class="feature">
         <div class="feature-icon">🎬</div>
-        <h3>Downloads videos fast</h3>
+        <h3>Fast video downloads</h3>
         <p>
           Videos are downloaded in parallel instead of one at a time.
           A 100-video page finishes in minutes, not hours.
         </p>
       </div>
-
       <div class="feature">
         <div class="feature-icon">🧹</div>
         <h3>No duplicate mess</h3>
         <p>
-          Facebook has a "See more" button that splits posts into pieces.
-          Most tools save the same post 3 times. This one recognizes duplicates
-          and saves only the full version. You get clean data.
+          Facebook splits posts into pieces. Most tools save the same
+          post 3 times. This one recognizes duplicates and stores only
+          the full version.
         </p>
       </div>
-
       <div class="feature">
         <div class="feature-icon">🖥️</div>
-        <h3>Check progress in your browser</h3>
+        <h3>Live web dashboard</h3>
         <p>
-          A built-in website opens in your browser. You can see what posts
-          are coming in right now, view the videos, and change settings
-          without restarting anything.
+          A built-in website opens in your browser. See new posts as they
+          arrive, view the media, change settings — all without touching
+          the desktop app.
         </p>
       </div>
-
       <div class="feature">
         <div class="feature-icon">🌐</div>
         <h3>Works with any proxy</h3>
         <p>
           If you have a proxy server, it uses it. If you don't, it doesn't
-          need one. Supports all common proxy types including SOCKS5.
+          need one. Supports all common types including SOCKS5.
         </p>
       </div>
-
       <div class="feature">
         <div class="feature-icon">📮</div>
-        <h3>Sends data to your tools</h3>
+        <h3>Push to your tools</h3>
         <p>
           Every post can be sent automatically to your CRM, database, or
           spreadsheet — the moment it's collected. No manual export.
         </p>
       </div>
-
       <div class="feature">
-        <div class="feature-icon">🛡️</div>
-        <h3>Recovers from crashes</h3>
+        <div class="feature-icon">🔌</div>
+        <h3>Full REST API</h3>
         <p>
-          If something goes wrong, it restarts itself. But not forever —
-          after 5 crashes in an hour, it stops and waits for you, so it
-          doesn't burn through resources.
+          Start jobs, check progress, download data, change settings —
+          all programmable. Perfect for scheduled runs and integrations.
         </p>
       </div>
-
-      <div class="feature highlight">
+      <div class="feature">
         <div class="feature-icon">⌨️</div>
         <h3>Your PC stays yours</h3>
         <p>
-          It does not steal your mouse. It does not steal your keyboard.
-          It does not open windows that pop up while you type. It just sits
-          quietly in the background and does its job.
+          Does not steal your mouse, does not steal your keyboard, does
+          not pop up windows while you type. Runs silently in the
+          background.
         </p>
       </div>
     </div>
@@ -1059,27 +1203,27 @@
     <div class="section-tag">runs quietly</div>
     <h2>Your computer stays yours.</h2>
     <p class="section-sub">
-      No window to watch. No buttons to click. It opens, it starts, and it
-      disappears into the background — like a download that takes all day.
+      No window to watch, no buttons to click. It opens, it starts,
+      and it fades into the background — like a long download.
     </p>
 
     <div class="split">
       <div class="split-text">
         <h3>Keep typing. Keep clicking. <em>Keep working.</em></h3>
         <p>
-          The scraper runs like any normal Windows program. It doesn't need
-          to be the front window. It doesn't lock your mouse. It doesn't
-          pull focus away from what you're typing.
+          The scraper runs like any normal Windows program. It doesn't
+          need to be the front window. It doesn't lock your mouse. It
+          doesn't pull focus away from what you're typing.
         </p>
         <p>
           Type in Excel. Browse the web. Take a Teams call. The collector
-          keeps running the whole time.
+          runs the whole time.
         </p>
         <ul class="split-list">
           <li><strong>Runs minimised or fully hidden</strong> — set it and forget it.</li>
           <li><strong>Does not lock your mouse or keyboard</strong> — ever.</li>
           <li><strong>Multiple copies side by side</strong> — one per client, all silent.</li>
-          <li><strong>Check progress anytime</strong> — the built-in website shows what's happening.</li>
+          <li><strong>Check progress from any browser</strong> — including your phone.</li>
           <li><strong>Logs clean themselves up</strong> — no huge files piling up.</li>
         </ul>
       </div>
@@ -1110,69 +1254,13 @@
   </div>
 </section>
 
-<!-- ═══════ BULK SERVICE ═══════ -->
-<section id="bulk">
-  <div class="wrap">
-    <div class="section-tag">or we do it for you</div>
-    <h2>Don't want to run it yourself? No problem.</h2>
-    <p class="section-sub">
-      If you need a large amount of data and don't want to manage software,
-      proxies, or servers — I'll do the whole job for you. You get the data.
-      That's it.
-    </p>
-
-    <div class="service">
-      <div class="service-grid">
-        <div>
-          <h3>Bulk jobs, <em>handled end-to-end.</em></h3>
-          <p>
-            Just tell me what you need — which pages, which hashtags, what
-            date range, what fields. I run the scrapers on my own machines,
-            clean the results, and deliver the data in whatever format
-            you want: Excel, JSON, or straight into your database.
-          </p>
-          <p>
-            Perfect for one-off bulk pulls, weekly monitoring, or any job
-            that's too big for a single desktop.
-          </p>
-          <ul class="split-list" style="margin-top:20px">
-            <li><strong>You tell me what to collect</strong> — targets, filters, schedule.</li>
-            <li><strong>I run the collection</strong> on my own infrastructure.</li>
-            <li><strong>You receive clean data</strong> — no duplicates, ready to use.</li>
-            <li><strong>You manage nothing</strong> — no installs, no proxies, no headaches.</li>
-          </ul>
-        </div>
-
-        <div class="service-stats">
-          <div class="stat">
-            <div class="stat-label">usual delivery</div>
-            <div class="stat-value">48<small>hours</small></div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">minimum order</div>
-            <div class="stat-value">10k<small>+ posts</small></div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">file formats</div>
-            <div class="stat-value" style="font-size:14px;letter-spacing:0">Excel · JSON · SQLite</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">recurring jobs</div>
-            <div class="stat-value" style="font-size:14px;letter-spacing:0">weekly · monthly</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══════ SPECS ═══════ -->
 <section id="specs">
   <div class="wrap">
     <div class="section-tag">technical details</div>
     <h2>What you're actually running.</h2>
     <p class="section-sub">
-      For the people who have to install this on a real machine.
+      Concrete answers for the people who have to install this on a real machine.
     </p>
 
     <div class="specs">
@@ -1198,11 +1286,19 @@
       </dl>
       <dl class="specs-row">
         <dt>Control panel</dt>
-        <dd>Windows desktop window + built-in web page on <code>localhost</code></dd>
+        <dd>Desktop window + built-in web page on <code>localhost</code> · also reachable from other devices on your network</dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Web API</dt>
+        <dd>Full REST endpoints for jobs, status, download, config, logs, control</dd>
       </dl>
       <dl class="specs-row">
         <dt>Background mode</dt>
         <dd>Runs minimised or hidden · <strong>never takes over your mouse or keyboard</strong></dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Authentication</dt>
+        <dd>Bearer tokens for API · password + session cookies for the web panel</dd>
       </dl>
       <dl class="specs-row">
         <dt>Settings</dt>
@@ -1230,11 +1326,11 @@
     <div class="honesty">
       <h3>// what this does NOT do</h3>
       <ul>
-        <li>It does not run on Mac, Linux, or inside Docker. It's a Windows program.</li>
+        <li>It does not run on Mac, Linux, or inside Docker. It's a Windows program (or our hosted service).</li>
         <li>It does not log in to Facebook for you. You provide the account and log in once.</li>
         <li>It does not rotate proxies automatically. You provide the proxy — or run multiple copies.</li>
-        <li>It does not have an official API. It sends data to your tools via a simple web address.</li>
         <li>It is not a hack, a crack, or a way to bypass Facebook's rules. Use it responsibly.</li>
+        <li>It is not a "growth hacking" tool. It collects public data — it doesn't post, like, or comment.</li>
       </ul>
     </div>
   </div>
@@ -1244,18 +1340,18 @@
 <section id="contact">
   <div class="wrap">
     <div class="cta-final">
-      <div class="pill-price">licenses from $499 · bulk jobs quoted per project</div>
+      <div class="pill-price">licenses from $499 · monthly service from $299 · bulk jobs quoted per project</div>
       <h2>Tell me what you need.</h2>
       <p>
-        Buying the software, or want me to run a bulk job for you?
-        Either way — send me the details and I'll reply with a straight
-        answer, including whether I think this fits your case.
+        Software purchase, ongoing service, or a single bulk job — send
+        the details and I'll reply with a straight answer, including
+        whether I think this fits your case.
       </p>
       <div class="cta-buttons">
-        <a href="mailto:hsnebrahimi@protonmail.com?subject=Facebook%20Scraper%20Inquiry" class="btn btn-primary">
+        <a href="mailto:hoseinebrahimiii@hotmail.com?subject=Facebook%20Scraper%20Inquiry" class="btn btn-primary">
           hoseinebrahimiii@hotmail.com
         </a>
-        <a href="#bulk" class="btn btn-ghost">Bulk scraping details</a>
+        <a href="#ways" class="btn btn-ghost">Review the options</a>
       </div>
       <div class="cta-note">
         Reply within 24 hours · BTC &amp; USDT (TRC-20) accepted · invoices provided
@@ -1272,14 +1368,13 @@
       <div>
         <a href="https://github.com/HSNEbrahimii" target="_blank" rel="noopener">GitHub</a>
         &nbsp;·&nbsp;
-        <a href="mailto:hsnebrahimi@protonmail.com">Email</a>
+        <a href="mailto:hoseinebrahimiii@hotmail.com">Email</a>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
-  // Scroll reveal
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -1289,13 +1384,12 @@
     });
   }, { threshold: 0.08 });
 
-  document.querySelectorAll('section, .feature, .honesty, .specs, .terminal, .split, .service, .explain-card, .step')
+  document.querySelectorAll('section, .feature, .honesty, .specs, .terminal, .split, .way, .explain-card, .step, .value, .live-panel, .api-section')
     .forEach(el => {
       el.classList.add('reveal');
       io.observe(el);
     });
 
-  // Smooth anchor with sticky-nav offset
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const id = a.getAttribute('href');
@@ -1308,7 +1402,6 @@
     });
   });
 
-  // Random typing animation on keyboard illustration
   const keys = document.querySelectorAll('.key:not(.space)');
   if (keys.length) {
     setInterval(() => {
