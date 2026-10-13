@@ -3,1378 +3,1876 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f0f4ff">
+<meta name="theme-color" content="#fbfaf7">
 
-<title>Facebook Scraper — Collect, Monitor, and Manage Facebook Data</title>
-<meta name="description" content="Windows app + cloud service + Web API to collect Facebook posts at scale. Buy the software, watch it live from any browser, or let us run the whole job for you.">
-<meta name="keywords" content="facebook scraper, collect facebook data, bulk scraping service, web api, facebook monitoring, data collection">
+<title>Facebook Scraper — Collect Facebook Data 10x Faster</title>
+<meta name="description" content="Run multiple scrapers simultaneously — each with its own account and proxy. Watch progress live in your browser. Full REST API. Buy license from $499.">
+<meta name="keywords" content="facebook scraper, facebook data collection, multi-instance scraper, bulk scraping, facebook api, data extraction">
 <meta name="author" content="Hosein Ebrahimi">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hsnebrahimi.github.io/FacebookScrapper/">
-<meta property="og:title" content="Facebook Scraper — Collect, Monitor, and Manage Facebook Data">
-<meta property="og:description" content="Buy the software, watch it live in your browser, or let us run the whole job for you.">
+<meta property="og:title" content="Facebook Scraper — Collect Facebook Data 10x Faster">
+<meta property="og:description" content="Run multiple scrapers simultaneously. Watch progress live. Full REST API.">
 <meta property="og:image" content="https://hsnebrahimi.github.io/FacebookScrapper/preview.png">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Facebook Scraper — Collect, Monitor, and Manage">
-<meta name="twitter:description" content="Buy the software, watch it live in your browser, or let us run the job for you.">
+<meta name="twitter:title" content="Facebook Scraper — Collect Facebook Data 10x Faster">
+<meta name="twitter:description" content="Run multiple scrapers simultaneously. Watch progress live.">
 
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f2942'/><text x='50' y='68' font-size='52' font-family='monospace' font-weight='bold' fill='%23d4a017' text-anchor='middle'>F</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
   :root{
-    --bg-1:#eef3ff;
-    --text:#0f1a35;
-    --text-2:#4a5878;
-    --text-3:#8b95b0;
-    --glass:rgba(255,255,255,0.55);
-    --glass-2:rgba(255,255,255,0.75);
-    --glass-3:rgba(255,255,255,0.88);
-    --stroke:rgba(255,255,255,0.9);
-    --stroke-2:rgba(180,195,230,0.35);
-    --shadow:0 8px 32px rgba(80,110,180,0.12),0 2px 8px rgba(80,110,180,0.06);
-    --shadow-lg:0 20px 60px rgba(80,110,180,0.18),0 4px 16px rgba(80,110,180,0.08);
-    --accent:#5b7fff;
-    --accent-2:#8b5cf6;
-    --accent-3:#14b8a6;
-    --green:#10b981;
-    --amber:#f59e0b;
-    --pink:#ec4899;
-    --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+    --bg:#fbfaf7;
+    --surface:#ffffff;
+    --surface-2:#f6f4ef;
+    --ink:#0c1220;
+    --ink-2:#48546b;
+    --ink-3:#8b93a7;
+    --navy:#0f2942;
+    --navy-2:#1a4166;
+    --navy-3:#2c5a85;
+    --gold:#b8860b;
+    --gold-2:#d4a017;
+    --gold-3:#f0c14b;
+    --emerald:#047857;
+    --emerald-2:#10b981;
+    --amber:#d97706;
+    --rose:#be123c;
+    --border:#e8e4da;
+    --border-2:#d4cfc2;
+    --shadow-sm:0 1px 2px rgba(15,41,66,0.04),0 1px 4px rgba(15,41,66,0.04);
+    --shadow:0 4px 12px rgba(15,41,66,0.06),0 2px 4px rgba(15,41,66,0.04);
+    --shadow-lg:0 12px 40px rgba(15,41,66,0.10),0 4px 12px rgba(15,41,66,0.05);
+    --shadow-xl:0 24px 60px rgba(15,41,66,0.14),0 8px 20px rgba(15,41,66,0.06);
     --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    --serif:'Fraunces',Georgia,serif;
+    --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
   }
 
-  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
   body{
     font-family:var(--sans);
-    background:var(--bg-1);
-    color:var(--text);
+    background:var(--bg);
+    color:var(--ink);
     line-height:1.6;
     font-size:15px;
     overflow-x:hidden;
     min-height:100vh;
-    position:relative;
   }
-
-  .bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-  .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.65;will-change:transform}
-  .orb-1{width:520px;height:520px;background:radial-gradient(circle,#93b8ff,transparent 70%);top:-120px;left:-100px;animation:float1 20s ease-in-out infinite}
-  .orb-2{width:480px;height:480px;background:radial-gradient(circle,#d8b4fe,transparent 70%);top:15%;right:-120px;animation:float2 26s ease-in-out infinite}
-  .orb-3{width:420px;height:420px;background:radial-gradient(circle,#a7f3d0,transparent 70%);top:55%;left:-80px;animation:float3 24s ease-in-out infinite}
-  .orb-4{width:500px;height:500px;background:radial-gradient(circle,#fbcfe8,transparent 70%);bottom:-150px;right:10%;animation:float2 30s ease-in-out infinite reverse}
-  .orb-5{width:380px;height:380px;background:radial-gradient(circle,#fde68a,transparent 70%);top:35%;left:40%;opacity:0.4;animation:float1 28s ease-in-out infinite reverse}
-  @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,50px) scale(1.08)}}
-  @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-70px,40px) scale(0.95)}}
-  @keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-60px) scale(1.05)}}
 
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
+  button{font-family:inherit}
 
-  code{
-    font-family:var(--mono);
-    font-size:0.88em;
-    padding:2px 7px;
-    border-radius:5px;
-    background:rgba(91,127,255,0.1);
-    color:#4055c4;
-    border:1px solid rgba(91,127,255,0.18);
-  }
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
 
-  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
-
-  /* ═══════════ NAV ═══════════ */
+  /* ═══════════════════════════════════════════════════════════
+     NAVIGATION
+     ═══════════════════════════════════════════════════════════ */
   .nav{
-    position:sticky;top:12px;z-index:100;
-    margin:12px auto 0;max-width:1180px;
-    border-radius:16px;
-    background:var(--glass-2);
-    backdrop-filter:blur(24px) saturate(180%);
-    -webkit-backdrop-filter:blur(24px) saturate(180%);
-    border:1px solid var(--stroke);
-    box-shadow:var(--shadow);
+    position:sticky;top:0;z-index:100;
+    background:rgba(251,250,247,0.85);
+    backdrop-filter:blur(16px) saturate(180%);
+    -webkit-backdrop-filter:blur(16px) saturate(180%);
+    border-bottom:1px solid var(--border);
   }
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;gap:20px}
-  .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:14.5px;letter-spacing:-0.01em}
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0;gap:24px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px}
   .brand-mark{
-    width:34px;height:34px;border-radius:10px;
-    background:url('logo.png');
-	background-position: center;
-    background-size: cover;
+    width:32px;height:32px;border-radius:8px;
+    background:var(--navy);
     display:grid;place-items:center;
-    font-family:var(--mono);font-size:12px;font-weight:700;color:#fff;
-    box-shadow:0 6px 18px rgba(91,127,255,0.35),inset 0 1px 0 rgba(255,255,255,0.3);
+    color:var(--gold-3);font-family:var(--serif);
+    font-size:18px;font-weight:700;
+    box-shadow:0 2px 8px rgba(15,41,66,0.2);
     flex-shrink:0;
   }
-  .brand-sep{color:var(--text-3);font-weight:400}
-  .brand-sub{color:var(--text-2);font-weight:500;font-size:12.5px}
-
-  .nav-links{display:flex;gap:22px;align-items:center}
-  .nav-links a{font-size:13.5px;color:var(--text-2);font-weight:500;transition:color .15s}
-  .nav-links a:hover{color:var(--accent)}
+  .brand-name{letter-spacing:-0.01em}
+  .brand-badge{
+    font-family:var(--mono);font-size:10px;
+    padding:2px 7px;border-radius:4px;
+    background:rgba(184,134,11,0.1);
+    color:var(--gold);
+    font-weight:600;
+    margin-left:2px;
+  }
+  .nav-links{display:flex;gap:28px;align-items:center}
+  .nav-links a{
+    font-size:13.5px;color:var(--ink-2);font-weight:500;
+    transition:color .15s;
+  }
+  .nav-links a:hover{color:var(--navy)}
+  .nav-actions{display:flex;gap:8px;align-items:center}
 
   .btn{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:10px 18px;border-radius:11px;
-    font-size:13.5px;font-weight:600;
-    transition:all .2s;cursor:pointer;border:none;
-    font-family:inherit;white-space:nowrap;letter-spacing:-0.005em;
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:10px 18px;border-radius:8px;
+    font-size:13.5px;font-weight:600;letter-spacing:-0.005em;
+    transition:all .18s;cursor:pointer;border:none;
+    white-space:nowrap;
+    text-decoration:none;
   }
-  .btn-primary{
-    background:linear-gradient(135deg,#5b7fff 0%,#8b5cf6 100%);
+  .btn-gold{
+    background:var(--gold);
     color:#fff;
-    box-shadow:0 8px 24px rgba(91,127,255,0.35),inset 0 1px 0 rgba(255,255,255,0.25);
+    box-shadow:0 2px 8px rgba(184,134,11,0.25),inset 0 1px 0 rgba(255,255,255,0.15);
   }
-  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(91,127,255,0.45),inset 0 1px 0 rgba(255,255,255,0.3)}
-  .btn-ghost{
-    background:var(--glass);color:var(--text);
-    border:1px solid var(--stroke-2);
-    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    box-shadow:0 2px 8px rgba(80,110,180,0.06);
+  .btn-gold:hover{
+    background:#a07608;
+    transform:translateY(-1px);
+    box-shadow:0 4px 14px rgba(184,134,11,0.35),inset 0 1px 0 rgba(255,255,255,0.2);
   }
-  .btn-ghost:hover{border-color:var(--accent);background:rgba(255,255,255,0.85);color:var(--accent)}
+  .btn-navy{
+    background:var(--navy);
+    color:#fff;
+    box-shadow:0 2px 8px rgba(15,41,66,0.2),inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .btn-navy:hover{
+    background:var(--navy-2);
+    transform:translateY(-1px);
+    box-shadow:0 4px 14px rgba(15,41,66,0.3),inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .btn-outline{
+    background:transparent;color:var(--ink);
+    border:1px solid var(--border-2);
+  }
+  .btn-outline:hover{border-color:var(--navy);color:var(--navy)}
+  .btn-lg{padding:14px 26px;font-size:15px;border-radius:10px}
+  .btn-xl{padding:16px 32px;font-size:16px;border-radius:10px}
 
-  /* ═══════════ HERO ═══════════ */
-  .hero{padding:56px 0 40px;position:relative}
-  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:48px;align-items:start}
-  @media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:36px}}
-
-  .live-pill{
-    display:inline-flex;align-items:center;gap:9px;
-    padding:6px 14px;border-radius:100px;
-    background:rgba(255,255,255,0.7);
-    border:1px solid rgba(16,185,129,0.3);
-    font-size:12px;font-weight:600;color:#0d9d75;
-    font-family:var(--mono);margin-bottom:24px;
-    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    box-shadow:0 2px 10px rgba(16,185,129,0.1);
-  }
-  .live-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-
-  h1{font-size:clamp(34px,4.8vw,54px);font-weight:800;line-height:1.08;letter-spacing:-0.03em;margin-bottom:22px;color:var(--text)}
-  h1 em{font-style:normal;background:linear-gradient(120deg,#5b7fff 0%,#8b5cf6 60%,#14b8a6 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-
-  .lede{font-size:17px;color:var(--text-2);max-width:580px;margin-bottom:34px;line-height:1.65}
-  .lede strong{color:var(--text);font-weight:600}
-
-  .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
-
-  .simple-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
-  @media (max-width:640px){.simple-steps{grid-template-columns:1fr}}
-  .step{
-    background:var(--glass);border:1px solid var(--stroke);
-    border-radius:14px;padding:16px 18px;
-    backdrop-filter:blur(16px) saturate(160%);
-    -webkit-backdrop-filter:blur(16px) saturate(160%);
-    box-shadow:var(--shadow);transition:transform .2s;
-  }
-  .step:hover{transform:translateY(-2px)}
-  .step-num{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:26px;height:26px;border-radius:8px;
-    background:linear-gradient(135deg,#5b7fff,#8b5cf6);
-    color:#fff;font-size:12px;font-weight:700;
-    font-family:var(--mono);margin-bottom:10px;
-    box-shadow:0 4px 12px rgba(91,127,255,0.3);
-  }
-  .step h4{font-size:13.5px;font-weight:700;margin-bottom:4px;color:var(--text)}
-  .step p{font-size:12.5px;color:var(--text-2);line-height:1.5}
-
-  /* terminal */
-  .terminal{
-    background:var(--glass-2);border:1px solid var(--stroke);
-    border-radius:20px;overflow:hidden;
-    backdrop-filter:blur(28px) saturate(180%);
-    -webkit-backdrop-filter:blur(28px) saturate(180%);
-    box-shadow:var(--shadow-lg);position:relative;
-  }
-  .terminal-head{
-    display:flex;align-items:center;gap:8px;
-    padding:14px 18px;background:rgba(255,255,255,0.4);
-    border-bottom:1px solid rgba(180,195,230,0.3);
-  }
-  .tdot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
-  .tdot.red{background:#ff5f57}.tdot.yellow{background:#febc2e}.tdot.green{background:#28c840}
-  .terminal-title{margin-left:auto;margin-right:auto;font-family:var(--mono);font-size:11.5px;color:var(--text-3);letter-spacing:0.02em;font-weight:500}
-  .terminal-body{
-    padding:22px 24px;font-family:var(--mono);font-size:12.5px;
-    line-height:1.95;overflow-x:auto;
-    color:var(--text-2);background:rgba(255,255,255,0.35);
-  }
-  .terminal-body .prompt{color:#10b981;font-weight:700}
-  .terminal-body .cmd{color:var(--text);font-weight:500}
-  .terminal-body .arg{color:#b45309}
-  .terminal-body .val{color:#7c3aed}
-  .terminal-body .out{color:var(--text-2)}
-  .terminal-body .ok{color:#0d9d75;font-weight:600}
-  .terminal-body .warn{color:#d97706}
-
-  /* ═══════════ SECTION ═══════════ */
-  section{padding:72px 0;position:relative}
-  .section-tag{
-    display:inline-block;
-    font-family:var(--mono);font-size:11.5px;
-    color:var(--accent);font-weight:700;
-    letter-spacing:0.1em;text-transform:uppercase;
-    padding:5px 12px;
-    background:rgba(91,127,255,0.1);
-    border:1px solid rgba(91,127,255,0.2);
-    border-radius:100px;margin-bottom:16px;
-  }
-  h2{font-size:clamp(26px,3.4vw,36px);font-weight:800;letter-spacing:-0.025em;margin-bottom:16px;line-height:1.18;color:var(--text)}
-  .section-sub{color:var(--text-2);max-width:680px;margin-bottom:44px;font-size:16px;line-height:1.65}
-
-  /* ═══════════ EXPLAIN (3 cards) ═══════════ */
-  .explain{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  @media (max-width:768px){.explain{grid-template-columns:1fr}}
-  .explain-card{
-    background:var(--glass-2);border:1px solid var(--stroke);
-    border-radius:18px;padding:30px 26px;
-    backdrop-filter:blur(24px) saturate(180%);
-    -webkit-backdrop-filter:blur(24px) saturate(180%);
-    box-shadow:var(--shadow);text-align:center;transition:transform .2s;
-  }
-  .explain-card:hover{transform:translateY(-3px)}
-  .explain-icon{
-    width:64px;height:64px;border-radius:18px;margin:0 auto 18px;
-    display:grid;place-items:center;font-size:28px;
-    background:linear-gradient(135deg,rgba(91,127,255,0.15),rgba(139,92,246,0.1));
-    border:1px solid rgba(91,127,255,0.2);
-    box-shadow:0 8px 20px rgba(91,127,255,0.15);
-  }
-  .explain-card h3{font-size:17px;font-weight:700;margin-bottom:10px;color:var(--text);letter-spacing:-0.015em}
-  .explain-card p{font-size:14px;color:var(--text-2);line-height:1.65}
-
-  /* ═══════════ 3 WAYS TO USE ═══════════ */
-  .ways{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  @media (max-width:900px){.ways{grid-template-columns:1fr}}
-  .way{
-    background:var(--glass-2);border:1px solid var(--stroke);
-    border-radius:20px;padding:32px 28px;
-    backdrop-filter:blur(24px) saturate(180%);
-    -webkit-backdrop-filter:blur(24px) saturate(180%);
-    box-shadow:var(--shadow);transition:all .25s;
-    position:relative;overflow:hidden;display:flex;flex-direction:column;
-  }
-  .way:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-  .way-num{
-    font-family:var(--mono);font-size:11px;
-    color:var(--accent);font-weight:700;
-    letter-spacing:0.1em;margin-bottom:14px;
-  }
-  .way h3{font-size:19px;font-weight:800;margin-bottom:10px;letter-spacing:-0.015em;color:var(--text)}
-  .way .way-sub{font-size:13px;color:var(--text-3);margin-bottom:18px;font-family:var(--mono);font-weight:500}
-  .way p{font-size:14px;color:var(--text-2);line-height:1.65;margin-bottom:20px}
-  .way ul{list-style:none;margin-bottom:24px;flex-grow:1}
-  .way ul li{
-    padding:7px 0 7px 24px;position:relative;
-    font-size:13.5px;color:var(--text-2);line-height:1.55;
-  }
-  .way ul li::before{
-    content:'✓';position:absolute;left:0;top:6px;
-    color:var(--green);font-weight:700;font-size:14px;
-  }
-  .way ul li strong{color:var(--text);font-weight:600}
-  .way-price{
-    padding-top:18px;border-top:1px solid rgba(180,195,230,0.3);
-    font-family:var(--mono);font-size:12.5px;
-    color:var(--text-3);font-weight:600;
-    display:flex;justify-content:space-between;align-items:center;
-  }
-  .way-price strong{color:var(--accent);font-size:16px;font-family:var(--sans)}
-
-  .way.featured{
-    background:linear-gradient(180deg,rgba(91,127,255,0.1),rgba(255,255,255,0.65));
-    border-color:rgba(91,127,255,0.3);
-  }
-  .way.featured::before{
-    content:'MOST POPULAR';
-    position:absolute;top:18px;right:-32px;
-    transform:rotate(45deg);
-    background:linear-gradient(135deg,#5b7fff,#8b5cf6);
-    color:#fff;font-size:10px;font-weight:700;
-    font-family:var(--mono);letter-spacing:0.1em;
-    padding:4px 40px;box-shadow:0 4px 12px rgba(91,127,255,0.3);
-	top: 36px !important;
-  }
-
-  /* ═══════════ LIVE PANEL SECTION ═══════════ */
-  .live-panel{
-    background:linear-gradient(135deg,rgba(91,127,255,0.08),rgba(139,92,246,0.06) 50%,rgba(20,184,166,0.05) 100%);
-    border:1px solid var(--stroke);border-radius:24px;
-    padding:48px 44px;
-    backdrop-filter:blur(28px) saturate(180%);
-    -webkit-backdrop-filter:blur(28px) saturate(180%);
-    box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
-  }
-  @media (max-width:768px){.live-panel{padding:32px 24px}}
-  .live-panel::before{
-    content:'';position:absolute;top:-1px;left:30%;right:30%;height:1px;
-    background:linear-gradient(90deg,transparent,rgba(91,127,255,0.6),transparent);
-  }
-
-  .lp-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:44px;align-items:center}
-  @media (max-width:900px){.lp-grid{grid-template-columns:1fr;gap:28px}}
-
-  .lp-text h3{
-    font-size:clamp(22px,2.6vw,30px);
-    font-weight:800;letter-spacing:-0.02em;
-    margin-bottom:16px;line-height:1.25;color:var(--text);
-  }
-  .lp-text h3 em{
-    font-style:normal;
-    background:linear-gradient(120deg,#5b7fff,#8b5cf6);
-    -webkit-background-clip:text;background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
-  .lp-text p{font-size:15px;color:var(--text-2);line-height:1.7;margin-bottom:16px}
-  .lp-text ul{list-style:none;margin-top:18px}
-  .lp-text ul li{
-    padding:9px 0 9px 28px;position:relative;
-    font-size:14px;color:var(--text-2);line-height:1.55;
-  }
-  .lp-text ul li::before{content:'✓';position:absolute;left:0;top:8px;color:var(--green);font-weight:700}
-  .lp-text ul li strong{color:var(--text);font-weight:600}
-
-  /* mock live panel */
-  .mock-panel{
-    background:var(--glass-3);
-    border:1px solid var(--stroke);
-    border-radius:16px;
+  /* ═══════════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════════ */
+  .hero{
+    padding:72px 0 80px;
+    position:relative;
     overflow:hidden;
-    backdrop-filter:blur(24px) saturate(180%);
-    -webkit-backdrop-filter:blur(24px) saturate(180%);
-    box-shadow:var(--shadow-lg);
-    font-family:var(--mono);font-size:12px;
   }
-  .mock-head{
+  .hero::before{
+    content:'';position:absolute;
+    top:-200px;right:-200px;
+    width:600px;height:600px;
+    background:radial-gradient(circle,rgba(212,160,23,0.08),transparent 70%);
+    pointer-events:none;
+  }
+  .hero::after{
+    content:'';position:absolute;
+    bottom:-300px;left:-200px;
+    width:700px;height:700px;
+    background:radial-gradient(circle,rgba(15,41,66,0.06),transparent 70%);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative;z-index:1}
+
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px 6px 10px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:100px;
+    font-size:12.5px;font-weight:500;
+    color:var(--ink-2);
+    margin-bottom:28px;
+    box-shadow:var(--shadow-sm);
+  }
+  .hero-eyebrow-dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--emerald);
+    box-shadow:0 0 0 3px rgba(4,120,87,0.15);
+  }
+
+  h1{
+    font-family:var(--serif);
+    font-size:clamp(40px,5.5vw,68px);
+    font-weight:600;
+    line-height:1.05;
+    letter-spacing:-0.025em;
+    color:var(--ink);
+    margin-bottom:24px;
+    max-width:900px;
+  }
+  h1 em{
+    font-style:italic;
+    color:var(--gold);
+    font-weight:600;
+  }
+
+  .hero-sub{
+    font-size:18px;
+    color:var(--ink-2);
+    max-width:640px;
+    margin-bottom:36px;
+    line-height:1.6;
+  }
+  .hero-sub strong{color:var(--ink);font-weight:600}
+
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px}
+
+  /* stats strip */
+  .hero-stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    padding:24px 0;
+    max-width:1000px;
+  }
+  @media (max-width:768px){.hero-stats{grid-template-columns:repeat(2,1fr);gap:20px 0}}
+  .hero-stat{
+    padding:0 24px;
+    border-right:1px solid var(--border);
+  }
+  .hero-stat:last-child{border-right:none}
+  @media (max-width:768px){
+    .hero-stat:nth-child(2n){border-right:none}
+    .hero-stat:nth-child(n+3){border-top:1px solid var(--border);padding-top:20px}
+  }
+  .hero-stat-label{
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--ink-3);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:8px;
+    font-weight:500;
+  }
+  .hero-stat-value{
+    font-family:var(--serif);
+    font-size:28px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-0.02em;
+    line-height:1;
+  }
+  .hero-stat-value span{
+    font-size:15px;
+    color:var(--ink-3);
+    font-weight:500;
+    margin-left:4px;
+    font-family:var(--sans);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     TERMINAL / CONSOLE VISUAL
+     ═══════════════════════════════════════════════════════════ */
+  .console-wrap{
+    margin-top:48px;
+    position:relative;
+  }
+  .console{
+    background:var(--navy);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:var(--shadow-xl);
+    border:1px solid rgba(15,41,66,0.3);
+    max-width:960px;
+    margin:0 auto;
+  }
+  .console-head{
     padding:12px 16px;
-    background:rgba(255,255,255,0.5);
-    border-bottom:1px solid rgba(180,195,230,0.3);
-    display:flex;align-items:center;gap:10px;
+    background:rgba(0,0,0,0.15);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    display:flex;align-items:center;gap:8px;
   }
-  .mock-url{
-    flex:1;
-    background:rgba(255,255,255,0.7);
-    padding:5px 12px;border-radius:6px;
-    font-size:11px;color:var(--text-2);
-    border:1px solid rgba(180,195,230,0.4);
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  .console-dot{width:11px;height:11px;border-radius:50%}
+  .console-dot.r{background:#ff5f57}
+  .console-dot.y{background:#febc2e}
+  .console-dot.g{background:#28c840}
+  .console-title{
+    margin-left:auto;margin-right:auto;
+    font-family:var(--mono);font-size:11px;
+    color:rgba(255,255,255,0.4);
+    letter-spacing:0.03em;
   }
-  .mock-dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0}
-  .mock-body{padding:18px 16px;background:rgba(255,255,255,0.3)}
-  .mock-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-  .mock-stat{
-    background:rgba(255,255,255,0.7);
-    border:1px solid rgba(180,195,230,0.4);
-    border-radius:8px;padding:10px 12px;
+  .console-body{
+    padding:22px 24px;
+    font-family:var(--mono);font-size:12.5px;
+    line-height:1.85;
+    color:rgba(226,232,240,0.9);
+    overflow-x:auto;
+    background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);
   }
-  .mock-stat-label{font-size:9px;color:var(--text-3);letter-spacing:0.05em;font-weight:700;text-transform:uppercase;margin-bottom:3px}
-  .mock-stat-value{font-size:14px;font-weight:800;color:var(--accent);font-family:var(--sans)}
-  .mock-stat-value.green{color:var(--green)}
-  .mock-log{
-    background:rgba(255,255,255,0.6);
-    border:1px solid rgba(180,195,230,0.4);
-    border-radius:8px;padding:12px 14px;
-    font-size:11px;line-height:1.9;
-    color:var(--text-2);max-height:180px;overflow:hidden;
-  }
-  .mock-log .line{display:flex;gap:10px}
-  .mock-log .t{color:var(--text-3);flex-shrink:0}
-  .mock-log .m{color:var(--text)}
-  .mock-log .ok{color:var(--green);font-weight:600}
-  .mock-log .warn{color:var(--amber);font-weight:600}
+  .c-prompt{color:#6ee7b7}
+  .c-cmd{color:#fff;font-weight:500}
+  .c-arg{color:#fcd34d}
+  .c-val{color:#a78bfa}
+  .c-out{color:rgba(226,232,240,0.6)}
+  .c-ok{color:#6ee7b7;font-weight:500}
+  .c-warn{color:#fbbf24;font-weight:500}
+  .c-gold{color:var(--gold-3);font-weight:600}
+  .c-dim{color:rgba(226,232,240,0.35);font-style:italic}
 
-  /* ═══════════ API SECTION ═══════════ */
-  .api-section{
-    background:var(--glass-2);
-    border:1px solid var(--stroke);
-    border-radius:24px;padding:48px 44px;
-    backdrop-filter:blur(28px) saturate(180%);
-    -webkit-backdrop-filter:blur(28px) saturate(180%);
-    box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+  /* ═══════════════════════════════════════════════════════════
+     SECTION
+     ═══════════════════════════════════════════════════════════ */
+  section{padding:80px 0}
+  .section-head{max-width:720px;margin-bottom:56px}
+  .section-eyebrow{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--gold);
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-weight:600;
+    margin-bottom:14px;
   }
-  @media (max-width:768px){.api-section{padding:32px 24px}}
-
-  .api-header{text-align:center;max-width:720px;margin:0 auto 40px}
-  .api-header h3{
-    font-size:clamp(22px,2.8vw,30px);
-    font-weight:800;letter-spacing:-0.02em;
-    margin-bottom:14px;color:var(--text);
+  h2{
+    font-family:var(--serif);
+    font-size:clamp(30px,3.8vw,44px);
+    font-weight:600;
+    line-height:1.15;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+    margin-bottom:16px;
   }
-  .api-header h3 em{
-    font-style:normal;
-    background:linear-gradient(120deg,#5b7fff,#8b5cf6);
-    -webkit-background-clip:text;background-clip:text;
-    -webkit-text-fill-color:transparent;
+  h2 em{font-style:italic;color:var(--gold)}
+  .section-sub{
+    font-size:16.5px;
+    color:var(--ink-2);
+    line-height:1.65;
+    max-width:620px;
   }
-  .api-header p{font-size:15.5px;color:var(--text-2);line-height:1.7}
 
-  .api-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:44px;align-items:start}
-  @media (max-width:900px){.api-grid{grid-template-columns:1fr;gap:28px}}
-
-  .endpoint{
-    display:flex;align-items:flex-start;gap:12px;
-    padding:14px 16px;
-    background:rgba(255,255,255,0.6);
-    border:1px solid rgba(180,195,230,0.4);
-    border-radius:10px;margin-bottom:10px;
+  /* ═══════════════════════════════════════════════════════════
+     PROBLEM (3-col)
+     ═══════════════════════════════════════════════════════════ */
+  .problem-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+  @media (max-width:900px){.problem-grid{grid-template-columns:1fr}}
+  .problem{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:28px 26px;
+    position:relative;
     transition:all .2s;
   }
-  .endpoint:hover{background:rgba(255,255,255,0.9);transform:translateX(2px)}
-  .method{
-    font-family:var(--mono);font-size:10px;font-weight:700;
-    padding:3px 8px;border-radius:5px;flex-shrink:0;
-    letter-spacing:0.05em;margin-top:2px;
+  .problem:hover{
+    border-color:var(--border-2);
+    transform:translateY(-2px);
+    box-shadow:var(--shadow);
   }
-  .method.get{background:rgba(91,127,255,0.15);color:#4055c4}
-  .method.post{background:rgba(16,185,129,0.15);color:#0d9d75}
-  .method.del{background:rgba(236,72,153,0.15);color:#be185d}
-  .endpoint-path{
-    font-family:var(--mono);font-size:12.5px;
-    color:var(--text);font-weight:600;
-    margin-bottom:3px;
+  .problem-num{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--rose);
+    font-weight:600;
+    letter-spacing:0.08em;
+    margin-bottom:16px;
   }
-  .endpoint-desc{font-size:12.5px;color:var(--text-2);line-height:1.5}
+  .problem h3{
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:10px;
+    letter-spacing:-0.015em;
+    color:var(--ink);
+  }
+  .problem p{
+    font-size:14px;
+    color:var(--ink-2);
+    line-height:1.65;
+  }
 
-  .api-code{
-    background:#0f1a35;
-    border:1px solid rgba(30,45,80,0.5);
-    border-radius:14px;padding:22px 24px;
-    font-family:var(--mono);font-size:12px;
-    line-height:1.85;color:#e2e8f8;
-    overflow-x:auto;
-    box-shadow:0 20px 50px rgba(15,26,53,0.25);
+  /* ═══════════════════════════════════════════════════════════
+     SOLUTION / PILLARS
+     ═══════════════════════════════════════════════════════════ */
+  .pillars{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+    margin-top:16px;
+  }
+  @media (max-width:900px){.pillars{grid-template-columns:1fr}}
+  .pillar{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:32px 28px;
     position:relative;
+    transition:all .2s;
   }
-  .api-code::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent,rgba(91,127,255,0.6),transparent);
+  .pillar:hover{
+    border-color:var(--navy);
+    box-shadow:var(--shadow-lg);
+    transform:translateY(-3px);
   }
-  .api-code .c-tag{color:#a78bfa}
-  .api-code .c-attr{color:#7dd3fc}
-  .api-code .c-str{color:#fbbf24}
-  .api-code .c-cmt{color:#64748b;font-style:italic}
-  .api-code .c-kw{color:#f472b6;font-weight:600}
-  .api-code .c-num{color:#34d399}
-
-  /* ═══════════ BUSINESS VALUE ═══════════ */
-  .value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-  .value{
-    background:var(--glass-2);border:1px solid var(--stroke);
-    border-radius:16px;padding:26px 24px;
-    backdrop-filter:blur(24px) saturate(180%);
-    -webkit-backdrop-filter:blur(24px) saturate(180%);
-    box-shadow:var(--shadow);transition:all .2s;
+  .pillar-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:40px;height:40px;
+    border-radius:10px;
+    background:var(--navy);
+    color:var(--gold-3);
+    font-family:var(--serif);
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:20px;
+    box-shadow:0 4px 12px rgba(15,41,66,0.2);
+  }
+  .pillar h3{
+    font-size:19px;
+    font-weight:600;
+    margin-bottom:12px;
+    letter-spacing:-0.015em;
+    color:var(--ink);
+    line-height:1.3;
+  }
+  .pillar p{
+    font-size:14.5px;
+    color:var(--ink-2);
+    line-height:1.65;
+    margin-bottom:16px;
+  }
+  .pillar-list{list-style:none}
+  .pillar-list li{
+    padding:6px 0 6px 24px;
     position:relative;
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.55;
   }
-  .value:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
-  .value-icon{
-    width:44px;height:44px;border-radius:12px;
-    background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(20,184,166,0.1));
-    border:1px solid rgba(16,185,129,0.25);
-    display:grid;place-items:center;
-    font-size:20px;margin-bottom:16px;
+  .pillar-list li::before{
+    content:'';
+    position:absolute;left:0;top:13px;
+    width:14px;height:6px;
+    border-left:2px solid var(--emerald);
+    border-bottom:2px solid var(--emerald);
+    transform:rotate(-45deg) scale(0.85);
+    transform-origin:left;
   }
-  .value h3{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--text);letter-spacing:-0.005em}
-  .value p{font-size:13.5px;color:var(--text-2);line-height:1.6}
+  .pillar-list li strong{color:var(--ink);font-weight:600}
 
-  /* ═══════════ FEATURES ═══════════ */
-  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  /* ═══════════════════════════════════════════════════════════
+     MULTI-INSTANCE (FEATURED BLOCK)
+     ═══════════════════════════════════════════════════════════ */
+  .multi-block{
+    background:linear-gradient(180deg,#ffffff 0%,#faf8f3 100%);
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:56px 48px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+  }
+  @media (max-width:768px){.multi-block{padding:36px 24px}}
+  .multi-block::before{
+    content:'';
+    position:absolute;top:0;right:0;
+    width:400px;height:400px;
+    background:radial-gradient(circle,rgba(212,160,23,0.1),transparent 70%);
+    pointer-events:none;
+  }
+  .multi-grid{
+    display:grid;
+    grid-template-columns:1fr 1.1fr;
+    gap:56px;
+    align-items:center;
+    position:relative;
+    z-index:1;
+  }
+  @media (max-width:900px){.multi-grid{grid-template-columns:1fr;gap:36px}}
+
+  .multi-text h3{
+    font-family:var(--serif);
+    font-size:clamp(26px,3vw,36px);
+    font-weight:600;
+    line-height:1.15;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+    margin-bottom:18px;
+  }
+  .multi-text h3 em{font-style:italic;color:var(--gold)}
+  .multi-text p{
+    font-size:15.5px;
+    color:var(--ink-2);
+    line-height:1.7;
+    margin-bottom:16px;
+  }
+  .multi-text p strong{color:var(--ink);font-weight:600}
+
+  .multi-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:24px;
+  }
+  .multi-stat{
+    padding:16px 18px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+  }
+  .multi-stat-label{
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--ink-3);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:6px;
+    font-weight:500;
+  }
+  .multi-stat-value{
+    font-family:var(--serif);
+    font-size:22px;
+    font-weight:600;
+    color:var(--navy);
+    letter-spacing:-0.02em;
+  }
+  .multi-stat-value small{
+    font-family:var(--sans);
+    font-size:12px;
+    color:var(--ink-3);
+    font-weight:500;
+    margin-left:4px;
+  }
+
+  /* instances visual */
+  .instances{
+    background:var(--navy);
+    border-radius:16px;
+    padding:24px;
+    box-shadow:var(--shadow-xl);
+    position:relative;
+    overflow:hidden;
+  }
+  .instances::before{
+    content:'';
+    position:absolute;top:-100px;right:-100px;
+    width:300px;height:300px;
+    background:radial-gradient(circle,rgba(212,160,23,0.15),transparent 70%);
+    pointer-events:none;
+  }
+  .instances-head{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-bottom:16px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    margin-bottom:16px;
+    position:relative;
+    z-index:1;
+  }
+  .instances-title{
+    font-family:var(--mono);
+    font-size:11px;
+    color:rgba(255,255,255,0.5);
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    font-weight:500;
+  }
+  .instances-status{
+    display:flex;align-items:center;gap:6px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:#6ee7b7;
+    font-weight:600;
+  }
+  .instances-status::before{
+    content:'';
+    width:6px;height:6px;border-radius:50%;
+    background:#6ee7b7;
+    box-shadow:0 0 8px #6ee7b7;
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  .instance-row{
+    display:flex;align-items:center;gap:14px;
+    padding:12px 14px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:10px;
+    margin-bottom:8px;
+    transition:all .2s;
+    position:relative;
+    z-index:1;
+  }
+  .instance-row:hover{
+    background:rgba(255,255,255,0.05);
+    border-color:rgba(212,160,23,0.3);
+  }
+  .instance-id{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--gold-3);
+    font-weight:700;
+    width:36px;
+    flex-shrink:0;
+  }
+  .instance-detail{
+    flex:1;
+    font-family:var(--mono);
+    font-size:11px;
+    color:rgba(226,232,240,0.7);
+    line-height:1.5;
+  }
+  .instance-detail .label{color:rgba(226,232,240,0.4)}
+  .instance-detail .val{color:#a78bfa}
+  .instance-count{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:#6ee7b7;
+    font-weight:600;
+    text-align:right;
+    white-space:nowrap;
+  }
+  .instance-count small{
+    display:block;
+    font-size:9.5px;
+    color:rgba(226,232,240,0.4);
+    font-weight:400;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FEATURES GRID
+     ═══════════════════════════════════════════════════════════ */
+  .features{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:16px;
+    overflow:hidden;
+  }
+  @media (max-width:900px){.features{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.features{grid-template-columns:1fr}}
   .feature{
-    background:var(--glass);border:1px solid var(--stroke);
-    border-radius:18px;padding:26px 24px;
-    backdrop-filter:blur(24px) saturate(180%);
-    -webkit-backdrop-filter:blur(24px) saturate(180%);
-    transition:all .25s;box-shadow:var(--shadow);
+    background:var(--surface);
+    padding:32px 28px;
+    transition:background .2s;
   }
-  .feature:hover{background:var(--glass-3);transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:rgba(91,127,255,0.3)}
+  .feature:hover{background:var(--surface-2)}
   .feature-icon{
-    width:44px;height:44px;border-radius:12px;
-    background:linear-gradient(135deg,rgba(91,127,255,0.15),rgba(139,92,246,0.1));
-    border:1px solid rgba(91,127,255,0.2);
-    display:grid;place-items:center;font-size:20px;margin-bottom:16px;
-  }
-  .feature h3{font-size:15.5px;font-weight:700;margin-bottom:9px;color:var(--text);letter-spacing:-0.01em}
-  .feature p{font-size:13.5px;color:var(--text-2);line-height:1.65}
-
-  /* ═══════════ SPLIT BACKGROUND ═══════════ */
-  .split{
-    display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
-    background:var(--glass-2);border:1px solid var(--stroke);
-    border-radius:22px;padding:44px;
-    backdrop-filter:blur(28px) saturate(180%);
-    -webkit-backdrop-filter:blur(28px) saturate(180%);
-    box-shadow:var(--shadow-lg);
-  }
-  @media (max-width:900px){.split{grid-template-columns:1fr;padding:32px 24px;gap:28px}}
-  .split-text h3{font-size:clamp(20px,2.4vw,27px);font-weight:800;letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;color:var(--text)}
-  .split-text h3 em{font-style:normal;color:var(--green)}
-  .split-text p{font-size:15px;color:var(--text-2);line-height:1.7;margin-bottom:16px}
-  .split-list{list-style:none;margin-top:20px}
-  .split-list li{padding:8px 0 8px 28px;position:relative;font-size:14px;color:var(--text-2);line-height:1.55}
-  .split-list li::before{content:'✓';position:absolute;left:0;top:7px;color:var(--green);font-weight:700;font-size:15px}
-  .split-list li strong{color:var(--text);font-weight:600}
-
-  .kb-illo{display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;padding:20px}
-  .kb-row{display:flex;gap:6px}
-  .key{
-    width:40px;height:40px;border-radius:9px;
-    background:var(--glass-3);border:1px solid var(--stroke-2);
+    width:40px;height:40px;
+    border-radius:10px;
+    background:rgba(15,41,66,0.06);
     display:grid;place-items:center;
-    font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text-2);
-    box-shadow:0 2px 4px rgba(80,110,180,0.08),inset 0 -2px 0 rgba(80,110,180,0.08),inset 0 1px 0 rgba(255,255,255,0.9);
-    transition:all .2s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    margin-bottom:18px;
+    color:var(--navy);
   }
-  .key.active{
-    background:linear-gradient(180deg,#5b7fff,#8b5cf6);
-    border-color:rgba(91,127,255,0.5);color:#fff;
-    box-shadow:0 6px 16px rgba(91,127,255,0.4),inset 0 1px 0 rgba(255,255,255,0.3);
-    transform:translateY(1px);
+  .feature h3{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:8px;
+    letter-spacing:-0.01em;
+    color:var(--ink);
   }
-  .key.space{width:150px}
-  .kb-caption{font-family:var(--mono);font-size:12px;color:var(--text-3);text-align:center;margin-top:12px;font-weight:500}
+  .feature p{
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.65;
+  }
+  .feature code{
+    font-family:var(--mono);
+    font-size:12px;
+    background:rgba(15,41,66,0.06);
+    color:var(--navy-2);
+    padding:1px 6px;
+    border-radius:4px;
+    font-weight:500;
+  }
 
-  /* ═══════════ SPECS ═══════════ */
-  .specs{
-    background:var(--glass-2);border:1px solid var(--stroke);
-    border-radius:18px;overflow:hidden;
-    backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-    box-shadow:var(--shadow);
+  /* ═══════════════════════════════════════════════════════════
+     LIVE PANEL + API (SPLIT)
+     ═══════════════════════════════════════════════════════════ */
+  .duo{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
   }
-  .specs-row{
-    display:grid;grid-template-columns:220px 1fr;
-    padding:16px 24px;border-bottom:1px solid rgba(180,195,230,0.25);
-    font-size:14px;align-items:baseline;transition:background .15s;
+  @media (max-width:900px){.duo{grid-template-columns:1fr}}
+  .duo-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:36px 32px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
   }
-  .specs-row:last-child{border-bottom:none}
-  .specs-row:hover{background:rgba(255,255,255,0.4)}
-  .specs-row dt{color:var(--text-3);font-family:var(--mono);font-size:12px;letter-spacing:0.02em;font-weight:600}
-  .specs-row dd{color:var(--text);font-size:14px}
-  .specs-row dd strong{color:var(--accent);font-weight:600}
-  @media (max-width:640px){.specs-row{grid-template-columns:1fr;gap:4px;padding:14px 18px}}
+  .duo-card.dark{
+    background:var(--navy);
+    color:#fff;
+    border-color:transparent;
+  }
+  .duo-card.dark::before{
+    content:'';
+    position:absolute;top:-100px;right:-100px;
+    width:300px;height:300px;
+    background:radial-gradient(circle,rgba(212,160,23,0.15),transparent 70%);
+    pointer-events:none;
+  }
+  .duo-card.dark *{position:relative;z-index:1}
+  .duo-tag{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    font-weight:600;
+    color:var(--gold);
+    margin-bottom:16px;
+  }
+  .duo-card.dark .duo-tag{color:var(--gold-3)}
+  .duo-card h3{
+    font-family:var(--serif);
+    font-size:26px;
+    font-weight:600;
+    line-height:1.2;
+    letter-spacing:-0.02em;
+    margin-bottom:14px;
+    color:inherit;
+  }
+  .duo-card p{
+    font-size:14.5px;
+    line-height:1.7;
+    color:var(--ink-2);
+    margin-bottom:20px;
+  }
+  .duo-card.dark p{color:rgba(255,255,255,0.7)}
+  .duo-list{list-style:none;margin-bottom:24px;flex-grow:1}
+  .duo-list li{
+    padding:7px 0 7px 24px;
+    position:relative;
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--ink-2);
+  }
+  .duo-card.dark .duo-list li{color:rgba(255,255,255,0.75)}
+  .duo-list li::before{
+    content:'';
+    position:absolute;left:0;top:12px;
+    width:12px;height:5px;
+    border-left:2px solid var(--emerald);
+    border-bottom:2px solid var(--emerald);
+    transform:rotate(-45deg) scale(0.8);
+    transform-origin:left;
+  }
+  .duo-card.dark .duo-list li::before{
+    border-color:var(--gold-3);
+  }
+  .duo-list li strong{color:var(--ink);font-weight:600}
+  .duo-card.dark .duo-list li strong{color:#fff}
 
-  /* ═══════════ HONESTY ═══════════ */
-  .honesty{
-    background:var(--glass-2);border:1px solid var(--stroke);
-    border-left:4px solid var(--amber);border-radius:16px;
-    padding:26px 30px;
-    backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-    box-shadow:var(--shadow);
+  /* mock dashboard */
+  .mock-dash{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;
+    overflow:hidden;
+    margin-top:20px;
   }
-  .honesty h3{font-size:15px;font-weight:700;color:#b45309;margin-bottom:16px;font-family:var(--mono);letter-spacing:0.02em}
-  .honesty ul{list-style:none}
-  .honesty li{padding:8px 0 8px 26px;position:relative;font-size:14px;color:var(--text-2);line-height:1.65}
-  .honesty li::before{content:'—';position:absolute;left:0;color:var(--text-3);font-family:var(--mono);font-weight:600}
+  .mock-dash-head{
+    padding:10px 14px;
+    background:rgba(0,0,0,0.2);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    display:flex;align-items:center;gap:8px;
+  }
+  .mock-dash-url{
+    flex:1;
+    background:rgba(255,255,255,0.06);
+    padding:5px 10px;
+    border-radius:5px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:rgba(255,255,255,0.7);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .mock-dash-body{padding:16px}
+  .mock-stat-row{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:8px;margin-bottom:12px;
+  }
+  .mock-stat{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:8px;
+    padding:10px 12px;
+  }
+  .mock-stat-label{
+    font-family:var(--mono);font-size:9px;
+    color:rgba(255,255,255,0.5);
+    letter-spacing:0.08em;text-transform:uppercase;
+    margin-bottom:4px;font-weight:600;
+  }
+  .mock-stat-value{
+    font-family:var(--serif);
+    font-size:16px;font-weight:600;color:#fff;
+    letter-spacing:-0.01em;
+  }
+  .mock-stat-value.gold{color:var(--gold-3)}
 
-  /* ═══════════ CTA ═══════════ */
-  .cta-final{
-    background:linear-gradient(135deg,rgba(91,127,255,0.12) 0%,rgba(139,92,246,0.1) 100%);
-    border:1px solid var(--stroke);border-radius:24px;
-    padding:64px 40px;text-align:center;
-    position:relative;overflow:hidden;
-    backdrop-filter:blur(28px) saturate(180%);
-    -webkit-backdrop-filter:blur(28px) saturate(180%);
+  /* API endpoints */
+  .endpoint{
+    display:flex;align-items:flex-start;gap:12px;
+    padding:11px 14px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    margin-bottom:8px;
+    transition:all .15s;
+  }
+  .endpoint:hover{
+    background:var(--surface);
+    border-color:var(--border-2);
+  }
+  .method{
+    font-family:var(--mono);
+    font-size:9.5px;font-weight:700;
+    padding:3px 7px;border-radius:4px;
+    flex-shrink:0;margin-top:2px;
+    letter-spacing:0.05em;
+  }
+  .method.get{background:rgba(15,41,66,0.1);color:var(--navy)}
+  .method.post{background:rgba(4,120,87,0.1);color:var(--emerald)}
+  .method.del{background:rgba(190,18,60,0.1);color:var(--rose)}
+  .endpoint-path{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink);
+    font-weight:600;
+    margin-bottom:2px;
+  }
+  .endpoint-desc{
+    font-size:12px;
+    color:var(--ink-2);
+    line-height:1.5;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     PRICING
+     ═══════════════════════════════════════════════════════════ */
+  .pricing{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    align-items:stretch;
+  }
+  @media (max-width:900px){.pricing{grid-template-columns:1fr}}
+  .price-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:32px 28px;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    transition:all .2s;
+  }
+  .price-card:hover{
+    border-color:var(--border-2);
+    transform:translateY(-3px);
     box-shadow:var(--shadow-lg);
   }
-  .cta-final h2{margin-bottom:16px;color:var(--text)}
-  .cta-final p{color:var(--text-2);max-width:600px;margin:0 auto 30px;font-size:16px;line-height:1.65}
-  .pill-price{
-    display:inline-block;font-family:var(--mono);font-size:12px;
-    padding:6px 14px;background:var(--glass-3);
-    border:1px solid rgba(16,185,129,0.3);color:#0d9d75;
-    border-radius:100px;margin-bottom:22px;font-weight:700;
-    box-shadow:0 4px 12px rgba(16,185,129,0.1);
+  .price-card.featured{
+    border-color:var(--navy);
+    box-shadow:var(--shadow-lg);
+    transform:scale(1.02);
   }
-  .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .cta-note{margin-top:22px;font-size:13px;color:var(--text-3);font-family:var(--mono);font-weight:500}
+  .price-card.featured:hover{
+    transform:scale(1.02) translateY(-3px);
+  }
+  .price-badge{
+    position:absolute;
+    top:-12px;left:50%;transform:translateX(-50%);
+    background:var(--gold);
+    color:#fff;
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    padding:5px 14px;
+    border-radius:100px;
+    box-shadow:0 4px 12px rgba(184,134,11,0.35);
+    text-transform:uppercase;
+  }
+  .price-name{
+    font-size:15px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+  .price-sub{
+    font-size:12.5px;
+    color:var(--ink-3);
+    margin-bottom:24px;
+    font-family:var(--mono);
+  }
+  .price-amount{
+    font-family:var(--serif);
+    font-size:44px;
+    font-weight:600;
+    letter-spacing:-0.03em;
+    color:var(--ink);
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .price-amount span{
+    font-family:var(--sans);
+    font-size:14px;
+    color:var(--ink-3);
+    font-weight:500;
+    margin-left:6px;
+    letter-spacing:0;
+  }
+  .price-note{
+    font-size:12.5px;
+    color:var(--ink-3);
+    margin-bottom:24px;
+  }
+  .price-features{
+    list-style:none;
+    margin-bottom:28px;
+    flex-grow:1;
+    padding-top:24px;
+    border-top:1px solid var(--border);
+  }
+  .price-features li{
+    padding:8px 0 8px 24px;
+    position:relative;
+    font-size:13.5px;
+    color:var(--ink-2);
+    line-height:1.5;
+  }
+  .price-features li::before{
+    content:'';
+    position:absolute;left:0;top:13px;
+    width:12px;height:5px;
+    border-left:2px solid var(--emerald);
+    border-bottom:2px solid var(--emerald);
+    transform:rotate(-45deg) scale(0.8);
+    transform-origin:left;
+  }
+  .price-features li strong{color:var(--ink);font-weight:600}
+  .price-features li.muted{color:var(--ink-3)}
+  .price-features li.muted::before{
+    border-color:var(--ink-3);
+    opacity:0.4;
+  }
+  .price-cta{
+    width:100%;
+    justify-content:center;
+    padding:14px;
+    font-size:14.5px;
+  }
 
-  /* ═══════════ FOOTER ═══════════ */
-  footer{padding:40px 0 60px;margin-top:40px}
+  /* ═══════════════════════════════════════════════════════════
+     FAQ
+     ═══════════════════════════════════════════════════════════ */
+  .faq{max-width:840px;margin:0 auto}
+  .faq-item{
+    border-bottom:1px solid var(--border);
+    padding:24px 0;
+  }
+  .faq-item:first-child{border-top:1px solid var(--border)}
+  .faq-q{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    gap:24px;
+    cursor:pointer;
+    list-style:none;
+  }
+  .faq-q h3{
+    font-size:16px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+    line-height:1.4;
+  }
+  .faq-q .icon{
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    display:grid;place-items:center;
+    flex-shrink:0;
+    transition:all .2s;
+    color:var(--ink-2);
+  }
+  .faq-q .icon svg{transition:transform .2s}
+  .faq-item[open] .faq-q .icon{
+    background:var(--navy);
+    border-color:var(--navy);
+    color:#fff;
+  }
+  .faq-item[open] .faq-q .icon svg{transform:rotate(45deg)}
+  .faq-a{
+    margin-top:14px;
+    font-size:14.5px;
+    color:var(--ink-2);
+    line-height:1.7;
+    padding-right:48px;
+  }
+  .faq-a strong{color:var(--ink);font-weight:600}
+
+  /* ═══════════════════════════════════════════════════════════
+     FINAL CTA
+     ═══════════════════════════════════════════════════════════ */
+  .final-cta{
+    background:var(--navy);
+    border-radius:24px;
+    padding:72px 48px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    color:#fff;
+  }
+  @media (max-width:768px){.final-cta{padding:48px 24px}}
+  .final-cta::before{
+    content:'';
+    position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+    width:800px;height:800px;
+    background:radial-gradient(circle,rgba(212,160,23,0.12),transparent 60%);
+    pointer-events:none;
+  }
+  .final-cta > *{position:relative;z-index:1}
+  .final-cta h2{
+    color:#fff;
+    margin-bottom:16px;
+    font-size:clamp(32px,4vw,48px);
+  }
+  .final-cta h2 em{color:var(--gold-3)}
+  .final-cta p{
+    color:rgba(255,255,255,0.75);
+    max-width:600px;
+    margin:0 auto 36px;
+    font-size:16.5px;
+    line-height:1.65;
+  }
+  .final-cta-buttons{
+    display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+    margin-bottom:32px;
+  }
+  .final-cta .btn-outline{
+    border-color:rgba(255,255,255,0.2);
+    color:#fff;
+  }
+  .final-cta .btn-outline:hover{
+    border-color:var(--gold-3);
+    color:var(--gold-3);
+    background:rgba(212,160,23,0.05);
+  }
+  .payment-methods{
+    display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+    padding-top:32px;
+    border-top:1px solid rgba(255,255,255,0.1);
+    max-width:600px;
+    margin:0 auto;
+  }
+  .payment-chip{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:9px 16px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:100px;
+    font-size:12.5px;
+    font-weight:500;
+    color:rgba(255,255,255,0.85);
+    font-family:var(--mono);
+  }
+  .payment-chip svg{opacity:0.7}
+
+  /* ═══════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════ */
+  footer{
+    padding:48px 0 60px;
+    border-top:1px solid var(--border);
+    margin-top:80px;
+  }
   .footer-inner{
     display:flex;justify-content:space-between;align-items:center;
-    gap:20px;flex-wrap:wrap;font-size:13px;color:var(--text-3);
-    font-family:var(--mono);padding:20px 26px;
-    background:var(--glass);border:1px solid var(--stroke);
-    border-radius:16px;
-    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-    box-shadow:var(--shadow);font-weight:500;
+    gap:24px;flex-wrap:wrap;
+    font-size:13px;
+    color:var(--ink-3);
   }
-  .footer-inner a{color:var(--text-2);transition:color .15s}
-  .footer-inner a:hover{color:var(--accent)}
+  .footer-brand{
+    display:flex;align-items:center;gap:10px;
+    font-weight:600;color:var(--ink-2);
+  }
+  .footer-brand .brand-mark{width:26px;height:26px;font-size:14px;border-radius:6px}
+  .footer-links{display:flex;gap:24px;flex-wrap:wrap}
+  .footer-links a{
+    color:var(--ink-3);
+    transition:color .15s;
+    font-size:13px;
+  }
+  .footer-links a:hover{color:var(--navy)}
 
-  /* ═══════════ RESPONSIVE ═══════════ */
+  /* ═══════════════════════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════════════════════ */
   @media (max-width:768px){
-    .nav{margin:8px 12px 0}
-    .nav-inner{padding:10px 14px}
     .nav-links{display:none}
-    .brand-sub{display:none}
-    .hero{padding:44px 0 30px}
-    section{padding:52px 0}
-    .cta-final{padding:44px 22px}
-    .terminal-body{font-size:11.5px;padding:16px}
-    .footer-inner{flex-direction:column;text-align:center}
-    .kb-row{gap:4px}
-    .key{width:32px;height:32px;font-size:9px}
-    .key.space{width:120px}
+    .hero{padding:48px 0 60px}
+    section{padding:60px 0}
+    .hero-stats{padding:20px 0}
+    .hero-stat{padding:0 16px}
+    .hero-stat-value{font-size:22px}
+    .console-body{font-size:11px;padding:16px}
+    .final-cta{border-radius:16px}
   }
 
-  ::selection{background:rgba(91,127,255,0.3);color:#fff}
-  .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s,transform .7s}
+  ::selection{background:rgba(212,160,23,0.25);color:var(--ink)}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .8s cubic-bezier(0.16,1,0.3,1),transform .8s cubic-bezier(0.16,1,0.3,1)}
   .reveal.in{opacity:1;transform:none}
 </style>
 </head>
 <body>
 
-<div class="bg-wrap">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="orb orb-4"></div>
-  <div class="orb orb-5"></div>
-</div>
-
-<!-- ═══════ NAV ═══════ -->
+<!-- ═══════════════ NAVIGATION ═══════════════ -->
 <nav class="nav">
-  <div class="nav-inner">
+  <div class="wrap nav-inner">
     <a href="/FacebookScrapper/" class="brand">
-      <div class="brand-mark"></div>
-      <span>Facebook Scraper</span>
-      <span class="brand-sep">/</span>
-      <span class="brand-sub">v2.0</span>
+      <div class="brand-mark">F</div>
+      <span class="brand-name">Facebook Scraper</span>
+      <span class="brand-badge">v2.0</span>
     </a>
     <div class="nav-links">
-      <a href="#ways">Pricing</a>
+      <a href="#how">How it works</a>
+      <a href="#multi">Multi-instance</a>
       <a href="#live">Live panel</a>
       <a href="#api">API</a>
-      <a href="#features">Features</a>
-      <a href="#contact">Contact</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
     </div>
-    <a href="#contact" class="btn btn-primary">Get a quote →</a>
+    <div class="nav-actions">
+      <a href="https://soft68.ir/fbscraper" target="_blank" class="btn btn-gold">Buy license →</a>
+    </div>
   </div>
 </nav>
 
-<!-- ═══════ HERO ═══════ -->
+<!-- ═══════════════ HERO ═══════════════ -->
 <header class="hero">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <div class="live-pill">
-          <span class="dot"></span>
-          Windows app · Web API · Cloud service
-        </div>
+  <div class="wrap hero-inner">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      v2.0 · Windows 10 / 11 · Web API · Live dashboard
+    </div>
 
-        <h1>
-          Facebook data,<br>
-          <em>three ways to get it.</em>
-        </h1>
+    <h1>
+      Stop scraping Facebook<br>
+      <em>one post at a time.</em>
+    </h1>
 
-        <p class="lede">
-          Buy the software and run it yourself. Watch it working live in your browser.
-          Or hand the whole job to us and just receive the results.
-          <strong>Same tool, same quality — you pick the level of involvement.</strong>
-        </p>
+    <p class="hero-sub">
+      Run <strong>10 scrapers simultaneously</strong> — each with its own Facebook
+      account and proxy. <strong>10× the data in the same time</strong>, while you
+      keep using your computer normally.
+    </p>
 
-        <div class="hero-cta">
-          <a href="#ways" class="btn btn-primary">See the 3 options →</a>
-          <a href="#contact" class="btn btn-ghost">Talk to me first</a>
-        </div>
+    <div class="hero-cta">
+      <a href="https://soft68.ir/fbscraper" target="_blank" class="btn btn-gold btn-lg">
+        Buy license — from $499
+      </a>
+      <a href="#how" class="btn btn-outline btn-lg">
+        See how it works
+      </a>
+    </div>
 
-        <div class="simple-steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <h4>Pick your option</h4>
-            <p>Software license, live monitoring, or done-for-you service.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <h4>Tell us your targets</h4>
-            <p>Which pages, what date range, what fields you need.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <h4>Get clean data</h4>
-            <p>In Excel, JSON, or sent straight to your database.</p>
-          </div>
-        </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-label">Speed boost</div>
+        <div class="hero-stat-value">10<span>×</span></div>
       </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Posts per hour</div>
+        <div class="hero-stat-value">2,400<span>+</span></div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Instance limit</div>
+        <div class="hero-stat-value">∞</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Setup time</div>
+        <div class="hero-stat-value">5<span> min</span></div>
+      </div>
+    </div>
 
-      <div class="terminal">
-        <div class="terminal-head">
-          <span class="tdot red"></span>
-          <span class="tdot yellow"></span>
-          <span class="tdot green"></span>
-          <span class="terminal-title">facebook.exe — running</span>
+    <!-- terminal preview -->
+    <div class="console-wrap">
+      <div class="console">
+        <div class="console-head">
+          <span class="console-dot r"></span>
+          <span class="console-dot y"></span>
+          <span class="console-dot g"></span>
+          <span class="console-title">powershell — facebook.exe</span>
         </div>
-        <div class="terminal-body">
-<span class="prompt">PS&gt;</span> <span class="cmd">.\facebook.exe</span> <span class="arg">-userProfile=</span><span class="val">my_account</span> `<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">-profiles=</span><span class="val">brandpage,competitor1</span> `<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">-media=</span><span class="val">images,videos</span> `<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">-server=</span><span class="val">https://panel.yourdomain.com/</span><br>
+        <div class="console-body">
+<span class="c-prompt">PS&gt;</span> <span class="c-cmd">.\facebook.exe</span> <span class="c-arg">-userProfile=</span><span class="c-val">client_a</span> <span class="c-arg">-proxy=</span><span class="c-val">socks5://gate-01:1080</span><br>
+<span class="c-prompt">PS&gt;</span> <span class="c-cmd">.\facebook.exe</span> <span class="c-arg">-userProfile=</span><span class="c-val">client_b</span> <span class="c-arg">-proxy=</span><span class="c-val">socks5://gate-02:1080</span><br>
+<span class="c-prompt">PS&gt;</span> <span class="c-cmd">.\facebook.exe</span> <span class="c-arg">-userProfile=</span><span class="c-val">client_c</span> <span class="c-arg">-proxy=</span><span class="c-val">socks5://gate-03:1080</span><br>
 <br>
-<span class="out">[13:42:01] App ready. Logged in as my_account.</span><br>
-<span class="out">[13:42:11] Web panel online — 2 viewers</span><br>
-<span class="out">[13:43:27] Page 1 — 47 new posts saved.</span><br>
-<span class="out">[13:45:02] Downloading 8 videos…</span><br>
-<span class="out">[13:51:14] Page 1 — 231 new posts saved.</span><br>
-<span class="warn">[13:52:08] Facebook is slowing us down. Waiting 12s…</span><br>
-<span class="out">[14:02:09] </span><span class="ok">✓ Done. 278 posts, 94 files saved.</span><br>
-<span class="out">[14:02:09] API: /status → 200 OK</span>
+<span class="c-dim"># 3 instances started — collecting in parallel</span><br>
+<span class="c-out">[14:02:01] ✓ instance #1 online — account: client_a</span><br>
+<span class="c-out">[14:02:02] ✓ instance #2 online — account: client_b</span><br>
+<span class="c-out">[14:02:03] ✓ instance #3 online — account: client_c</span><br>
+<span class="c-out">[14:02:14] web panel ready — <span class="c-gold">https://panel.soft68.ir/acme</span></span><br>
+<span class="c-out">[14:03:41] instance #1 — 47 posts  (2 pages)</span><br>
+<span class="c-out">[14:03:43] instance #2 — 44 posts  (2 pages)</span><br>
+<span class="c-out">[14:03:45] instance #3 — 51 posts  (2 pages)</span><br>
+<span class="c-warn">[14:04:12] instance #2 — rate limit hit, backing off 12s</span><br>
+<span class="c-out">[14:04:25] instance #2 — resumed, still 3× overall speed</span><br>
+<span class="c-out">[14:08:33] </span><span class="c-ok">✓ batch complete — 834 posts, 282 media files</span><br>
+<span class="c-out">[14:08:33] API: GET /api/jobs/latest/status → </span><span class="c-ok">200 OK</span>
         </div>
       </div>
     </div>
   </div>
 </header>
 
-<!-- ═══════ WHAT IT DOES ═══════ -->
+<!-- ═══════════════ PROBLEM ═══════════════ -->
 <section>
   <div class="wrap">
-    <div class="section-tag">in plain words</div>
-    <h2>What does this actually do for you?</h2>
-    <p class="section-sub">
-      Skip the tech talk. Here's the plain-English version of what you're buying.
-    </p>
+    <div class="section-head">
+      <div class="section-eyebrow">The problem</div>
+      <h2>Other Facebook scrapers <em>quietly fail.</em></h2>
+      <p class="section-sub">
+        You've probably tried one of them. They run for a few hours,
+        Facebook detects them, and everything stops. Here's why.
+      </p>
+    </div>
 
-    <div class="explain">
-      <div class="explain-card">
-        <div class="explain-icon">📥</div>
-        <h3>It collects Facebook posts for you</h3>
+    <div class="problem-grid">
+      <div class="problem">
+        <div class="problem-num">PROBLEM 01</div>
+        <h3>Single account, single point of failure</h3>
         <p>
-          You give it a list of Facebook pages. It reads every post — text,
-          photos, videos — and saves everything in one clean file. Like a
-          tireless assistant that never misses a post.
+          One account hits a rate limit — the entire scraping job stops.
+          You lose hours of work, and there's no way to recover except
+          to wait and try again.
         </p>
       </div>
-      <div class="explain-card">
-        <div class="explain-icon">👀</div>
-        <h3>You can watch it working live</h3>
+      <div class="problem">
+        <div class="problem-num">PROBLEM 02</div>
+        <h3>Headless browsers get flagged fast</h3>
         <p>
-          A private dashboard opens in your browser at a URL we send you.
-          See how many posts have been collected, what's coming in right now,
-          and how much is left — from any device, anywhere.
+          Facebook knows what a Puppeteer script looks like. Within an hour
+          or two, headless browsers are blocked — and your account is
+          flagged for good.
         </p>
       </div>
-      <div class="explain-card">
-        <div class="explain-icon">⚙️</div>
-        <h3>Or control it entirely by API</h3>
+      <div class="problem">
+        <div class="problem-num">PROBLEM 03</div>
+        <h3>Duplicate data ruins the output</h3>
         <p>
-          For technical teams: start, pause, stop, and reconfigure everything
-          through simple HTTP requests. Perfect for scheduled jobs, dashboards,
-          and integrations with your existing systems.
+          "See more" splits posts into pieces. Most scrapers save each
+          fragment separately. You end up with the same post 3–4 times,
+          and cleaning it becomes your problem.
         </p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ 3 WAYS ═══════ -->
-<section id="ways">
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section id="how" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
   <div class="wrap">
-    <div class="section-tag">three ways to work with us</div>
-    <h2>Choose your level of involvement.</h2>
-    <p class="section-sub">
-      Whether you want the tool, the results, or something in between —
-      there's an option that fits how you work.
-    </p>
+    <div class="section-head">
+      <div class="section-eyebrow">The solution</div>
+      <h2>Three things this scraper <em>does differently.</em></h2>
+      <p class="section-sub">
+        Every architectural decision was made to solve the three problems above.
+        No shortcuts, no workarounds.
+      </p>
+    </div>
 
-    <div class="ways">
-      <!-- WAY 1 -->
-      <div class="way">
-        <div class="way-num">OPTION 01</div>
-        <h3>Buy the software</h3>
-        <div class="way-sub">// self-hosted · Windows</div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">1</div>
+        <h3>Real browser, not headless</h3>
         <p>
-          Install it on your Windows machine and run it whenever you want.
-          Full control, unlimited use, your data stays with you.
+          It uses Microsoft's actual Edge engine (WebView2) — the same one
+          your normal browser uses. Facebook can't tell the difference.
         </p>
-        <ul>
-          <li><strong>Runs on your PC</strong> — nothing to host, nothing to pay monthly</li>
-          <li><strong>Unlimited scraping</strong> — no per-post fees, ever</li>
-          <li><strong>Local database</strong> — data never leaves your machine</li>
-          <li><strong>Live web panel</strong> — check progress from any browser on your network</li>
-          <li><strong>Free updates</strong> — new versions included for 12 months</li>
+        <ul class="pillar-list">
+          <li><strong>Same fingerprint</strong> as a real user</li>
+          <li><strong>Login once</strong> — stays logged in for weeks</li>
+          <li><strong>No detection</strong> by Facebook's bot filters</li>
         </ul>
-        <div class="way-price">
-          <span>one-time license</span>
-          <strong>from $499</strong>
-        </div>
       </div>
 
-      <!-- WAY 2 (featured) -->
-      <div class="way featured">
-        <div class="way-num">OPTION 02</div>
-        <h3>We run it for you</h3>
-        <div class="way-sub">// managed · live panel · API</div>
+      <div class="pillar">
+        <div class="pillar-num">2</div>
+        <h3>Multiple instances in parallel</h3>
         <p>
-          Tell us what you need. We run the scrapers on our servers, and you
-          watch the results come in through a private live dashboard.
+          Run as many copies as you have accounts and proxies for. Each one
+          is completely independent — same tool, unlimited power.
         </p>
-        <ul>
-          <li><strong>Zero setup</strong> — you send a list, we do the work</li>
-          <li><strong>Live dashboard URL</strong> — watch progress from any device</li>
-          <li><strong>Web API access</strong> — pull data or control jobs programmatically</li>
-          <li><strong>Your infrastructure stays clean</strong> — no installs on your side</li>
-          <li><strong>We handle proxies, retries, and rate limits</strong> — you just get data</li>
+        <ul class="pillar-list">
+          <li><strong>Own account + proxy</strong> per instance</li>
+          <li><strong>Own database + logs</strong> — full isolation</li>
+          <li><strong>One rate-limited?</strong> The rest keep going</li>
         </ul>
-        <div class="way-price">
-          <span>monthly service</span>
-          <strong>from $299/mo</strong>
-        </div>
       </div>
 
-      <!-- WAY 3 -->
-      <div class="way">
-        <div class="way-num">OPTION 03</div>
-        <h3>One-off bulk job</h3>
-        <div class="way-sub">// project-based</div>
+      <div class="pillar">
+        <div class="pillar-num">3</div>
+        <h3>Clean, deduplicated data</h3>
         <p>
-          Have a specific dataset you need once? Send the requirements —
-          pages, date range, fields — and receive the file when it's done.
+          FTS5 full-text index + SHA-256 hashing + bidirectional containment
+          check. The "See more" problem is solved at the database level.
         </p>
-        <ul>
-          <li><strong>Fixed price per project</strong> — no subscriptions, no surprises</li>
-          <li><strong>Clean, deduplicated output</strong> — ready to use immediately</li>
-          <li><strong>Multiple delivery formats</strong> — Excel, JSON, SQLite, or CSV</li>
-          <li><strong>Minimum 10,000 posts</strong> — for smaller jobs, use Option 01</li>
-          <li><strong>48-hour typical turnaround</strong> — for standard scopes</li>
+        <ul class="pillar-list">
+          <li><strong>Zero duplicates</strong> — ever</li>
+          <li><strong>Full post text</strong>, not fragments</li>
+          <li><strong>Indexed and searchable</strong> instantly</li>
         </ul>
-        <div class="way-price">
-          <span>per project</span>
-          <strong>quote on request</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MULTI-INSTANCE DEEP DIVE ═══════════════ -->
+<section id="multi">
+  <div class="wrap">
+    <div class="multi-block">
+      <div class="multi-grid">
+        <div class="multi-text">
+          <div class="section-eyebrow">Signature feature</div>
+          <h3>One tool. <em>Multiply the speed.</em></h3>
+          <p>
+            The multi-instance architecture is what separates this from
+            every other scraper on the market. Launch three instances,
+            and you get roughly three times the throughput.
+          </p>
+          <p>
+            <strong>Each instance is fully isolated</strong> — its own
+            Facebook account, its own proxy, its own database, its own
+            log file. If one gets rate-limited, the others don't even
+            notice. Collection continues at full speed.
+          </p>
+          <p>
+            There is no artificial cap on the number of instances. The
+            license covers unlimited runs on a single machine.
+          </p>
+
+          <div class="multi-stats">
+            <div class="multi-stat">
+              <div class="multi-stat-label">1 instance</div>
+              <div class="multi-stat-value">240<small>posts/hr</small></div>
+            </div>
+            <div class="multi-stat">
+              <div class="multi-stat-label">5 instances</div>
+              <div class="multi-stat-value">1,200<small>posts/hr</small></div>
+            </div>
+            <div class="multi-stat">
+              <div class="multi-stat-label">10 instances</div>
+              <div class="multi-stat-value">2,400<small>posts/hr</small></div>
+            </div>
+            <div class="multi-stat">
+              <div class="multi-stat-label">Rate-limit impact</div>
+              <div class="multi-stat-value">0<small>%</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="instances">
+          <div class="instances-head">
+            <div class="instances-title">Running instances</div>
+            <div class="instances-status">5 ACTIVE</div>
+          </div>
+          <div class="instance-row">
+            <div class="instance-id">#01</div>
+            <div class="instance-detail">
+              <span class="label">account:</span> <span class="val">client_a</span><br>
+              <span class="label">proxy:</span> <span class="val">socks5://gate-01:1080</span>
+            </div>
+            <div class="instance-count">247<small>posts</small></div>
+          </div>
+          <div class="instance-row">
+            <div class="instance-id">#02</div>
+            <div class="instance-detail">
+              <span class="label">account:</span> <span class="val">client_b</span><br>
+              <span class="label">proxy:</span> <span class="val">socks5://gate-02:1080</span>
+            </div>
+            <div class="instance-count">231<small>posts</small></div>
+          </div>
+          <div class="instance-row">
+            <div class="instance-id">#03</div>
+            <div class="instance-detail">
+              <span class="label">account:</span> <span class="val">client_c</span><br>
+              <span class="label">proxy:</span> <span class="val">socks5://gate-03:1080</span>
+            </div>
+            <div class="instance-count">254<small>posts</small></div>
+          </div>
+          <div class="instance-row">
+            <div class="instance-id">#04</div>
+            <div class="instance-detail">
+              <span class="label">account:</span> <span class="val">client_d</span><br>
+              <span class="label">proxy:</span> <span class="val">socks5://gate-04:1080</span>
+            </div>
+            <div class="instance-count">189<small>posts</small></div>
+          </div>
+          <div class="instance-row">
+            <div class="instance-id">#05</div>
+            <div class="instance-detail">
+              <span class="label">account:</span> <span class="val">client_e</span><br>
+              <span class="label">proxy:</span> <span class="val">socks5://gate-05:1080</span>
+            </div>
+            <div class="instance-count">213<small>posts</small></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ LIVE PANEL ═══════ -->
+<!-- ═══════════════ LIVE PANEL + API ═══════════════ -->
 <section id="live">
   <div class="wrap">
-    <div class="section-tag">live dashboard</div>
-    <h2>Watch the collection happen — from anywhere.</h2>
-    <p class="section-sub">
-      No more "is it running?" emails. We give you a private URL. Open it
-      on your laptop, tablet, or phone and see exactly what's going on.
-    </p>
+    <div class="section-head">
+      <div class="section-eyebrow">Visibility & control</div>
+      <h2>Watch it working. <em>Or script it.</em></h2>
+      <p class="section-sub">
+        A private dashboard URL lets you check progress from any device.
+        A full REST API lets you automate everything — jobs, status,
+        downloads, and configuration.
+      </p>
+    </div>
 
-    <div class="live-panel">
-      <div class="lp-grid">
-        <div class="lp-text">
-          <h3>Your own <em>real-time monitoring panel.</em></h3>
-          <p>
-            Every job we run for you comes with a private dashboard URL.
-            No login to our systems needed — just the link we send you.
-          </p>
-          <p>
-            You'll see how many posts have been collected so far, what's
-            coming in right now, how many videos have downloaded, and how
-            long until the job is finished. Refresh or leave it open —
-            it updates on its own.
-          </p>
-          <ul>
-            <li><strong>Private URL</strong> — sent to you by email, unique per client</li>
-            <li><strong>Works on any device</strong> — phone, tablet, desktop</li>
-            <li><strong>Live post feed</strong> — see new posts as they arrive</li>
-            <li><strong>Progress and ETA</strong> — know exactly when it'll be done</li>
-            <li><strong>Download data anytime</strong> — even mid-job</li>
-            <li><strong>Optional password protection</strong> — for sensitive jobs</li>
-          </ul>
-        </div>
+    <div class="duo">
+      <!-- LIVE PANEL -->
+      <div class="duo-card dark">
+        <div class="duo-tag">Live dashboard</div>
+        <h3>Progress from any device, anywhere.</h3>
+        <p>
+          Every instance hosts its own web panel. Open the URL we give you
+          on a phone, tablet, or another computer — and see exactly what's
+          happening in real time.
+        </p>
+        <ul class="duo-list">
+          <li><strong>Live post feed</strong> — new posts appear as they arrive</li>
+          <li><strong>Progress and ETA</strong> — know when the job will finish</li>
+          <li><strong>Download data anytime</strong> — even mid-job</li>
+          <li><strong>Optional password protection</strong> for sensitive jobs</li>
+        </ul>
 
-        <div class="mock-panel">
-          <div class="mock-head">
-            <span class="mock-dot"></span>
-            <div class="mock-url">https://panel.your-job.com/acme-corp</div>
+        <div class="mock-dash">
+          <div class="mock-dash-head">
+            <span style="width:10px;height:10px;border-radius:50%;background:#6ee7b7;box-shadow:0 0 8px #6ee7b7;"></span>
+            <div class="mock-dash-url">https://panel.soft68.ir/acme</div>
           </div>
-          <div class="mock-body">
+          <div class="mock-dash-body">
             <div class="mock-stat-row">
               <div class="mock-stat">
-                <div class="mock-stat-label">posts collected</div>
+                <div class="mock-stat-label">Posts</div>
                 <div class="mock-stat-value">2,847</div>
               </div>
               <div class="mock-stat">
-                <div class="mock-stat-label">media files</div>
-                <div class="mock-stat-value green">412</div>
+                <div class="mock-stat-label">Media</div>
+                <div class="mock-stat-value gold">412</div>
               </div>
               <div class="mock-stat">
-                <div class="mock-stat-label">progress</div>
-                <div class="mock-stat-value green">78%</div>
+                <div class="mock-stat-label">Progress</div>
+                <div class="mock-stat-value">78%</div>
               </div>
-            </div>
-            <div class="mock-log">
-              <div class="line"><span class="t">14:02:01</span><span class="m">New post from brandpage</span></div>
-              <div class="line"><span class="t">14:02:03</span><span class="m">Downloading video (42 MB)…</span></div>
-              <div class="line"><span class="t">14:02:09</span><span class="m ok">✓ Video saved</span></div>
-              <div class="line"><span class="t">14:02:14</span><span class="m">New post from competitor1</span></div>
-              <div class="line"><span class="t">14:02:18</span><span class="m warn">Rate-limited, waiting 12s…</span></div>
-              <div class="line"><span class="t">14:02:30</span><span class="m">Resuming collection…</span></div>
-              <div class="line"><span class="t">14:02:41</span><span class="m ok">✓ Batch saved (47 posts)</span></div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ═══════ API SECTION ═══════ -->
-<section id="api">
-  <div class="wrap">
-    <div class="section-tag">web api</div>
-    <h2>Full control through simple HTTP requests.</h2>
-    <p class="section-sub">
-      For teams that want to schedule jobs, connect the tool to internal
-      dashboards, or trigger scraping from another application — everything
-      the desktop app can do is also available through the API.
-    </p>
-
-    <div class="api-section">
-      <div class="api-header">
-        <h3>Everything <em>programmable.</em></h3>
+      <!-- API -->
+      <div class="duo-card">
+        <div class="duo-tag">Web API</div>
+        <h3>Automate everything.</h3>
         <p>
-          Start jobs, check progress, download results, change settings — all
-          through standard HTTP calls. Works with any programming language,
-          any automation tool, any scheduling platform.
+          Standard REST endpoints for jobs, status, downloads, and
+          configuration. Works with any language, any scheduler,
+          any automation tool.
         </p>
-      </div>
 
-      <div class="api-grid">
         <div>
           <div class="endpoint">
             <span class="method post">POST</span>
             <div>
               <div class="endpoint-path">/api/jobs/start</div>
-              <div class="endpoint-desc">Launch a new scraping job with your parameters.</div>
+              <div class="endpoint-desc">Launch a new job with your parameters.</div>
             </div>
           </div>
           <div class="endpoint">
             <span class="method get">GET</span>
             <div>
               <div class="endpoint-path">/api/jobs/{id}/status</div>
-              <div class="endpoint-desc">Check progress, counts, and ETA in real time.</div>
-            </div>
-          </div>
-          <div class="endpoint">
-            <span class="method post">POST</span>
-            <div>
-              <div class="endpoint-path">/api/jobs/{id}/pause</div>
-              <div class="endpoint-desc">Pause a running job. Resume any time.</div>
-            </div>
-          </div>
-          <div class="endpoint">
-            <span class="method post">POST</span>
-            <div>
-              <div class="endpoint-path">/api/jobs/{id}/stop</div>
-              <div class="endpoint-desc">Stop the job and finalize the dataset.</div>
+              <div class="endpoint-desc">Poll progress, counts, and ETA.</div>
             </div>
           </div>
           <div class="endpoint">
             <span class="method get">GET</span>
             <div>
               <div class="endpoint-path">/api/jobs/{id}/download</div>
-              <div class="endpoint-desc">Download the current dataset in JSON, CSV, or SQLite.</div>
+              <div class="endpoint-desc">Download dataset in JSON, CSV, or SQLite.</div>
             </div>
           </div>
           <div class="endpoint">
             <span class="method post">POST</span>
             <div>
               <div class="endpoint-path">/api/jobs/{id}/config</div>
-              <div class="endpoint-desc">Change targets, proxies, speed, or filters on the fly.</div>
-            </div>
-          </div>
-          <div class="endpoint">
-            <span class="method get">GET</span>
-            <div>
-              <div class="endpoint-path">/api/jobs/{id}/logs</div>
-              <div class="endpoint-desc">Stream structured logs for monitoring and alerting.</div>
-            </div>
-          </div>
-          <div class="endpoint">
-            <span class="method del">DEL</span>
-            <div>
-              <div class="endpoint-path">/api/jobs/{id}</div>
-              <div class="endpoint-desc">Delete a job and its associated data.</div>
+              <div class="endpoint-desc">Change targets, proxies, or speed live.</div>
             </div>
           </div>
         </div>
 
-        <div class="api-code">
-<span class="c-cmt"># Start a new job</span><br>
-<span class="c-kw">curl</span> -X POST https://panel.your-job.com<span class="c-tag">/api/jobs/start</span> \<br>
-&nbsp;&nbsp;-H <span class="c-attr">"Authorization: Bearer YOUR_TOKEN"</span> \<br>
-&nbsp;&nbsp;-H <span class="c-attr">"Content-Type: application/json"</span> \<br>
-&nbsp;&nbsp;-d <span class="c-str">'{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;"profiles": ["brandpage", "competitor1"],<br>
-&nbsp;&nbsp;&nbsp;&nbsp;"start_date": "2025-01-01",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;"end_date": "2025-10-13",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;"media": ["images", "videos"],<br>
-&nbsp;&nbsp;&nbsp;&nbsp;"format": "json"<br>
-&nbsp;&nbsp;}'</span><br>
-<br>
-<span class="c-cmt"># → 201 Created</span><br>
-<span class="c-str">{</span><br>
-&nbsp;&nbsp;<span class="c-attr">"job_id"</span>: <span class="c-str">"job_a3f8c2e1"</span>,<br>
-&nbsp;&nbsp;<span class="c-attr">"status"</span>: <span class="c-str">"running"</span>,<br>
-&nbsp;&nbsp;<span class="c-attr">"live_panel_url"</span>:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">"https://panel.your-job.com/jobs/a3f8c2e1"</span>,<br>
-&nbsp;&nbsp;<span class="c-attr">"eta_seconds"</span>: <span class="c-num">4200</span><br>
-<span class="c-str">}</span><br>
-<br>
-<span class="c-cmt"># Check progress anytime</span><br>
-<span class="c-kw">curl</span> https://panel.your-job.com<span class="c-tag">/api/jobs/job_a3f8c2e1/status</span> \<br>
-&nbsp;&nbsp;-H <span class="c-attr">"Authorization: Bearer YOUR_TOKEN"</span><br>
-<br>
-<span class="c-cmt"># → 200 OK</span><br>
-<span class="c-str">{</span><br>
-&nbsp;&nbsp;<span class="c-attr">"status"</span>: <span class="c-str">"running"</span>,<br>
-&nbsp;&nbsp;<span class="c-attr">"posts_collected"</span>: <span class="c-num">2847</span>,<br>
-&nbsp;&nbsp;<span class="c-attr">"media_downloaded"</span>: <span class="c-num">412</span>,<br>
-&nbsp;&nbsp;<span class="c-attr">"percent_complete"</span>: <span class="c-num">78</span><br>
-<span class="c-str">}</span>
+        <div style="margin-top:16px">
+          <a href="#api" class="btn btn-navy" style="width:100%;justify-content:center">
+            View full API reference →
+          </a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ BUSINESS VALUE ═══════ -->
-<section>
+<!-- ═══════════════ FEATURES GRID ═══════════════ -->
+<section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
   <div class="wrap">
-    <div class="section-tag">business impact</div>
-    <h2>What this means for your business.</h2>
-    <p class="section-sub">
-      This isn't about the software. It's about what the software lets you
-      do — faster, cheaper, and without hiring anyone.
-    </p>
-
-    <div class="value-grid">
-      <div class="value">
-        <div class="value-icon">💰</div>
-        <h3>Cut manual work to zero</h3>
-        <p>
-          What took an analyst two hours a day now runs in the background.
-          Free up your team's time for actual analysis instead of copy-paste.
-        </p>
-      </div>
-      <div class="value">
-        <div class="value-icon">📈</div>
-        <h3>Scale without new hires</h3>
-        <p>
-          Monitor 10 pages or 1,000 — the same tool handles it. No new
-          headcount required, no training, no ramp-up time.
-        </p>
-      </div>
-      <div class="value">
-        <div class="value-icon">🎯</div>
-        <h3>Real competitive advantage</h3>
-        <p>
-          Know what competitors posted this morning, not last week.
-          See emerging trends before they hit the mainstream.
-        </p>
-      </div>
-      <div class="value">
-        <div class="value-icon">📊</div>
-        <h3>Data you actually own</h3>
-        <p>
-          No SaaS lock-in. Your posts, images, and videos live in your
-          database, on your machine. Export anytime, use anywhere.
-        </p>
-      </div>
-      <div class="value">
-        <div class="value-icon">⏱️</div>
-        <h3>Results in days, not months</h3>
-        <p>
-          No IT project, no procurement, no integration phase. Set up in
-          an afternoon and start collecting immediately.
-        </p>
-      </div>
-      <div class="value">
-        <div class="value-icon">🔐</div>
-        <h3>Confidential by design</h3>
-        <p>
-          Self-hosted option keeps all data on your servers. Nothing sent
-          to us, nothing sent to third parties. Compliance-friendly.
-        </p>
-      </div>
+    <div class="section-head">
+      <div class="section-eyebrow">Under the hood</div>
+      <h2>Everything you'd expect. <em>Plus the things you wouldn't.</em></h2>
     </div>
-  </div>
-</section>
-
-<!-- ═══════ FEATURES ═══════ -->
-<section id="features">
-  <div class="wrap">
-    <div class="section-tag">under the hood</div>
-    <h2>Why it works when other tools don't.</h2>
-    <p class="section-sub">
-      The technical reasons this handles jobs that break most scrapers.
-    </p>
 
     <div class="features">
       <div class="feature">
-        <div class="feature-icon">🔒</div>
-        <h3>Looks like a real browser</h3>
-        <p>
-          Facebook blocks tools that pretend to be browsers. This one uses
-          the same engine Microsoft Edge uses — Facebook can't tell the
-          difference. You log in once, and it stays logged in.
-        </p>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Real WebView2 engine</h3>
+        <p>Uses the same Chromium engine as Microsoft Edge. Facebook sees a normal browser, not a bot.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">👥</div>
-        <h3>Run several jobs at once</h3>
-        <p>
-          Five clients? Run five copies simultaneously, each with its own
-          Facebook account and proxy. If one gets blocked, the others
-          keep working.
-        </p>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>Full SOCKS4/5 support</h3>
+        <p>HTTP, HTTPS, SOCKS4, and SOCKS5 with username/password auth. Applied to browser and downloads.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🎬</div>
-        <h3>Fast video downloads</h3>
-        <p>
-          Videos are downloaded in parallel instead of one at a time.
-          A 100-video page finishes in minutes, not hours.
-        </p>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3>Parallel video downloads</h3>
+        <p>Videos fetched with concurrent Range requests. <code>-videoconcurrency=1..16</code> to tune.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🧹</div>
-        <h3>No duplicate mess</h3>
-        <p>
-          Facebook splits posts into pieces. Most tools save the same
-          post 3 times. This one recognizes duplicates and stores only
-          the full version.
-        </p>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </div>
+        <h3>FTS5 deduplication</h3>
+        <p>SQLite full-text index + SHA-256 hashing. Duplicates are impossible by construction.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🖥️</div>
-        <h3>Live web dashboard</h3>
-        <p>
-          A built-in website opens in your browser. See new posts as they
-          arrive, view the media, change settings — all without touching
-          the desktop app.
-        </p>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Named-pipe DB writer</h3>
+        <p>Writes go through a separate process. Scraper never blocks on I/O. Local SQLite fallback built in.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🌐</div>
-        <h3>Works with any proxy</h3>
-        <p>
-          If you have a proxy server, it uses it. If you don't, it doesn't
-          need one. Supports all common types including SOCKS5.
-        </p>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <h3>Structured JSON logging</h3>
+        <p>Rotated by size, level-filtered, credentials sanitized. Ready for log aggregation tools.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">📮</div>
-        <h3>Push to your tools</h3>
-        <p>
-          Every post can be sent automatically to your CRM, database, or
-          spreadsheet — the moment it's collected. No manual export.
-        </p>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Auto-recovery with limits</h3>
+        <p>Crashes trigger restart, but a sliding-window counter prevents infinite restart loops.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🔌</div>
-        <h3>Full REST API</h3>
-        <p>
-          Start jobs, check progress, download data, change settings —
-          all programmable. Perfect for scheduled runs and integrations.
-        </p>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Live control via pipe</h3>
+        <p>Pause, resume, reload, add profiles, change proxy — all without restarting the app.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">⌨️</div>
-        <h3>Your PC stays yours</h3>
-        <p>
-          Does not steal your mouse, does not steal your keyboard, does
-          not pop up windows while you type. Runs silently in the
-          background.
-        </p>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Yours stays yours</h3>
+        <p>Never steals mouse or keyboard focus. Runs minimised or fully hidden while you work.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ BACKGROUND MODE ═══════ -->
-<section id="background">
+<!-- ═══════════════ PRICING ═══════════════ -->
+<section id="pricing">
   <div class="wrap">
-    <div class="section-tag">runs quietly</div>
-    <h2>Your computer stays yours.</h2>
-    <p class="section-sub">
-      No window to watch, no buttons to click. It opens, it starts,
-      and it fades into the background — like a long download.
-    </p>
+    <div class="section-head">
+      <div class="section-eyebrow">Pricing</div>
+      <h2>Three ways to work <em>with us.</em></h2>
+      <p class="section-sub">
+        Buy the software and run it yourself, hire us to run it for you,
+        or order a one-off bulk job. All payments handled on soft68.ir.
+      </p>
+    </div>
 
-    <div class="split">
-      <div class="split-text">
-        <h3>Keep typing. Keep clicking. <em>Keep working.</em></h3>
-        <p>
-          The scraper runs like any normal Windows program. It doesn't
-          need to be the front window. It doesn't lock your mouse. It
-          doesn't pull focus away from what you're typing.
-        </p>
-        <p>
-          Type in Excel. Browse the web. Take a Teams call. The collector
-          runs the whole time.
-        </p>
-        <ul class="split-list">
-          <li><strong>Runs minimised or fully hidden</strong> — set it and forget it.</li>
-          <li><strong>Does not lock your mouse or keyboard</strong> — ever.</li>
-          <li><strong>Multiple copies side by side</strong> — one per client, all silent.</li>
-          <li><strong>Check progress from any browser</strong> — including your phone.</li>
-          <li><strong>Logs clean themselves up</strong> — no huge files piling up.</li>
+    <div class="pricing">
+      <!-- SELF-HOSTED -->
+      <div class="price-card">
+        <div class="price-name">Self-hosted license</div>
+        <div class="price-sub">// run it on your Windows PC</div>
+        <div class="price-amount">$499<span>one-time</span></div>
+        <div class="price-note">Per installation. Free updates for 12 months.</div>
+        <ul class="price-features">
+          <li><strong>Unlimited scraping</strong> — no per-post fees</li>
+          <li><strong>Unlimited instances</strong> on one machine</li>
+          <li><strong>Full Web API</strong> access</li>
+          <li><strong>Local live dashboard</strong> with login</li>
+          <li><strong>Source code</strong> available (enterprise tier)</li>
+          <li class="muted">Email support</li>
         </ul>
+        <a href="https://soft68.ir/fbscraper" target="_blank" class="btn btn-gold price-cta">
+          Buy license →
+        </a>
       </div>
 
-      <div class="kb-illo" aria-hidden="true">
-        <div class="kb-row">
-          <div class="key">Q</div><div class="key">W</div><div class="key">E</div>
-          <div class="key">R</div><div class="key">T</div><div class="key">Y</div>
-          <div class="key">U</div><div class="key">I</div><div class="key">O</div>
-          <div class="key">P</div>
-        </div>
-        <div class="kb-row">
-          <div class="key">A</div><div class="key">S</div><div class="key">D</div>
-          <div class="key active">F</div><div class="key">G</div><div class="key">H</div>
-          <div class="key">J</div><div class="key">K</div><div class="key">L</div>
-        </div>
-        <div class="kb-row">
-          <div class="key">Z</div><div class="key">X</div><div class="key">C</div>
-          <div class="key">V</div><div class="key">B</div><div class="key">N</div>
-          <div class="key">M</div>
-        </div>
-        <div class="kb-row">
-          <div class="key space">SPACE</div>
-        </div>
-        <div class="kb-caption">// your mouse &amp; keyboard stay yours</div>
+      <!-- MANAGED -->
+      <div class="price-card featured">
+        <div class="price-badge">Most popular</div>
+        <div class="price-name">Managed service</div>
+        <div class="price-sub">// we run it, you watch</div>
+        <div class="price-amount">$299<span>/month</span></div>
+        <div class="price-note">No setup. Cancel any time. Cancel anytime.</div>
+        <ul class="price-features">
+          <li><strong>We run the scrapers</strong> on our infrastructure</li>
+          <li><strong>Private live dashboard URL</strong> — sent to you</li>
+          <li><strong>Full API access</strong> to your own data</li>
+          <li><strong>We manage proxies, retries, rate limits</strong></li>
+          <li><strong>Unlimited pages and instances</strong></li>
+          <li><strong>Priority support</strong> — replies within 4 hours</li>
+        </ul>
+        <a href="#contact" class="btn btn-navy price-cta">
+          Request service →
+        </a>
+      </div>
+
+      <!-- BULK -->
+      <div class="price-card">
+        <div class="price-name">Bulk project</div>
+        <div class="price-sub">// one-off dataset delivery</div>
+        <div class="price-amount">Custom<span>quoted</span></div>
+        <div class="price-note">Minimum 10,000 posts. Fixed price, no subscriptions.</div>
+        <ul class="price-features">
+          <li><strong>Fixed price per project</strong></li>
+          <li><strong>Clean, deduplicated output</strong></li>
+          <li><strong>Excel, JSON, SQLite, or CSV delivery</strong></li>
+          <li><strong>48-hour typical turnaround</strong></li>
+          <li><strong>No infrastructure on your side</strong></li>
+          <li class="muted">Larger scopes quoted per request</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline price-cta">
+          Request a quote →
+        </a>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ═══════ SPECS ═══════ -->
-<section id="specs">
-  <div class="wrap">
-    <div class="section-tag">technical details</div>
-    <h2>What you're actually running.</h2>
-    <p class="section-sub">
-      Concrete answers for the people who have to install this on a real machine.
+    <p style="text-align:center;font-size:13px;color:var(--ink-3);margin-top:32px">
+      All payments processed securely on
+      <a href="https://soft68.ir/fbscraper" target="_blank" style="color:var(--gold);font-weight:600">soft68.ir</a>
+      · Bitcoin · USDT (TRC-20) · Iranian Rial
     </p>
-
-    <div class="specs">
-      <dl class="specs-row">
-        <dt>Operating system</dt>
-        <dd>Windows 10 or Windows 11 (64-bit)</dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Browser engine</dt>
-        <dd>Microsoft Edge WebView2 (real browser, not a fake one)</dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Where data is stored</dt>
-        <dd>SQLite database file · optional <strong>separate writer process</strong></dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Video processing</dt>
-        <dd>Requires ffmpeg in <strong>PATH</strong> · automatic audio-video merging</dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Proxy support</dt>
-        <dd>HTTP · HTTPS · SOCKS4 · SOCKS5 with authentication</dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Control panel</dt>
-        <dd>Desktop window + built-in web page on <code>localhost</code> · also reachable from other devices on your network</dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Web API</dt>
-        <dd>Full REST endpoints for jobs, status, download, config, logs, control</dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Background mode</dt>
-        <dd>Runs minimised or hidden · <strong>never takes over your mouse or keyboard</strong></dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Authentication</dt>
-        <dd>Bearer tokens for API · password + session cookies for the web panel</dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Settings</dt>
-        <dd>Simple text file (<code>scrapsettings.json</code>) + command-line options</dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Isolation</dt>
-        <dd>Each copy has its own <strong>login, database, log file, and port</strong></dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>Logs</dt>
-        <dd>Rotated automatically · proxy passwords hidden from log files</dd>
-      </dl>
-      <dl class="specs-row">
-        <dt>License</dt>
-        <dd>Per installation · source code available for enterprise buyers</dd>
-      </dl>
-    </div>
   </div>
 </section>
 
-<!-- ═══════ HONESTY ═══════ -->
-<section>
+<!-- ═══════════════ FAQ ═══════════════ -->
+<section id="faq" style="background:var(--surface);border-top:1px solid var(--border)">
   <div class="wrap">
-    <div class="honesty">
-      <h3>// what this does NOT do</h3>
-      <ul>
-        <li>It does not run on Mac, Linux, or inside Docker. It's a Windows program (or our hosted service).</li>
-        <li>It does not log in to Facebook for you. You provide the account and log in once.</li>
-        <li>It does not rotate proxies automatically. You provide the proxy — or run multiple copies.</li>
-        <li>It is not a hack, a crack, or a way to bypass Facebook's rules. Use it responsibly.</li>
-        <li>It is not a "growth hacking" tool. It collects public data — it doesn't post, like, or comment.</li>
-      </ul>
+    <div class="section-head">
+      <div class="section-eyebrow">Common questions</div>
+      <h2>Things people ask <em>before buying.</em></h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq-item" open>
+        <summary class="faq-q">
+          <h3>Does it work on Mac or Linux?</h3>
+          <div class="icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </summary>
+        <div class="faq-a">
+          No. This is a Windows application, built around Microsoft's
+          WebView2 browser engine. It requires Windows 10 or 11 (64-bit).
+          For Mac or Linux, you'd need the <strong>managed service</strong>
+          — we run it on our servers and deliver the data to you.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <h3>How many instances can I run at once?</h3>
+          <div class="icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </summary>
+        <div class="faq-a">
+          As many as your hardware can handle. There's no artificial limit.
+          Each instance uses roughly 300–500 MB of RAM and is a normal
+          Windows process. Most customers comfortably run 5–10 instances
+          on a standard machine. The license covers unlimited instances
+          on one machine.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <h3>Do I need to provide my own proxies?</h3>
+          <div class="icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </summary>
+        <div class="faq-a">
+          Yes for the self-hosted version. You provide the proxies and
+          assign one to each instance. The app supports HTTP, HTTPS,
+          SOCKS4, and SOCKS5 with authentication. For the managed
+          service, we handle all proxy infrastructure for you.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <h3>Will my Facebook account get banned?</h3>
+          <div class="icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </summary>
+        <div class="faq-a">
+          Because the scraper uses a real WebView2 browser (not headless
+          automation), Facebook sees normal user activity. Combined with
+          proper proxies and reasonable delays, accounts stay safe in
+          long-term use. That said, <strong>no scraper can guarantee 100%
+          account safety</strong> — you should always use accounts you're
+          comfortable risking for data collection purposes.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <h3>What payment methods do you accept?</h3>
+          <div class="icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </summary>
+        <div class="faq-a">
+          Bitcoin (BTC), USDT on TRC-20 network, and Iranian Rial (ریال).
+          All payments are processed on our secure checkout page at
+          <a href="https://soft68.ir/fbscraper" target="_blank" style="color:var(--gold);font-weight:600">soft68.ir/fbscraper</a>.
+          Invoices are provided for all transactions.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <h3>Can I get the source code?</h3>
+          <div class="icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </summary>
+        <div class="faq-a">
+          Yes, source code is available on the enterprise tier. This is
+          intended for teams that want to modify the scraper for their
+          specific use case, integrate it into a larger system, or
+          self-audit the code. Email us for enterprise pricing.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <h3>What kind of support do you offer?</h3>
+          <div class="icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </summary>
+        <div class="faq-a">
+          Self-hosted customers get email support. Managed service
+          customers get priority support with replies within 4 hours.
+          For enterprise and source-code customers, we offer direct
+          communication channels and setup assistance.
+        </div>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- ═══════ CTA ═══════ -->
+<!-- ═══════════════ FINAL CTA ═══════════════ -->
 <section id="contact">
   <div class="wrap">
-    <div class="cta-final">
-      <div class="pill-price">licenses from $499 · monthly service from $299 · bulk jobs quoted per project</div>
-      <h2>Tell me what you need.</h2>
+    <div class="final-cta">
+      <h2>Ready to <em>stop waiting?</em></h2>
       <p>
-        Software purchase, ongoing service, or a single bulk job — send
-        the details and I'll reply with a straight answer, including
-        whether I think this fits your case.
+        Buy the license and run it yourself, or let us handle the whole
+        operation for you. Either way, you'll have clean Facebook data
+        within hours, not weeks.
       </p>
-      <div class="cta-buttons">
-        <a href="mailto:hoseinebrahimiii@hotmail.com?subject=Facebook%20Scraper%20Inquiry" class="btn btn-primary">
-          hoseinebrahimiii@hotmail.com
+
+      <div class="final-cta-buttons">
+        <a href="https://soft68.ir/fbscraper" target="_blank" class="btn btn-gold btn-xl">
+          Buy license →
         </a>
-        <a href="#ways" class="btn btn-ghost">Review the options</a>
+        <a href="mailto:hoseinebrahimiii@hotmail.com?subject=Facebook%20Scraper%20Inquiry" class="btn btn-outline btn-xl">
+          Email for managed service
+        </a>
       </div>
-      <div class="cta-note">
-        Reply within 24 hours · BTC &amp; USDT (TRC-20) accepted · invoices provided
+
+      <div class="payment-methods">
+        <div class="payment-chip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          Bitcoin (BTC)
+        </div>
+        <div class="payment-chip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          USDT (TRC-20)
+        </div>
+        <div class="payment-chip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          Iranian Rial
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ FOOTER ═══════ -->
+<!-- ═══════════════ FOOTER ═══════════════ -->
 <footer>
   <div class="wrap">
     <div class="footer-inner">
-      <div>© 2025 Hosein Ebrahimi · Independent software</div>
-      <div>
-        <a href="https://github.com/HSNEbrahimii" target="_blank" rel="noopener">GitHub</a>
-        &nbsp;·&nbsp;
+      <div class="footer-brand">
+        <div class="brand-mark">F</div>
+        <span>Facebook Scraper © 2025 Hosein Ebrahimi</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://soft68.ir/fbscraper" target="_blank">Buy</a>
+        <a href="https://github.com/HSNEbrahimi" target="_blank" rel="noopener">GitHub</a>
         <a href="mailto:hoseinebrahimiii@hotmail.com">Email</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
+  // Reveal on scroll
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -1382,14 +1880,15 @@
         io.unobserve(e.target);
       }
     });
-  }, { threshold: 0.08 });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-  document.querySelectorAll('section, .feature, .honesty, .specs, .terminal, .split, .way, .explain-card, .step, .value, .live-panel, .api-section')
+  document.querySelectorAll('.problem, .pillar, .feature, .price-card, .multi-block, .duo-card, .console, .hero-stats, .faq-item')
     .forEach(el => {
       el.classList.add('reveal');
       io.observe(el);
     });
 
+  // Smooth anchor offset for sticky nav
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const id = a.getAttribute('href');
@@ -1397,19 +1896,14 @@
       const target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      const top = target.getBoundingClientRect().top + window.pageYOffset - 90;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - 80;
       window.scrollTo({ top, behavior: 'smooth' });
     });
   });
 
-  const keys = document.querySelectorAll('.key:not(.space)');
-  if (keys.length) {
-    setInterval(() => {
-      keys.forEach(k => k.classList.remove('active'));
-      const idx = Math.floor(Math.random() * keys.length);
-      keys[idx].classList.add('active');
-    }, 500);
-  }
+  // Live-count "posts/hr" number pulse on hero stats
+  const statValues = document.querySelectorAll('.hero-stat-value');
+  // Optional subtle animation could go here — leaving clean for now
 </script>
 
 </body>
