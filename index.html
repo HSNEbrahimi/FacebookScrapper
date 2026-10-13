@@ -1,51 +1,1323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Scraper - Enterprise Data Collection</title>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; background: #f4f4f4; }
-        header { background: #333; color: #fff; padding: 20px; text-align: center; border-radius: 8px; }
-        .container { background: #fff; padding: 20px; margin-top: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h1 { color: #fff; margin: 0; }
-        h2 { color: #333; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .feature-list { list-style: none; padding: 0; }
-        .feature-list li { background: #f9f9f9; margin: 5px 0; padding: 10px; border-left: 4px solid #007bff; }
-        .cta { text-align: center; margin-top: 20px; }
-        .cta a { background: #007bff; color: #fff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .cta a:hover { background: #0056b3; }
-        footer { text-align: center; margin-top: 20px; color: #777; font-size: 0.9em; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f0f4ff">
+
+<title>Facebook Scraper — Collect Facebook Posts Automatically</title>
+<meta name="description" content="A Windows program that collects Facebook posts for you automatically — text, images, and videos. Runs in the background while you work. Bulk scraping service available.">
+<meta name="keywords" content="facebook scraper, collect facebook posts, facebook data, web scraping, data collection">
+<meta name="author" content="Hosein Ebrahimi">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hsnebrahimi.github.io/FacebookScrapper/">
+<meta property="og:title" content="Facebook Scraper — Collect Facebook Posts Automatically">
+<meta property="og:description" content="A Windows program that collects Facebook posts for you automatically. Runs in the background while you work.">
+<meta property="og:image" content="https://hsnebrahimi.github.io/FacebookScrapper/preview.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Facebook Scraper — Collect Facebook Posts Automatically">
+<meta name="twitter:description" content="A Windows program that collects Facebook posts for you automatically.">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root{
+    --bg-1:#eef3ff;
+    --bg-2:#f5f0ff;
+    --bg-3:#eafaf5;
+    --text:#0f1a35;
+    --text-2:#4a5878;
+    --text-3:#8b95b0;
+    --glass:rgba(255,255,255,0.55);
+    --glass-2:rgba(255,255,255,0.75);
+    --glass-3:rgba(255,255,255,0.85);
+    --stroke:rgba(255,255,255,0.9);
+    --stroke-2:rgba(180,195,230,0.35);
+    --shadow-glass:0 8px 32px rgba(80,110,180,0.12),0 2px 8px rgba(80,110,180,0.06);
+    --shadow-glass-lg:0 20px 60px rgba(80,110,180,0.18),0 4px 16px rgba(80,110,180,0.08);
+    --accent:#5b7fff;
+    --accent-2:#8b5cf6;
+    --accent-3:#14b8a6;
+    --green:#10b981;
+    --amber:#f59e0b;
+    --pink:#ec4899;
+    --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  body{
+    font-family:var(--sans);
+    background:var(--bg-1);
+    color:var(--text);
+    line-height:1.6;
+    font-size:15px;
+    overflow-x:hidden;
+    min-height:100vh;
+    position:relative;
+  }
+
+  /* ─────── colorful background orbs (visible through glass) ─────── */
+  .bg-wrap{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    overflow:hidden;
+  }
+  .orb{
+    position:absolute;border-radius:50%;
+    filter:blur(80px);
+    opacity:0.65;
+    will-change:transform;
+  }
+  .orb-1{
+    width:520px;height:520px;
+    background:radial-gradient(circle,#93b8ff,transparent 70%);
+    top:-120px;left:-100px;
+    animation:float1 20s ease-in-out infinite;
+  }
+  .orb-2{
+    width:480px;height:480px;
+    background:radial-gradient(circle,#d8b4fe,transparent 70%);
+    top:15%;right:-120px;
+    animation:float2 26s ease-in-out infinite;
+  }
+  .orb-3{
+    width:420px;height:420px;
+    background:radial-gradient(circle,#a7f3d0,transparent 70%);
+    top:55%;left:-80px;
+    animation:float3 24s ease-in-out infinite;
+  }
+  .orb-4{
+    width:500px;height:500px;
+    background:radial-gradient(circle,#fbcfe8,transparent 70%);
+    bottom:-150px;right:10%;
+    animation:float2 30s ease-in-out infinite reverse;
+  }
+  .orb-5{
+    width:380px;height:380px;
+    background:radial-gradient(circle,#fde68a,transparent 70%);
+    top:35%;left:40%;
+    opacity:0.4;
+    animation:float1 28s ease-in-out infinite reverse;
+  }
+  @keyframes float1{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(60px,50px) scale(1.08)}
+  }
+  @keyframes float2{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(-70px,40px) scale(0.95)}
+  }
+  @keyframes float3{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(50px,-60px) scale(1.05)}
+  }
+
+  /* ─────── subtle noise for glass realism ─────── */
+  .bg-wrap::after{
+    content:'';
+    position:absolute;inset:0;
+    background-image:
+      radial-gradient(rgba(255,255,255,0.4) 1px,transparent 1px);
+    background-size:3px 3px;
+    opacity:0.15;
+    mix-blend-mode:overlay;
+  }
+
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  code{
+    font-family:var(--mono);
+    font-size:0.88em;
+    padding:2px 7px;
+    border-radius:5px;
+    background:rgba(91,127,255,0.1);
+    color:#4055c4;
+    border:1px solid rgba(91,127,255,0.18);
+  }
+
+  .wrap{
+    max-width:1160px;
+    margin:0 auto;
+    padding:0 24px;
+    position:relative;
+    z-index:1;
+  }
+
+  /* ═══════════ NAV ═══════════ */
+  .nav{
+    position:sticky;top:12px;z-index:100;
+    margin:12px 24px 0;
+    border-radius:16px;
+    background:var(--glass-2);
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+    border:1px solid var(--stroke);
+    box-shadow:var(--shadow-glass);
+    max-width:1160px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 22px;
+    gap:20px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:11px;
+    font-weight:700;font-size:14.5px;
+    letter-spacing:-0.01em;
+    color:var(--text);
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(135deg,#5b7fff 0%,#8b5cf6 100%);
+    display:grid;place-items:center;
+    font-family:var(--mono);font-size:12px;font-weight:700;color:#fff;
+    box-shadow:0 6px 18px rgba(91,127,255,0.35),inset 0 1px 0 rgba(255,255,255,0.3);
+    flex-shrink:0;
+  }
+  .brand-sep{color:var(--text-3);font-weight:400}
+  .brand-sub{color:var(--text-2);font-weight:500;font-size:12.5px}
+
+  .nav-links{display:flex;gap:22px;align-items:center}
+  .nav-links a{
+    font-size:13.5px;color:var(--text-2);font-weight:500;
+    transition:color .15s;
+  }
+  .nav-links a:hover{color:var(--accent)}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 18px;border-radius:11px;
+    font-size:13.5px;font-weight:600;
+    transition:all .2s;
+    cursor:pointer;border:none;
+    font-family:inherit;
+    white-space:nowrap;
+    letter-spacing:-0.005em;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,#5b7fff 0%,#8b5cf6 100%);
+    color:#fff;
+    box-shadow:0 8px 24px rgba(91,127,255,0.35),inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .btn-primary:hover{
+    transform:translateY(-1px);
+    box-shadow:0 12px 32px rgba(91,127,255,0.45),inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .btn-ghost{
+    background:var(--glass);
+    color:var(--text);
+    border:1px solid var(--stroke-2);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    box-shadow:0 2px 8px rgba(80,110,180,0.06);
+  }
+  .btn-ghost:hover{
+    border-color:var(--accent);
+    background:rgba(255,255,255,0.85);
+    color:var(--accent);
+  }
+
+  /* ═══════════ HERO ═══════════ */
+  .hero{padding:56px 0 40px;position:relative}
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:48px;
+    align-items:start;
+  }
+  @media (max-width:960px){
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+  }
+
+  .live-pill{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:6px 14px;border-radius:100px;
+    background:rgba(255,255,255,0.7);
+    border:1px solid rgba(16,185,129,0.3);
+    font-size:12px;font-weight:600;color:#0d9d75;
+    font-family:var(--mono);
+    margin-bottom:24px;
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    box-shadow:0 2px 10px rgba(16,185,129,0.1);
+  }
+  .live-pill .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 10px var(--green);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  h1{
+    font-size:clamp(34px,4.8vw,54px);
+    font-weight:800;line-height:1.08;
+    letter-spacing:-0.03em;
+    margin-bottom:22px;
+    color:var(--text);
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg,#5b7fff 0%,#8b5cf6 60%,#14b8a6 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+
+  .lede{
+    font-size:17px;color:var(--text-2);
+    max-width:560px;margin-bottom:34px;
+    line-height:1.65;
+  }
+  .lede strong{color:var(--text);font-weight:600}
+
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
+
+  /* simple 3-step strip under hero */
+  .simple-steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:36px;
+  }
+  @media (max-width:640px){
+    .simple-steps{grid-template-columns:1fr}
+  }
+  .step{
+    background:var(--glass);
+    border:1px solid var(--stroke);
+    border-radius:14px;
+    padding:16px 18px;
+    backdrop-filter:blur(16px) saturate(160%);
+    -webkit-backdrop-filter:blur(16px) saturate(160%);
+    box-shadow:var(--shadow-glass);
+    transition:transform .2s;
+  }
+  .step:hover{transform:translateY(-2px)}
+  .step-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:26px;height:26px;border-radius:8px;
+    background:linear-gradient(135deg,#5b7fff,#8b5cf6);
+    color:#fff;font-size:12px;font-weight:700;
+    font-family:var(--mono);
+    margin-bottom:10px;
+    box-shadow:0 4px 12px rgba(91,127,255,0.3);
+  }
+  .step h4{
+    font-size:13.5px;font-weight:700;
+    margin-bottom:4px;
+    color:var(--text);
+  }
+  .step p{
+    font-size:12.5px;color:var(--text-2);
+    line-height:1.5;
+  }
+
+  /* ─────── mock dashboard card (glass) ─────── */
+  .terminal{
+    background:var(--glass-2);
+    border:1px solid var(--stroke);
+    border-radius:20px;
+    overflow:hidden;
+    backdrop-filter:blur(28px) saturate(180%);
+    -webkit-backdrop-filter:blur(28px) saturate(180%);
+    box-shadow:var(--shadow-glass-lg);
+    position:relative;
+  }
+  .terminal-head{
+    display:flex;align-items:center;gap:8px;
+    padding:14px 18px;
+    background:rgba(255,255,255,0.4);
+    border-bottom:1px solid rgba(180,195,230,0.3);
+    position:relative;
+  }
+  .tdot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+  .tdot.red{background:#ff5f57}
+  .tdot.yellow{background:#febc2e}
+  .tdot.green{background:#28c840}
+  .terminal-title{
+    margin-left:auto;margin-right:auto;
+    font-family:var(--mono);font-size:11.5px;
+    color:var(--text-3);
+    letter-spacing:0.02em;
+    font-weight:500;
+  }
+  .terminal-body{
+    padding:22px 24px;
+    font-family:var(--mono);font-size:12.5px;
+    line-height:1.95;
+    overflow-x:auto;
+    color:var(--text-2);
+    background:rgba(255,255,255,0.35);
+  }
+  .terminal-body .prompt{color:#10b981;font-weight:700}
+  .terminal-body .cmd{color:var(--text);font-weight:500}
+  .terminal-body .arg{color:#b45309}
+  .terminal-body .val{color:#7c3aed}
+  .terminal-body .out{color:var(--text-2)}
+  .terminal-body .ok{color:#0d9d75;font-weight:600}
+  .terminal-body .warn{color:#d97706}
+
+  /* ═══════════ SECTION ═══════════ */
+  section{padding:72px 0;position:relative}
+  .section-tag{
+    display:inline-block;
+    font-family:var(--mono);font-size:11.5px;
+    color:var(--accent);font-weight:700;
+    letter-spacing:0.1em;text-transform:uppercase;
+    padding:5px 12px;
+    background:rgba(91,127,255,0.1);
+    border:1px solid rgba(91,127,255,0.2);
+    border-radius:100px;
+    margin-bottom:16px;
+  }
+  h2{
+    font-size:clamp(26px,3.4vw,36px);
+    font-weight:800;letter-spacing:-0.025em;
+    margin-bottom:16px;line-height:1.18;
+    color:var(--text);
+  }
+  .section-sub{
+    color:var(--text-2);max-width:640px;
+    margin-bottom:44px;font-size:16px;
+    line-height:1.65;
+  }
+
+  /* ═══════════ FEATURE CARDS (GLASS) ═══════════ */
+  .features{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+  }
+  .feature{
+    background:var(--glass);
+    border:1px solid var(--stroke);
+    border-radius:18px;
+    padding:26px 24px;
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+    transition:all .25s;
+    box-shadow:var(--shadow-glass);
+    position:relative;
+    overflow:hidden;
+  }
+  .feature:hover{
+    background:var(--glass-3);
+    transform:translateY(-3px);
+    box-shadow:var(--shadow-glass-lg);
+    border-color:rgba(91,127,255,0.3);
+  }
+
+  .feature-icon{
+    width:44px;height:44px;
+    border-radius:12px;
+    background:linear-gradient(135deg,rgba(91,127,255,0.15),rgba(139,92,246,0.1));
+    border:1px solid rgba(91,127,255,0.2);
+    display:grid;place-items:center;
+    font-size:20px;
+    margin-bottom:16px;
+  }
+  .feature h3{
+    font-size:15.5px;font-weight:700;
+    margin-bottom:9px;color:var(--text);
+    letter-spacing:-0.01em;
+  }
+  .feature p{
+    font-size:13.5px;color:var(--text-2);
+    line-height:1.65;
+  }
+
+  .feature.highlight{
+    background:linear-gradient(180deg,rgba(16,185,129,0.08),rgba(255,255,255,0.5));
+    border-color:rgba(16,185,129,0.25);
+  }
+  .feature.highlight .feature-icon{
+    background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(20,184,166,0.1));
+    border-color:rgba(16,185,129,0.3);
+  }
+
+  /* ═══════════ SPLIT (background mode) ═══════════ */
+  .split{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+    background:var(--glass-2);
+    border:1px solid var(--stroke);
+    border-radius:22px;
+    padding:44px;
+    backdrop-filter:blur(28px) saturate(180%);
+    -webkit-backdrop-filter:blur(28px) saturate(180%);
+    box-shadow:var(--shadow-glass-lg);
+    position:relative;
+    overflow:hidden;
+  }
+  @media (max-width:900px){
+    .split{grid-template-columns:1fr;padding:32px 24px;gap:28px}
+  }
+
+  .split-text h3{
+    font-size:clamp(20px,2.4vw,27px);
+    font-weight:800;letter-spacing:-0.02em;
+    margin-bottom:14px;line-height:1.25;
+    color:var(--text);
+  }
+  .split-text h3 em{
+    font-style:normal;
+    color:var(--green);
+  }
+  .split-text p{
+    font-size:15px;color:var(--text-2);
+    line-height:1.7;margin-bottom:16px;
+  }
+  .split-list{list-style:none;margin-top:20px}
+  .split-list li{
+    padding:8px 0 8px 28px;
+    position:relative;
+    font-size:14px;
+    color:var(--text-2);
+    line-height:1.55;
+  }
+  .split-list li::before{
+    content:'✓';
+    position:absolute;left:0;top:7px;
+    color:var(--green);
+    font-weight:700;
+    font-size:15px;
+  }
+  .split-list li strong{color:var(--text);font-weight:600}
+
+  /* keyboard illustration */
+  .kb-illo{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .kb-row{display:flex;gap:6px}
+  .key{
+    width:40px;height:40px;
+    border-radius:9px;
+    background:var(--glass-3);
+    border:1px solid var(--stroke-2);
+    display:grid;place-items:center;
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:600;
+    color:var(--text-2);
+    box-shadow:
+      0 2px 4px rgba(80,110,180,0.08),
+      inset 0 -2px 0 rgba(80,110,180,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.9);
+    transition:all .2s;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+  .key.active{
+    background:linear-gradient(180deg,#5b7fff,#8b5cf6);
+    border-color:rgba(91,127,255,0.5);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(91,127,255,0.4),inset 0 1px 0 rgba(255,255,255,0.3);
+    transform:translateY(1px);
+  }
+  .key.space{width:150px}
+  .kb-caption{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-3);
+    text-align:center;
+    margin-top:12px;
+    font-weight:500;
+  }
+
+  /* ═══════════ SERVICE CARD ═══════════ */
+  .service{
+    background:linear-gradient(135deg,rgba(91,127,255,0.1) 0%,rgba(139,92,246,0.08) 50%,rgba(20,184,166,0.06) 100%);
+    border:1px solid var(--stroke);
+    border-radius:22px;
+    padding:44px;
+    backdrop-filter:blur(28px) saturate(180%);
+    -webkit-backdrop-filter:blur(28px) saturate(180%);
+    box-shadow:var(--shadow-glass-lg);
+    position:relative;
+    overflow:hidden;
+  }
+  @media (max-width:768px){
+    .service{padding:32px 24px}
+  }
+
+  .service-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:44px;
+    align-items:center;
+  }
+  @media (max-width:900px){
+    .service-grid{grid-template-columns:1fr;gap:28px}
+  }
+
+  .service h3{
+    font-size:clamp(22px,2.6vw,30px);
+    font-weight:800;letter-spacing:-0.02em;
+    margin-bottom:16px;line-height:1.25;
+    color:var(--text);
+  }
+  .service h3 em{
+    font-style:normal;
+    background:linear-gradient(120deg,#5b7fff,#8b5cf6);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .service p{
+    color:var(--text-2);font-size:15px;
+    line-height:1.7;margin-bottom:18px;
+  }
+
+  .service-stats{
+    display:grid;gap:12px;
+    grid-template-columns:1fr 1fr;
+  }
+  .stat{
+    background:var(--glass-3);
+    border:1px solid var(--stroke);
+    border-radius:14px;
+    padding:18px;
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    box-shadow:var(--shadow-glass);
+  }
+  .stat-label{
+    font-family:var(--mono);font-size:10.5px;
+    color:var(--text-3);letter-spacing:0.06em;
+    margin-bottom:8px;text-transform:uppercase;
+    font-weight:600;
+  }
+  .stat-value{
+    font-size:20px;font-weight:800;
+    color:var(--accent);
+    letter-spacing:-0.02em;
+  }
+  .stat-value small{
+    font-size:12px;color:var(--text-3);
+    font-weight:500;margin-left:4px;
+  }
+
+  /* ═══════════ SIMPLE EXPLANATION ═══════════ */
+  .explain{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-top:8px;
+  }
+  @media (max-width:768px){
+    .explain{grid-template-columns:1fr}
+  }
+  .explain-card{
+    background:var(--glass-2);
+    border:1px solid var(--stroke);
+    border-radius:18px;
+    padding:30px 26px;
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+    box-shadow:var(--shadow-glass);
+    text-align:center;
+    transition:transform .2s;
+  }
+  .explain-card:hover{transform:translateY(-3px)}
+  .explain-icon{
+    width:64px;height:64px;
+    border-radius:18px;
+    margin:0 auto 18px;
+    display:grid;place-items:center;
+    font-size:28px;
+    background:linear-gradient(135deg,rgba(91,127,255,0.15),rgba(139,92,246,0.1));
+    border:1px solid rgba(91,127,255,0.2);
+    box-shadow:0 8px 20px rgba(91,127,255,0.15);
+  }
+  .explain-card h3{
+    font-size:17px;font-weight:700;
+    margin-bottom:10px;color:var(--text);
+    letter-spacing:-0.015em;
+  }
+  .explain-card p{
+    font-size:14px;color:var(--text-2);
+    line-height:1.65;
+  }
+
+  /* ═══════════ SPECS ═══════════ */
+  .specs{
+    background:var(--glass-2);
+    border:1px solid var(--stroke);
+    border-radius:18px;
+    overflow:hidden;
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    box-shadow:var(--shadow-glass);
+  }
+  .specs-row{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    padding:16px 24px;
+    border-bottom:1px solid rgba(180,195,230,0.25);
+    font-size:14px;
+    align-items:baseline;
+    transition:background .15s;
+  }
+  .specs-row:last-child{border-bottom:none}
+  .specs-row:hover{background:rgba(255,255,255,0.4)}
+  .specs-row dt{
+    color:var(--text-3);
+    font-family:var(--mono);font-size:12px;
+    letter-spacing:0.02em;
+    font-weight:600;
+  }
+  .specs-row dd{color:var(--text);font-size:14px}
+  .specs-row dd strong{color:var(--accent);font-weight:600}
+  @media (max-width:640px){
+    .specs-row{grid-template-columns:1fr;gap:4px;padding:14px 18px}
+  }
+
+  /* ═══════════ HONESTY ═══════════ */
+  .honesty{
+    background:var(--glass-2);
+    border:1px solid var(--stroke);
+    border-left:4px solid var(--amber);
+    border-radius:16px;
+    padding:26px 30px;
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    box-shadow:var(--shadow-glass);
+  }
+  .honesty h3{
+    font-size:15px;font-weight:700;
+    color:#b45309;margin-bottom:16px;
+    font-family:var(--mono);
+    letter-spacing:0.02em;
+  }
+  .honesty ul{list-style:none}
+  .honesty li{
+    padding:8px 0 8px 26px;
+    position:relative;
+    font-size:14px;
+    color:var(--text-2);
+    line-height:1.65;
+  }
+  .honesty li::before{
+    content:'—';
+    position:absolute;left:0;
+    color:var(--text-3);
+    font-family:var(--mono);
+    font-weight:600;
+  }
+
+  /* ═══════════ CTA ═══════════ */
+  .cta-final{
+    background:linear-gradient(135deg,rgba(91,127,255,0.12) 0%,rgba(139,92,246,0.1) 100%);
+    border:1px solid var(--stroke);
+    border-radius:24px;
+    padding:64px 40px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    backdrop-filter:blur(28px) saturate(180%);
+    -webkit-backdrop-filter:blur(28px) saturate(180%);
+    box-shadow:var(--shadow-glass-lg);
+  }
+  .cta-final h2{margin-bottom:16px;color:var(--text)}
+  .cta-final p{
+    color:var(--text-2);max-width:560px;
+    margin:0 auto 30px;font-size:16px;
+    line-height:1.65;
+  }
+
+  .pill-price{
+    display:inline-block;
+    font-family:var(--mono);font-size:12px;
+    padding:6px 14px;
+    background:var(--glass-3);
+    border:1px solid rgba(16,185,129,0.3);
+    color:#0d9d75;
+    border-radius:100px;
+    margin-bottom:22px;
+    font-weight:700;
+    box-shadow:0 4px 12px rgba(16,185,129,0.1);
+  }
+
+  .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+  .cta-note{
+    margin-top:22px;
+    font-size:13px;
+    color:var(--text-3);
+    font-family:var(--mono);
+    font-weight:500;
+  }
+
+  /* ═══════════ FOOTER ═══════════ */
+  footer{
+    padding:40px 0 60px;
+    margin-top:40px;
+  }
+  .footer-inner{
+    display:flex;justify-content:space-between;
+    align-items:center;gap:20px;
+    flex-wrap:wrap;
+    font-size:13px;
+    color:var(--text-3);
+    font-family:var(--mono);
+    padding:20px 26px;
+    background:var(--glass);
+    border:1px solid var(--stroke);
+    border-radius:16px;
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    box-shadow:var(--shadow-glass);
+    font-weight:500;
+  }
+  .footer-inner a{color:var(--text-2);transition:color .15s}
+  .footer-inner a:hover{color:var(--accent)}
+
+  /* ═══════════ RESPONSIVE ═══════════ */
+  @media (max-width:768px){
+    .nav{margin:8px 12px 0}
+    .nav-inner{padding:10px 14px}
+    .nav-links{display:none}
+    .brand-sub{display:none}
+    .hero{padding:44px 0 30px}
+    section{padding:52px 0}
+    .cta-final{padding:44px 22px}
+    .terminal-body{font-size:11.5px;padding:16px}
+    .footer-inner{flex-direction:column;text-align:center}
+    .kb-row{gap:4px}
+    .key{width:32px;height:32px;font-size:9px}
+    .key.space{width:120px}
+  }
+
+  ::selection{background:rgba(91,127,255,0.3);color:#fff}
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s,transform .7s}
+  .reveal.in{opacity:1;transform:none}
+</style>
 </head>
 <body>
-    <header>
-        <h1>Facebook Scraper</h1>
-        <p>High-Performance Data Collection Tool for Windows</p>
-    </header>
 
-    <div class="container">
-        <h2>🚀 Key Features</h2>
-        <ul class="feature-list">
-            <li><strong>Multi-Instance:</strong> Run multiple scrapers with different accounts & proxies simultaneously.</li>
-            <li><strong>High Speed:</strong> Parallel video downloads & global speed multiplier.</li>
-            <li><strong>Smart Deduplication:</strong> FTS5 + SHA-256 to eliminate duplicate posts.</li>
-            <li><strong>Web Dashboard:</strong> Real-time logs, post viewer, and full control panel.</li>
-            <li><strong>Proxy Support:</strong> HTTP, HTTPS, SOCKS4, SOCKS5 with authentication.</li>
-        </ul>
+<div class="bg-wrap">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+  <div class="orb orb-5"></div>
+</div>
 
-        <h2>🎯 Who Is It For?</h2>
-        <p>Marketing agencies, B2B sales teams, e-commerce analysts, and data researchers who need reliable Facebook data.</p>
-
-        <h2>📩 Get in Touch</h2>
-        <p>For licensing, pricing, or a demo, please contact me:</p>
-        <div class="cta">
-            <a href="mailto:your-email@example.com">Email Me</a>
-        </div>
+<!-- ═══════ NAV ═══════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/FacebookScrapper/" class="brand">
+      <span class="brand-mark">FS</span>
+      <span>Facebook Scraper</span>
+      <span class="brand-sep">/</span>
+      <span class="brand-sub">v2.0</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#background">Background</a>
+      <a href="#bulk">Bulk service</a>
+      <a href="#contact">Contact</a>
     </div>
+    <a href="#contact" class="btn btn-primary">Get a quote →</a>
+  </div>
+</nav>
 
-    <footer>
-        <p>&copy; 2025 Your Name. All rights reserved.</p>
-    </footer>
+<!-- ═══════ HERO ═══════ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="live-pill">
+          <span class="dot"></span>
+          Works on Windows 10 / 11
+        </div>
+
+        <h1>
+          Collect Facebook posts.<br>
+          <em>Automatically.</em>
+        </h1>
+
+        <p class="lede">
+          A simple Windows program that saves Facebook posts for you —
+          text, photos, and videos. It runs quietly in the background
+          <strong>while you keep using your computer normally</strong>.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-primary">Request a demo →</a>
+          <a href="#bulk" class="btn btn-ghost">Or let me do it for you</a>
+        </div>
+
+        <div class="simple-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h4>You open the app</h4>
+            <p>Type the Facebook page or profile you want to watch.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h4>You press Start</h4>
+            <p>Then go back to your work. It runs on its own.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h4>You get the data</h4>
+            <p>Posts, photos, videos — all saved to a database file.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-head">
+          <span class="tdot red"></span>
+          <span class="tdot yellow"></span>
+          <span class="tdot green"></span>
+          <span class="terminal-title">facebook.exe — running</span>
+        </div>
+        <div class="terminal-body">
+<span class="prompt">PS&gt;</span> <span class="cmd">.\facebook.exe</span> <span class="arg">-userProfile=</span><span class="val">my_account</span> `<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">-profiles=</span><span class="val">brandpage,competitor1</span> `<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">-media=</span><span class="val">images,videos</span><br>
+<br>
+<span class="out">[13:42:01] App ready. Logged in as my_account.</span><br>
+<span class="out">[13:42:11] Watching 2 pages.</span><br>
+<span class="out">[13:43:27] Page 1 — 47 new posts saved.</span><br>
+<span class="out">[13:45:02] Downloading 8 videos…</span><br>
+<span class="out">[13:51:14] Page 1 — 231 new posts saved.</span><br>
+<span class="warn">[13:52:08] Facebook is slowing us down. Waiting 12s…</span><br>
+<span class="out">[14:02:09] </span><span class="ok">✓ Done. 278 posts, 94 files saved.</span><br>
+<span class="out">[14:02:09] Still running in background…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════ SIMPLE EXPLANATION ═══════ -->
+<section id="how">
+  <div class="wrap">
+    <div class="section-tag">in plain words</div>
+    <h2>What does this thing actually do?</h2>
+    <p class="section-sub">
+      Let's skip the tech talk. Here is exactly what this program does for you.
+    </p>
+
+    <div class="explain">
+      <div class="explain-card">
+        <div class="explain-icon">📥</div>
+        <h3>It saves Facebook posts</h3>
+        <p>
+          You give it the name of a Facebook page. It goes through that page
+          and copies every post it finds — the text, the photos, the videos.
+          Like taking notes, but automatic.
+        </p>
+      </div>
+      <div class="explain-card">
+        <div class="explain-icon">⚡</div>
+        <h3>It works while you do other things</h3>
+        <p>
+          You open it, you press start, you forget about it. Use Word, play
+          a video, answer emails — it keeps working in the background. Your
+          mouse and keyboard stay yours.
+        </p>
+      </div>
+      <div class="explain-card">
+        <div class="explain-icon">📊</div>
+        <h3>It puts everything in one place</h3>
+        <p>
+          All posts end up in a neat file on your computer. You can search
+          them, sort them by date, or send them to another program. No more
+          copying and pasting by hand.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FEATURES ═══════ -->
+<section id="features">
+  <div class="wrap">
+    <div class="section-tag">why it's better</div>
+    <h2>Why not just copy-paste by hand?</h2>
+    <p class="section-sub">
+      Because you have better things to do. Here's what makes this different
+      from opening Facebook in a browser and copying posts one by one.
+    </p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <h3>Looks like a real browser</h3>
+        <p>
+          Facebook blocks programs that pretend to be browsers. This one
+          actually uses the same engine Microsoft Edge uses — so Facebook
+          can't tell the difference. You log in once, and it stays logged in.
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">👥</div>
+        <h3>Run several at once</h3>
+        <p>
+          Managing data for 5 clients? Run 5 copies at the same time, each
+          with its own Facebook account and its own internet address. If
+          one gets blocked, the others keep working.
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🎬</div>
+        <h3>Downloads videos fast</h3>
+        <p>
+          Videos are downloaded in parallel instead of one at a time.
+          A 100-video page finishes in minutes, not hours.
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🧹</div>
+        <h3>No duplicate mess</h3>
+        <p>
+          Facebook has a "See more" button that splits posts into pieces.
+          Most tools save the same post 3 times. This one recognizes duplicates
+          and saves only the full version. You get clean data.
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🖥️</div>
+        <h3>Check progress in your browser</h3>
+        <p>
+          A built-in website opens in your browser. You can see what posts
+          are coming in right now, view the videos, and change settings
+          without restarting anything.
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🌐</div>
+        <h3>Works with any proxy</h3>
+        <p>
+          If you have a proxy server, it uses it. If you don't, it doesn't
+          need one. Supports all common proxy types including SOCKS5.
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">📮</div>
+        <h3>Sends data to your tools</h3>
+        <p>
+          Every post can be sent automatically to your CRM, database, or
+          spreadsheet — the moment it's collected. No manual export.
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🛡️</div>
+        <h3>Recovers from crashes</h3>
+        <p>
+          If something goes wrong, it restarts itself. But not forever —
+          after 5 crashes in an hour, it stops and waits for you, so it
+          doesn't burn through resources.
+        </p>
+      </div>
+
+      <div class="feature highlight">
+        <div class="feature-icon">⌨️</div>
+        <h3>Your PC stays yours</h3>
+        <p>
+          It does not steal your mouse. It does not steal your keyboard.
+          It does not open windows that pop up while you type. It just sits
+          quietly in the background and does its job.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BACKGROUND MODE ═══════ -->
+<section id="background">
+  <div class="wrap">
+    <div class="section-tag">runs quietly</div>
+    <h2>Your computer stays yours.</h2>
+    <p class="section-sub">
+      No window to watch. No buttons to click. It opens, it starts, and it
+      disappears into the background — like a download that takes all day.
+    </p>
+
+    <div class="split">
+      <div class="split-text">
+        <h3>Keep typing. Keep clicking. <em>Keep working.</em></h3>
+        <p>
+          The scraper runs like any normal Windows program. It doesn't need
+          to be the front window. It doesn't lock your mouse. It doesn't
+          pull focus away from what you're typing.
+        </p>
+        <p>
+          Type in Excel. Browse the web. Take a Teams call. The collector
+          keeps running the whole time.
+        </p>
+        <ul class="split-list">
+          <li><strong>Runs minimised or fully hidden</strong> — set it and forget it.</li>
+          <li><strong>Does not lock your mouse or keyboard</strong> — ever.</li>
+          <li><strong>Multiple copies side by side</strong> — one per client, all silent.</li>
+          <li><strong>Check progress anytime</strong> — the built-in website shows what's happening.</li>
+          <li><strong>Logs clean themselves up</strong> — no huge files piling up.</li>
+        </ul>
+      </div>
+
+      <div class="kb-illo" aria-hidden="true">
+        <div class="kb-row">
+          <div class="key">Q</div><div class="key">W</div><div class="key">E</div>
+          <div class="key">R</div><div class="key">T</div><div class="key">Y</div>
+          <div class="key">U</div><div class="key">I</div><div class="key">O</div>
+          <div class="key">P</div>
+        </div>
+        <div class="kb-row">
+          <div class="key">A</div><div class="key">S</div><div class="key">D</div>
+          <div class="key active">F</div><div class="key">G</div><div class="key">H</div>
+          <div class="key">J</div><div class="key">K</div><div class="key">L</div>
+        </div>
+        <div class="kb-row">
+          <div class="key">Z</div><div class="key">X</div><div class="key">C</div>
+          <div class="key">V</div><div class="key">B</div><div class="key">N</div>
+          <div class="key">M</div>
+        </div>
+        <div class="kb-row">
+          <div class="key space">SPACE</div>
+        </div>
+        <div class="kb-caption">// your mouse &amp; keyboard stay yours</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BULK SERVICE ═══════ -->
+<section id="bulk">
+  <div class="wrap">
+    <div class="section-tag">or we do it for you</div>
+    <h2>Don't want to run it yourself? No problem.</h2>
+    <p class="section-sub">
+      If you need a large amount of data and don't want to manage software,
+      proxies, or servers — I'll do the whole job for you. You get the data.
+      That's it.
+    </p>
+
+    <div class="service">
+      <div class="service-grid">
+        <div>
+          <h3>Bulk jobs, <em>handled end-to-end.</em></h3>
+          <p>
+            Just tell me what you need — which pages, which hashtags, what
+            date range, what fields. I run the scrapers on my own machines,
+            clean the results, and deliver the data in whatever format
+            you want: Excel, JSON, or straight into your database.
+          </p>
+          <p>
+            Perfect for one-off bulk pulls, weekly monitoring, or any job
+            that's too big for a single desktop.
+          </p>
+          <ul class="split-list" style="margin-top:20px">
+            <li><strong>You tell me what to collect</strong> — targets, filters, schedule.</li>
+            <li><strong>I run the collection</strong> on my own infrastructure.</li>
+            <li><strong>You receive clean data</strong> — no duplicates, ready to use.</li>
+            <li><strong>You manage nothing</strong> — no installs, no proxies, no headaches.</li>
+          </ul>
+        </div>
+
+        <div class="service-stats">
+          <div class="stat">
+            <div class="stat-label">usual delivery</div>
+            <div class="stat-value">48<small>hours</small></div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">minimum order</div>
+            <div class="stat-value">10k<small>+ posts</small></div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">file formats</div>
+            <div class="stat-value" style="font-size:14px;letter-spacing:0">Excel · JSON · SQLite</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">recurring jobs</div>
+            <div class="stat-value" style="font-size:14px;letter-spacing:0">weekly · monthly</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SPECS ═══════ -->
+<section id="specs">
+  <div class="wrap">
+    <div class="section-tag">technical details</div>
+    <h2>What you're actually running.</h2>
+    <p class="section-sub">
+      For the people who have to install this on a real machine.
+    </p>
+
+    <div class="specs">
+      <dl class="specs-row">
+        <dt>Operating system</dt>
+        <dd>Windows 10 or Windows 11 (64-bit)</dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Browser engine</dt>
+        <dd>Microsoft Edge WebView2 (real browser, not a fake one)</dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Where data is stored</dt>
+        <dd>SQLite database file · optional <strong>separate writer process</strong></dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Video processing</dt>
+        <dd>Requires ffmpeg in <strong>PATH</strong> · automatic audio-video merging</dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Proxy support</dt>
+        <dd>HTTP · HTTPS · SOCKS4 · SOCKS5 with authentication</dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Control panel</dt>
+        <dd>Windows desktop window + built-in web page on <code>localhost</code></dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Background mode</dt>
+        <dd>Runs minimised or hidden · <strong>never takes over your mouse or keyboard</strong></dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Settings</dt>
+        <dd>Simple text file (<code>scrapsettings.json</code>) + command-line options</dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Isolation</dt>
+        <dd>Each copy has its own <strong>login, database, log file, and port</strong></dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>Logs</dt>
+        <dd>Rotated automatically · proxy passwords hidden from log files</dd>
+      </dl>
+      <dl class="specs-row">
+        <dt>License</dt>
+        <dd>Per installation · source code available for enterprise buyers</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ HONESTY ═══════ -->
+<section>
+  <div class="wrap">
+    <div class="honesty">
+      <h3>// what this does NOT do</h3>
+      <ul>
+        <li>It does not run on Mac, Linux, or inside Docker. It's a Windows program.</li>
+        <li>It does not log in to Facebook for you. You provide the account and log in once.</li>
+        <li>It does not rotate proxies automatically. You provide the proxy — or run multiple copies.</li>
+        <li>It does not have an official API. It sends data to your tools via a simple web address.</li>
+        <li>It is not a hack, a crack, or a way to bypass Facebook's rules. Use it responsibly.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CTA ═══════ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="cta-final">
+      <div class="pill-price">licenses from $499 · bulk jobs quoted per project</div>
+      <h2>Tell me what you need.</h2>
+      <p>
+        Buying the software, or want me to run a bulk job for you?
+        Either way — send me the details and I'll reply with a straight
+        answer, including whether I think this fits your case.
+      </p>
+      <div class="cta-buttons">
+        <a href="mailto:hsnebrahimi@protonmail.com?subject=Facebook%20Scraper%20Inquiry" class="btn btn-primary">
+          hoseinebrahimiii@hotmail.com
+        </a>
+        <a href="#bulk" class="btn btn-ghost">Bulk scraping details</a>
+      </div>
+      <div class="cta-note">
+        Reply within 24 hours · BTC &amp; USDT (TRC-20) accepted · invoices provided
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>© 2025 Hosein Ebrahimi · Independent software</div>
+      <div>
+        <a href="https://github.com/HSNEbrahimii" target="_blank" rel="noopener">GitHub</a>
+        &nbsp;·&nbsp;
+        <a href="mailto:hsnebrahimi@protonmail.com">Email</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('section, .feature, .honesty, .specs, .terminal, .split, .service, .explain-card, .step')
+    .forEach(el => {
+      el.classList.add('reveal');
+      io.observe(el);
+    });
+
+  // Smooth anchor with sticky-nav offset
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id === '#') return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.pageYOffset - 90;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // Random typing animation on keyboard illustration
+  const keys = document.querySelectorAll('.key:not(.space)');
+  if (keys.length) {
+    setInterval(() => {
+      keys.forEach(k => k.classList.remove('active'));
+      const idx = Math.floor(Math.random() * keys.length);
+      keys[idx].classList.add('active');
+    }, 500);
+  }
+</script>
+
 </body>
 </html>
